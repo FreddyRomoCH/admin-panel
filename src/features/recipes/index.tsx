@@ -21,23 +21,9 @@ export default function Recipes() {
                             <th><Skeleton /></th>
                         </tr>
                     </thead>
-
-                    <tbody className="bg-card text-text-primary font-inter">
-                        <tr>
-                            <td className="px-4 py-2">
-                                <Skeleton />
-                            </td>
-                            <td className="px-4 py-2">
-                                <Skeleton />
-                            </td>
-                            <td className="px-4 py-2">
-                                <Skeleton />
-                            </td>
-                        </tr>
-                    </tbody>
                 </table>
             ) : (
-                <table className="w-full border-collapse text-sm tracking-wide font-light">
+                <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
                     <thead className="bg-background-light shadow rounded-t-2xl text-text-secondary">
                         <tr>
                             <th className="px-4 py-2 text-left">Image</th>

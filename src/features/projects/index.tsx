@@ -15,7 +15,7 @@ export default function Projects() {
                 <div>Error</div>
             )}
             
-            <header className="mb-4">
+            <header className="mb-8">
                 {loading ? (
                     <Skeleton />
                 ) : (
@@ -27,7 +27,7 @@ export default function Projects() {
                 <SectionProjects gitHubProjects={gitHubProjects} loading={loading} setTech={setTech} />
             </main>
 
-            <footer className="flex justify-center items-center gap-4">
+            <footer className="flex justify-center items-center gap-4 animate-slide-in-bottom">
                 <button className="cursor-pointer disabled:opacity-50" onClick={prevPage} disabled={page === 1 || loading}>
                     <IconPrev color="text-primary" />
                 </button>

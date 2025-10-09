@@ -16,7 +16,7 @@ export default function FiltersProjects({ filter, setFilter, tech, setTech }:Fil
     
     return (
         <div>
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-10 animate-slide-in-top">
                 <nav>
                     <ul className="flex items-center gap-10">
                         {PROJECT_FILTERS.map((item) => (

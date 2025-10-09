@@ -14,13 +14,13 @@ export default function Header() {
             <div className="flex justify-center items-center gap-10">
                 {
                     title === "Recipes" && (
-                        <nav className="relative">
+                        <nav className="relative animate-sway">
                             <a href="https://recipes.freddyromo.dev/add-recipe" target="_blank" rel="noopener norefer" className="bg-primary text-card text-sm rounded-2xl px-10 py-2">Add Recipes</a>
                             <IconPlus className="text-card w-5 h-5 absolute top-1 left-4" />
                         </nav>
                     )
                 }
-                <img className="rounded-full h-12 w-12 object-cover" src="/images/Freddy_pequeno.jpeg" alt="Admin Profile Image" />
+                <img className="rounded-full h-12 w-12 object-cover drop-shadow-lg drop-shadow-black/50" src="/images/Freddy_pequeno.jpeg" alt="Admin Profile Image" />
             </div>
         </div>
     )

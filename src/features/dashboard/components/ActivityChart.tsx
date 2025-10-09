@@ -17,7 +17,7 @@ interface ActivityChartProps {
 export default function ActivityChart({ data }:ActivityChartProps) {
 
     return (
-         <div className="w-full h-64">
+         <div className="w-full h-64 animate-blurred-fade-in">
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" className="text-border" />

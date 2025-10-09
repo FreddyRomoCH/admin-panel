@@ -16,9 +16,9 @@ export default function Dashboard() {
             <header className="grid grid-cols-3 gap-4 mt-2">
                 {dashboardStatsLoading ? (
                     <>
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
+                    {Array.from({length: 3}).map((_, i) => (
+                        <Skeleton key={i} />
+                    ))}
                     </>
                 ) : (
                     <>
@@ -39,15 +39,13 @@ export default function Dashboard() {
                     ) }
                 </section>
 
-                <section className="col-span-3 bg-card p-6 rounded-md shadow-md">
+                <section className="col-span-3 bg-card p-6 rounded-md shadow-md animate-slide-in-right">
                     <h2 className="text-lg text-text-primary font-bold">Recent Items</h2>
-                    { recentLoading ? (
-                        <Skeleton />
-                    ) : (
+                    {
                         recentItems.map((item) => (
-                            <RecentItems key={item.id} {...item} />
+                            <RecentItems key={item.id} recentLoading={recentLoading} {...item} />
                         ))
-                    ) }
+                    }
                 </section>
                 
             </main>
