@@ -6,7 +6,7 @@ import ProjectsPagination from "@features/projects/components/ProjectsPagination
 import SectionProjects from "@features/projects/components/SectionProjects"
 
 export default function Projects() {
-    const {loading, error, gitHubProjects, hasMore, page, totalPages, goToPage, nextPage, prevPage, filter, setFilter} = useProjects()
+    const {loading, error, gitHubProjects, hasMore, page, totalPages, goToPage, nextPage, prevPage, filter, setFilter, tech, setTech} = useProjects()
 
     return (
         <div>
@@ -15,7 +15,7 @@ export default function Projects() {
             )}
             
             <header className="mb-4">
-                <FiltersProjects filter={filter} setFilter={setFilter} />
+                <FiltersProjects filter={filter} setFilter={setFilter} tech={tech} setTech={setTech} />
             </header>
 
             <main className="grid grid-cols-2 md:grid-cols-4 gap-6 items-stretch mb-8">

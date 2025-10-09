@@ -1,8 +1,8 @@
 import { PROJECT_FILTERS } from "@features/projects/constants/filters"
 import FilterItem from "@features/projects/components/FilterItem"
 import type { Filters } from "@features/projects/types"
-import FilterSelector from "@features/projects/components/FilterSelector"
 import type { TopicsGitHub } from "@/types/topicsGitHub"
+import FilterSelector from "@features/projects/components/FilterSelector"
 
 interface FiltersProjectsProps {
     filter: Filters["value"],
