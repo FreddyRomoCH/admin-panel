@@ -4,6 +4,7 @@ import IconPrev from "@/assets/IconPrev"
 import IconNext from "@/assets/IconNext"
 import ProjectsPagination from "@features/projects/components/ProjectsPagination"
 import SectionProjects from "@features/projects/components/SectionProjects"
+import Skeleton from "@/components/ui/Skeleton"
 
 export default function Projects() {
     const {loading, error, gitHubProjects, hasMore, page, totalPages, goToPage, nextPage, prevPage, filter, setFilter, tech, setTech} = useProjects()
@@ -15,11 +16,15 @@ export default function Projects() {
             )}
             
             <header className="mb-4">
-                <FiltersProjects filter={filter} setFilter={setFilter} tech={tech} setTech={setTech} />
+                {loading ? (
+                    <Skeleton />
+                ) : (
+                    <FiltersProjects filter={filter} setFilter={setFilter} tech={tech} setTech={setTech} />
+                )}
             </header>
 
             <main className="grid grid-cols-2 md:grid-cols-4 gap-6 items-stretch mb-8">
-                <SectionProjects gitHubProjects={gitHubProjects} loading={loading} />
+                <SectionProjects gitHubProjects={gitHubProjects} loading={loading} setTech={setTech} />
             </main>
 
             <footer className="flex justify-center items-center gap-4">

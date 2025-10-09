@@ -1,10 +1,13 @@
 import type { GHProjects } from "@features/projects/types";
 import TopicItem from "@features/projects/components/TopicItem";
+import type { TopicsGitHub } from "@/types/topicsGitHub";
 
-type CardProjectsProps = GHProjects;
+interface CardProjectsProps extends GHProjects {
+  setTech: (value: TopicsGitHub["value"]) => void;
+}
 
 
-export default function CardProjects({ name, html_url, homepage, topics }:CardProjectsProps) {
+export default function CardProjects({ name, html_url, homepage, topics, setTech  }:CardProjectsProps) {
 
     return (
         <article className="flex flex-col justify-between items-center rounded-lg bg-card overflow-hidden h-full">
@@ -14,12 +17,12 @@ export default function CardProjects({ name, html_url, homepage, topics }:CardPr
             </div>
             <div className="flex flex-col p-3 w-full justify-between gap-1 flex-1">
                 <h3 className="font-semibold capitalize text-base text-text-primary font-inter">{name}</h3>
-                <small className="text-text-secondary mb-2 flex-1">In Progress</small>
+                {/* <small className="text-text-secondary mb-2 flex-1">In Progress</small> */}
                 <ul className="flex justify-start items-center flex-wrap gap-1">
                     {
                         topics && (
                             topics.filter((topic:string) => topic.toLowerCase() !== 'client').map((topic:string) => (
-                                <TopicItem key={topic} topic={topic} />
+                                <TopicItem key={topic} topic={topic} setTech={setTech} />
                             ))
                         )
                     }

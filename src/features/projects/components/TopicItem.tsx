@@ -1,10 +1,12 @@
 import { TOPICS } from "@/constants/getTopics"
+import type { TopicsGitHub } from "@/types/topicsGitHub";
 
 interface TopicItemProps {
-    topic: string
+    topic: string,
+    setTech: (value: TopicsGitHub["value"]) => void;
 }
 
-export default function TopicItem({ topic }:TopicItemProps) {
+export default function TopicItem({ topic, setTech }:TopicItemProps) {
     const matchedTopic = TOPICS.find((t) => t.value === topic)
 
     return (
@@ -15,7 +17,7 @@ export default function TopicItem({ topic }:TopicItemProps) {
             color: matchedTopic?.color
             }}
         >
-            {topic.charAt(0).toUpperCase() + topic.slice(1)}
+            <button onClick={() => { setTech(topic) }} className="cursor-pointer">{topic.charAt(0).toUpperCase() + topic.slice(1)}</button>
         </li>
     )
 }
