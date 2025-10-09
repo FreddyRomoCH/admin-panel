@@ -18,7 +18,7 @@ export default function FilterSelector({ tech, setTech }:FilterSelectorProps) {
                     ))
                 }
             </select>
-            <IconArrowDown color="text-secondary-text" />
+            <IconArrowDown color="text-text-secondary" />
         </div>
     )
 }
