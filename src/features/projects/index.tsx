@@ -1,0 +1,38 @@
+import { useProjects } from "@features/projects/hooks/useProjects"
+import FiltersProjects from "@features/projects/components/FiltersProjects"
+import IconPrev from "@/assets/IconPrev"
+import IconNext from "@/assets/IconNext"
+import ProjectsPagination from "@features/projects/components/ProjectsPagination"
+import SectionProjects from "@features/projects/components/SectionProjects"
+
+export default function Projects() {
+    const {loading, error, gitHubProjects, hasMore, page, totalPages, goToPage, nextPage, prevPage, filter, setFilter} = useProjects()
+
+    return (
+        <div>
+            {error && (
+                <div>Error</div>
+            )}
+            
+            <header className="mb-4">
+                <FiltersProjects filter={filter} setFilter={setFilter} />
+            </header>
+
+            <main className="grid grid-cols-2 md:grid-cols-4 gap-6 items-stretch mb-8">
+                <SectionProjects gitHubProjects={gitHubProjects} loading={loading} />
+            </main>
+
+            <footer className="flex justify-center items-center gap-4">
+                <button className="cursor-pointer disabled:opacity-50" onClick={prevPage} disabled={page === 1 || loading}>
+                    <IconPrev color="text-primary" />
+                </button>
+
+                <ProjectsPagination totalPages={totalPages} currentPage={page} onPageChange={goToPage} />
+
+                <button className="cursor-pointer disabled:opacity-50" onClick={nextPage} disabled={!hasMore || loading}>
+                    <IconNext color="text-primary" />
+                </button>
+            </footer>
+        </div>
+    )
+}

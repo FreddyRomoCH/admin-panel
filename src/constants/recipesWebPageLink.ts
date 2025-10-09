@@ -1,0 +1,1 @@
+export const recipesWebURL = "https://recipes.freddyromo.dev/recipes"
