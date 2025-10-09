@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import type { Filters, GHProjects } from "@features/projects/types"
+import type { TopicsGitHub } from "@/types/topicsGitHub"
 import { fetchGitHubRepos } from "@/lib/api/gitHubClient"
 
 export function useProjects() {
@@ -9,31 +10,21 @@ export function useProjects() {
     const [gitHubProjects, setGithubProjects] = useState<GHProjects[]>([])
     const [hasMore, setHasMore] = useState(true)
     const [page, setPage] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
+    // const [totalPages, setTotalPages] = useState(1)
     const [filter, setFilter] = useState<Filters["value"]>("all")
+    const [tech, setTech] = useState<TopicsGitHub["value"]>("all")
+    const perPage = 4
 
     useEffect(() => {
         async function getGitHubProjects() {
             try {
-                const projects = await fetchGitHubRepos({page:page, perPage:4})
+                const projects = await fetchGitHubRepos({page:page, perPage:100})
 
                 if (!projects.data.length) {
                     setError(true)
                     return
                 }
-
-                // Filter By Client or Personal
-                // let filteredProjects = projects.data
-
-                // if (filter === "client") {
-                //     filteredProjects = projects.data.filter((repo:GHProjects) => repo.topics?.includes("client") )
-                // }else if (filter === "personal") {
-                //     filteredProjects = projects.data.filter((repo:GHProjects) => !repo.topics?.includes("client"))
-                // }
-
-                setTotalPages(projects.totalPages)
-                setHasMore(projects.data.length === 4)
-
+                
                 setGithubProjects(projects.data)
 
             } catch (error) {
@@ -46,35 +37,58 @@ export function useProjects() {
         }
 
         getGitHubProjects()
-    }, [page])
+    }, [])
 
 
     // useMemo to use filters
     const filteredProjects = useMemo(() => {
-        if (filter === 'client') {
-            return gitHubProjects.filter((repo) => repo.topics?.includes("client") )
+        let results = gitHubProjects
+
+        if (tech !== "all") {
+            results = results.filter(repo => repo.topics?.includes(tech))
         }
 
-        if (filter === "personal") {
-            return gitHubProjects.filter((repo) => !repo.topics?.includes("client") )
+        if (filter === "client") {
+            results = results.filter(repo => repo.topics?.includes("client"))
+        } else if (filter === "personal") {
+            results = results.filter(repo => !repo.topics?.includes("client"))
         }
 
-        return gitHubProjects
-    }, [filter, gitHubProjects])
+        return results
+    }, [filter, tech, gitHubProjects])
+
+    // Pagination from UI
+    const totalPages = Math.ceil(filteredProjects.length / perPage)
+
+    const paginatedProjects = useMemo(() => {
+        const start = (page - 1) * perPage
+        const end = start + perPage
+        const sliced = filteredProjects.slice(start, end)
+
+        setHasMore(page < totalPages)
+
+        return sliced
+    }, [filteredProjects, page, totalPages])
+
 
     // Pagination functions
 
     function nextPage() {
-        hasMore && setPage((prev) => prev + 1)
+        setPage(prev => (prev < totalPages ? prev + 1 : prev))
     }
 
     function prevPage() {
-        page > 1 && setPage((prev) => prev - 1)
-    }
-    
-    function goToPage(num: number) {
-        setPage(num)
+        setPage(prev => (prev > 1 ? prev - 1 : prev))
     }
 
-    return { loading, error, gitHubProjects: filteredProjects, hasMore, page, totalPages, filter, setFilter, goToPage, nextPage, prevPage }
+    function goToPage(num: number) {
+        if (num >= 1 && num <= totalPages) setPage(num)
+    }
+
+    // Always returns to page 1 when changing filters
+    useEffect(() => {
+        setPage(1)
+    }, [filter, tech])
+
+    return { loading, error, gitHubProjects: paginatedProjects, hasMore, page, totalPages, filter, tech, setTech, setFilter, goToPage, nextPage, prevPage }
 }
