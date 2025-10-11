@@ -1,10 +1,24 @@
+import { useState } from "react"
 import { useRecipes } from "@features/recipes/hook/useRecipes"
-import type { RecipeCategory, Recipes } from "@features/recipes/types"
+import type { Recipes } from "@features/recipes/types"
 import Skeleton from "@/components/ui/Skeleton"
-import IconEdit from "@/assets/IconEdit"
+import TableRecipes from "@features/recipes/components/TableRecipes"
+import ModalEditRecipes from "@features/recipes/components/ModalEditRecipes"
 
 export default function Recipes() {
     const {loading, error, recipes} = useRecipes()
+    const [isOpen, setIsOpen] = useState(false)
+    const [selectedRecipe, setSelectedRecipe] = useState<Recipes | null>(null)
+
+    const handleOpenModal = (recipe: Recipes) => {
+        setIsOpen(true)
+        setSelectedRecipe(recipe)
+    }
+
+    const handleOnClose = () => {
+        setIsOpen(false)
+        setSelectedRecipe(null)
+    }
 
     return (
         <main className="flex flex-col justify-center items-center">
@@ -34,29 +48,18 @@ export default function Recipes() {
                     </thead>
 
                     <tbody className="bg-card text-text-primary font-inter">
-                        {
-                            recipes.map((recipe: Recipes) => (
-                                <tr key={recipe.title}>
-                                    <td className="px-4 py-2 text-center align-middle">
-                                        <img className="h-12 aspect-square object-cover rounded-lg inline-block" src={recipe.main_image} alt={recipe.title} />
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <h2 className="font-semibold">{ recipe.title }</h2>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <ul>
-                                        {recipe.recipe_categories.map((cate: RecipeCategory) =>
-                                            <li key={cate.categories.name}>{cate.categories.name}</li>
-                                        )}
-                                        </ul>
-                                    </td>
-                                    <td><IconEdit color="text-text-secondary" className="cursor-pointer" /></td>
-                                </tr>
-                            ))
-                        }
+                        <TableRecipes recipes={recipes} onEdit={handleOpenModal} />
                     </tbody>
                 </table>
             ) }
+
+            {isOpen && selectedRecipe && (
+                <ModalEditRecipes 
+                    isOpen={isOpen} 
+                    handleOnClose={handleOnClose} 
+                    recipe={selectedRecipe} 
+                />
+            )}
         </main>
     )
 }

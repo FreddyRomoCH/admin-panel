@@ -6,7 +6,14 @@ export async function fetchRecipesWithCategories() {
         .select(`
             id,
             title,
+            description,
             main_image,
+            servings,
+            prep_time,
+            country,
+            ingredients,
+            instructions,
+            user_id,
             recipe_categories (
                 categories (
                     name

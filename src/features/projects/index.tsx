@@ -1,7 +1,5 @@
 import { useProjects } from "@features/projects/hooks/useProjects"
 import FiltersProjects from "@features/projects/components/FiltersProjects"
-import IconPrev from "@/assets/IconPrev"
-import IconNext from "@/assets/IconNext"
 import ProjectsPagination from "@features/projects/components/ProjectsPagination"
 import SectionProjects from "@features/projects/components/SectionProjects"
 import Skeleton from "@/components/ui/Skeleton"
@@ -27,16 +25,8 @@ export default function Projects() {
                 <SectionProjects gitHubProjects={gitHubProjects} loading={loading} setTech={setTech} />
             </main>
 
-            <footer className="flex justify-center items-center gap-4 animate-slide-in-bottom">
-                <button className="cursor-pointer disabled:opacity-50" onClick={prevPage} disabled={page === 1 || loading}>
-                    <IconPrev color="text-primary" />
-                </button>
-
-                <ProjectsPagination totalPages={totalPages} currentPage={page} onPageChange={goToPage} />
-
-                <button className="cursor-pointer disabled:opacity-50" onClick={nextPage} disabled={!hasMore || loading}>
-                    <IconNext color="text-primary" />
-                </button>
+            <footer className="flex justify-center items-center gap-4">
+                <ProjectsPagination totalPages={totalPages} currentPage={page} onPageChange={goToPage} onNextPage={nextPage} onPrevPage={prevPage} hasMore={hasMore} loading={loading} />
             </footer>
         </div>
     )

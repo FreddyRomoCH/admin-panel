@@ -43,7 +43,11 @@ export default function Dashboard() {
                     <h2 className="text-lg text-text-primary font-bold">Recent Items</h2>
                     {
                         recentItems.map((item) => (
-                            <RecentItems key={item.id} recentLoading={recentLoading} {...item} />
+                            recentLoading ? (
+                                <Skeleton />
+                            ) : (
+                                <RecentItems key={item.id} {...item} />
+                            )
                         ))
                     }
                 </section>
