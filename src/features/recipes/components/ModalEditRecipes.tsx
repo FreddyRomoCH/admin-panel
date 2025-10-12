@@ -1,8 +1,13 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import type { Recipes } from "@features/recipes/types"
-import { PREP_TIME, type PrepTimeType } from "@features/recipes/lib/utils/getPrepTime"
-import { COUNTRIES, type CountriesType } from "../lib/utils/getCountries"
-import { useState } from "react"
+import RecipeName from "@features/recipes/components/RecipeName"
+import RecipeDescription from "@features/recipes/components/RecipeDescription"
+import RecipeServings from "@features/recipes/components/RecipeServings"
+import RecipePrepTime from "@features/recipes/components/RecipePrepTime"
+import RecipeCountry from "@features/recipes/components/RecipeCountry"
+import RecipeCategories from "@features/recipes/components/RecipeCategories"
+import RecipeIngredients from "@features/recipes/components/RecipeIngredients"
+import RecipeInstructions from "@features/recipes/components/RecipeInstructions"
 
 interface ModalEditRecipesProps {
     isOpen: boolean,
@@ -11,39 +16,14 @@ interface ModalEditRecipesProps {
 }
 
 export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: ModalEditRecipesProps) {
-    const {title, description, main_image, servings, prep_time, country} = recipe
-    const [selectedTitle, setSelectedTitle] = useState<Recipes["title"]>(title)
-    const [selectedDescription, setSelectedDescription] = useState<Recipes["description"]>(description)
-    const [selectedCountry, setSelectedCountry] = useState<CountriesType["name"]>(country)
-    const [selectedPrepTime, setSelectedPrepTime] = useState<PrepTimeType["value"]>(prep_time)
-    const [selectedServings, setSelectedServings] = useState<number>(servings)
-
-    const handleChangeTitle = (t: Recipes["title"]) => {
-        setSelectedTitle(t)
-    }
-
-    const handleChangeDescription = (d: Recipes["description"]) => {
-        setSelectedDescription(d)
-    }
-
-    const handleChangeCountry = (c: CountriesType["name"]) => {
-        setSelectedCountry(c)
-    }
-
-    const handleChangePrepTime = (t: PrepTimeType["value"]) => {
-        setSelectedPrepTime(t)
-    }
-
-    const handleChangeServings = (s: number) => {
-        setSelectedServings(s)
-    }
+    const {title, description, main_image, servings, prep_time, country, recipe_categories, ingredients, instructions} = recipe
 
     return (
         <Dialog open={isOpen} onClose={handleOnClose}>
             <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center">
                 {/* <Button onClick={handleOnClose}>Close Recipe</Button> */}
-                <DialogPanel className="max-w-xl w-full bg-white rounded-2xl">
+                <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white rounded-2xl overflow-y-auto">
                     <header className="border-b-2 border-border p-6">
                         <DialogTitle className="text-lg font-semibold">Edit Recipe</DialogTitle>
                     </header>
@@ -56,50 +36,38 @@ export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: Moda
 
                                 <div className="flex flex-col justify-start items-left gap-4 w-full">
                                     <div>
-                                        <label htmlFor="title" className="text-text-secondary text-sm">Name</label>
-                                        <input className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" id="title" type="text" value={selectedTitle} onChange={(e) => handleChangeTitle(e.target.value)} />
+                                        <RecipeName title={ title } />
                                     </div>
-
                                     <div>
-                                        <label htmlFor="description" className="text-text-secondary text-sm">Description</label>
-                                        <textarea value={selectedDescription} onChange={(e) => handleChangeDescription(e.target.value)} name="description" id="description" className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" />
+                                        <RecipeDescription description={description} />
                                     </div>
                                 </div>
                             </section>
 
-                            <section className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4">
+                            <section className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4 mb-4">
                                     <div>
-                                        <label htmlFor="servings" className="text-text-secondary text-sm">Servings</label>
-                                        <select value={selectedServings} onChange={(e) => handleChangeServings(Number(e.target.value))} name="servings" id="servings" className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1">
-                                            {
-                                                Array.from({ length: 21 }).map((_, i) => {
-                                                    if (i !== 0) return <option key={i} value={i}>{i}</option>
-                                                })
-                                            }
-                                        </select>
+                                        <RecipeServings servings={servings} />
                                     </div>
 
                                     <div>
-                                        <label htmlFor="prep_time" className="text-text-secondary text-sm">Prep Time</label>
-                                        <select value={selectedPrepTime} onChange={(e) => handleChangePrepTime(Number(e.target.value))} name="prep_time" id="prep_time" className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1">
-                                            {
-                                                PREP_TIME.map((time: PrepTimeType) => (
-                                                    <option key={time.value} value={time.value}>{time.name}</option>
-                                                ))
-                                            }
-                                        </select>
+                                        <RecipePrepTime prep_time={prep_time} />
                                     </div>
 
                                     <div>
-                                        <label htmlFor="country" className="text-text-secondary text-sm">Country</label>
-                                        <select value={selectedCountry} onChange={(e) => handleChangeCountry(e.target.value)} name="country" id="country" className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1">
-                                            {
-                                                COUNTRIES.map((country: CountriesType) => (
-                                                    <option key={country.value} value={country.name}>{country.name}</option>
-                                                ))
-                                            }
-                                        </select>
+                                        <RecipeCountry country={country} />
                                     </div>
+                            </section>
+
+                            <section className="flex flex-col justify-center items-start mb-4">
+                                <RecipeCategories categories={recipe_categories} />
+                            </section>
+                            
+                            <section className="mb-4">
+                                <RecipeIngredients ingredients={ingredients} />
+                            </section>
+                            
+                            <section>
+                                <RecipeInstructions instructions={instructions} />
                             </section>
                         </form>
                     </main>

@@ -6,7 +6,9 @@ export interface Recipes {
     servings: number,
     prep_time: number,
     country: string,
-    recipe_categories: RecipeCategory[]
+    recipe_categories: RecipeCategory[],
+    ingredients: string[],
+    instructions: string[]
 }
 
 export interface RecipeCategory {
@@ -14,5 +16,6 @@ export interface RecipeCategory {
 }
 
 export interface Category {
+    id: number,
     name: string
 }
