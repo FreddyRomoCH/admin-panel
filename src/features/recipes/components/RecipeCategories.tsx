@@ -23,7 +23,7 @@ export default function RecipeCategories({ categories }: RecipeCategoriesProps) 
     return (
         <>
             <label htmlFor="category" className="text-text-secondary text-sm">Categories</label>
-            <div className="grid grid-cols-1 md:grid-cols-6 justify-between items-center gap-2 bg-background-light rounded-lg border-2 border-border p-4">
+            <div className="grid grid-cols-1 md:grid-cols-6 justify-between items-center gap-2 bg-background-light rounded-lg border-2 border-border p-4 w-full">
             {
                 GET_CATEGORIES.map((cate) => (
                     <label key={cate.id} className="flex items-center gap-2 text-text-secondary text-xs">

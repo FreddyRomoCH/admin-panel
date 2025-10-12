@@ -34,9 +34,9 @@ export default function RecipeInstructions({ instructions }:RecipeInstructionsPr
                         <div key={step} className="flex justify-between items-center gap-2 mb-2">
                             <label className="text-xs text-text-secondary w-16" htmlFor={`instruction-${step}`}>{`Step ${step}`}</label>
                             <input id={`instruction-${step}`} className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" type="text" value={instruction} onChange={(e) => handleChangeInstruction(index, e.target.value)} />
-                            <div onClick={() => handleClickClose(index)}>
+                            <button type="button" onClick={() => handleClickClose(index)}>
                                 <IconClose className="text-primary w-8 h-8 cursor-pointer" />
-                            </div>
+                            </button>
                         </div>
                     )
                 })
