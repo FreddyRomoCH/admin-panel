@@ -1,14 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRecipes } from "@features/recipes/hook/useRecipes"
 import type { Recipes } from "@features/recipes/types"
 import Skeleton from "@/components/ui/Skeleton"
 import TableRecipes from "@features/recipes/components/TableRecipes"
 import ModalEditRecipes from "@features/recipes/components/ModalEditRecipes"
+import { useRecipesStore } from "@/store/useRecipesStore"
 
 export default function Recipes() {
-    const {loading, error, recipes} = useRecipes()
+    // const {loading, error, recipes} = useRecipes()
     const [isOpen, setIsOpen] = useState(false)
     const [selectedRecipe, setSelectedRecipe] = useState<Recipes | null>(null)
+    const { recipes, loading, error, fetchRecipes } = useRecipesStore()
+
+    useEffect(() => {
+        fetchRecipes()
+    }, [])
 
     const handleOpenModal = (recipe: Recipes) => {
         setIsOpen(true)

@@ -16,6 +16,7 @@ export async function fetchRecipesWithCategories() {
             user_id,
             recipe_categories (
                 categories (
+                    id,
                     name
                 )
             )

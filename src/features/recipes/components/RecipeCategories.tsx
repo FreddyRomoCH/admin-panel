@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Category, RecipeCategory } from "@features/recipes/types";
 import { GET_CATEGORIES } from "../lib/utils/getCategories";
+import { useFormContext } from "react-hook-form";
 
 interface RecipeCategoriesProps {
     categories: RecipeCategory[]
@@ -8,28 +9,33 @@ interface RecipeCategoriesProps {
 
 export default function RecipeCategories({ categories }: RecipeCategoriesProps) {
     const [categoryList, setCategoryList] = useState(categories)
+    const {setValue, formState: {errors}} = useFormContext()
 
     const handleChangeCategories = (newCate: Category) => {
-       const exists = categoryList.some(c => c.categories.name === newCate.name)
-        // If selected, it's removed
-        if (exists) {
-            setCategoryList(categoryList.filter(c => c.categories.name !== newCate.name))
-        }else{
-            // If not selected, gets selected
-            setCategoryList([...categoryList, { categories: newCate }])
-        }
+        const exists = categoryList.some(c => c.categories.id === newCate.id)
+
+        const updated = exists
+            ? categoryList.filter(c => c.categories.id !== newCate.id)
+            : [...categoryList, { categories: newCate }]
+
+        setCategoryList(updated)
+        setValue("recipe_categories", updated, { shouldValidate: true })
     }
+
+    useEffect(() => {
+        setCategoryList(categories)
+    }, [categories])
 
     return (
         <>
             <label htmlFor="category" className="text-text-secondary text-sm">Categories</label>
-            <div className="grid grid-cols-1 md:grid-cols-6 justify-between items-center gap-2 bg-background-light rounded-lg border-2 border-border p-4 w-full">
+            <div className={`grid grid-cols-1 md:grid-cols-6 justify-between items-center gap-2 bg-background-light rounded-lg border-2 ${errors.recipe_categories ? "border-red-600" : "border-border"} p-4 w-full`}>
             {
                 GET_CATEGORIES.map((cate) => (
                     <label key={cate.id} className="flex items-center gap-2 text-text-secondary text-xs">
                         <input 
                             type="checkbox" 
-                            checked={categoryList.some(c => c.categories.name === cate.name)}
+                            checked={categoryList.some(c => c.categories.id === cate.id)}
                             onChange={() => handleChangeCategories(cate)}
                             className="accent-primary w-4 h-4 cursor-pointer"
                         />
@@ -38,6 +44,12 @@ export default function RecipeCategories({ categories }: RecipeCategoriesProps) 
                 ))
             }
             </div>
+
+            {errors.recipe_categories && (
+                <p className="text-red-600 text-sm mt-2">
+                    {String(errors.recipe_categories.message) }
+                </p>
+            )}
         </>
         
     )

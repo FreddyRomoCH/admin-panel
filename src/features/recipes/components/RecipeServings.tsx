@@ -1,5 +1,6 @@
-import { useState } from "react"
-import type { Recipes } from "../types"
+import { useEffect, useState } from "react"
+import type { Recipes } from "@features/recipes/types"
+import { useFormContext } from "react-hook-form"
 
 interface RecipeServingsProps {
     servings: Recipes["servings"]
@@ -7,10 +8,17 @@ interface RecipeServingsProps {
 
 export default function RecipeServings({servings}: RecipeServingsProps) {
     const [selectedServings, setSelectedServings] = useState<number>(servings)
+
+    const { setValue, formState: {errors} } = useFormContext()
     
     const handleChangeServings = (s: number) => {
         setSelectedServings(s)
+        setValue("servings", s, { shouldValidate: true })
     }
+
+    useEffect(() => {
+        setSelectedServings(servings)
+    }, [servings])
 
     return (
         <>
@@ -21,6 +29,11 @@ export default function RecipeServings({servings}: RecipeServingsProps) {
                     if (i !== 0) return <option key={i} value={i}>{i}</option>
                 })
             }
+            { errors.servings && (
+                <p className="text-red-600 text-xs mt-1">
+                    {String(errors.servings.message)}
+                </p>
+            )}
         </select>
         </>
     )

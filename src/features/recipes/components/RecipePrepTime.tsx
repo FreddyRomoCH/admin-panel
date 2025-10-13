@@ -1,6 +1,7 @@
 import { PREP_TIME, type PrepTimeType } from "@features/recipes/lib/utils/getPrepTime"
-import { useState } from "react"
-import type { Recipes } from "../types"
+import { useEffect, useState } from "react"
+import type { Recipes } from "@features/recipes/types"
+import { useFormContext } from "react-hook-form"
 
 interface RecipePrepTimeProps {
     prep_time: Recipes["prep_time"]
@@ -8,10 +9,16 @@ interface RecipePrepTimeProps {
 
 export default function RecipePrepTime({ prep_time }: RecipePrepTimeProps) {
     const [selectedPrepTime, setSelectedPrepTime] = useState<PrepTimeType["value"]>(prep_time)
+    const {setValue, formState: {errors}} = useFormContext()
     
     const handleChangePrepTime = (t: PrepTimeType["value"]) => {
         setSelectedPrepTime(t)
+        setValue("prep_time", t, { shouldValidate: true })
     }
+
+    useEffect(() => {
+        setSelectedPrepTime(prep_time)
+    }, [prep_time])
 
     return (
         <>
@@ -22,6 +29,11 @@ export default function RecipePrepTime({ prep_time }: RecipePrepTimeProps) {
                     <option key={time.value} value={time.value}>{time.name}</option>
                 ))
             }
+            {errors.prep_time && (
+                <p className="text-red-600 text-xs mt-1">
+                    {String(errors.prep_time.message)}
+                </p>
+            )}
         </select>
         </>
     )
