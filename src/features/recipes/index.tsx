@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useRecipes } from "@features/recipes/hook/useRecipes"
 import type { Recipes } from "@features/recipes/types"
 import Skeleton from "@/components/ui/Skeleton"
 import TableRecipes from "@features/recipes/components/TableRecipes"

@@ -52,8 +52,6 @@ export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: Moda
             })
             .eq("id", data.id)
 
-        console.log(data.main_image)
-
         if (recipeError) {
             throw recipeError
         }
@@ -85,8 +83,7 @@ export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: Moda
         if (newRecipeCategories) {
             throw newRecipeCategories
         }
-
-        console.log("Recipe and categories updated successfully")
+        
         updateRecipe(data)
         handleOnClose()
     }
