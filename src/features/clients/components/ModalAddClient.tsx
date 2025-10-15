@@ -58,7 +58,7 @@ export default function ModalAddClient({ handleOnClose, isOpen }: ModalAddClient
                                         </div>
 
                                         <div>
-                                            <Select name="status" id="project-status" title="Project Status" validation="project_status" options={PROJECT_STATUS} labelClass="text-text-secondary text-sm" selectClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" />
+                                            <Select name="status" id="project-status" title="Project Status" validation="project_status" options={PROJECT_STATUS} labelClass="text-text-secondary text-sm" selectClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" value="Pending" />
                                         </div>
 
                                         <div>

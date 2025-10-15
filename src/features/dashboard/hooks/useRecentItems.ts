@@ -5,6 +5,7 @@ import { fetchGitHubRepos } from "@/lib/api/gitHubClient"
 
 export function useRecentItems() {
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
     const [recentItems, setRecentItems] = useState<RecentItem[]>([])
 
     useEffect(() => {
@@ -14,6 +15,11 @@ export function useRecentItems() {
                     fetchGitHubRepos(),
                     fetchSupabaseRecentRecipes()
                 ])
+
+                if (!repos.data.length) {
+                    setError(true)
+                    throw error
+                }
 
                 const githubItems: RecentItem[] = repos.data.slice(0, 3).map((repo: any) => ({
                     id: repo.id.toString(),
@@ -37,7 +43,7 @@ export function useRecentItems() {
                 setRecentItems(combinedItems.slice(0, 5))
 
             } catch (error) {
-                console.error("Error fetching recent items:", error)
+                setError(true)
             } finally {
                 setLoading(false)
             }
@@ -46,5 +52,5 @@ export function useRecentItems() {
         getRecentItems()
     }, [])
 
-    return {loading, recentItems}
+    return {error, loading, recentItems}
 }

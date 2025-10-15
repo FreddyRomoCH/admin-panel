@@ -1,4 +1,6 @@
 export interface Option {
-    label: string,
+    label: string
     value: string
+    bg?: string
+    text?: string
 }

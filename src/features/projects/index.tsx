@@ -3,16 +3,15 @@ import FiltersProjects from "@features/projects/components/FiltersProjects"
 import ProjectsPagination from "@features/projects/components/ProjectsPagination"
 import SectionProjects from "@features/projects/components/SectionProjects"
 import Skeleton from "@/components/ui/Skeleton"
+import Error from "@/components/shared/Error"
 
 export default function Projects() {
     const {loading, error, gitHubProjects, hasMore, page, totalPages, goToPage, nextPage, prevPage, filter, setFilter, tech, setTech} = useProjects()
 
+    if (error) return <Error type="page" />
+
     return (
-        <div>
-            {error && (
-                <div>Error</div>
-            )}
-            
+        <div className="flex flex-col justify-center items-center h-full -mt-12">
             <header className="mb-8">
                 {loading ? (
                     <Skeleton />

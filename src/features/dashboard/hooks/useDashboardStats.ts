@@ -6,6 +6,7 @@ export function useDashboardStats() {
     const [loading, setLoading] = useState(true)
     const [totalRepos, setTotalRepos] = useState<number | null>(null)
     const [totalRecipes, setTotalRecipes] = useState<number | null>(null)
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         async function getDashboardData() {
@@ -15,12 +16,17 @@ export function useDashboardStats() {
                     fetchSupabaseTotalRecipes()
                 ])
 
+                if (!repos.data.length) {
+                    setError(true)
+                    throw error
+                }
+
                 const totalRespos = repos.data.length
 
                 setTotalRepos(totalRespos)
                 setTotalRecipes(recipesCount)
             } catch (error) {
-                console.log(error, "Error fetching Dashboard data")
+                setError(true)
             } finally {
                 setLoading(false)
             }
@@ -29,6 +35,6 @@ export function useDashboardStats() {
         getDashboardData()
     }, [])
 
-    return { loading, totalRepos, totalRecipes }
+    return { error, loading, totalRepos, totalRecipes }
 }
 

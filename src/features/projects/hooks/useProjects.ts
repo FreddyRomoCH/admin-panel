@@ -10,7 +10,6 @@ export function useProjects() {
     const [gitHubProjects, setGithubProjects] = useState<GHProjects[]>([])
     const [hasMore, setHasMore] = useState(true)
     const [page, setPage] = useState(1)
-    // const [totalPages, setTotalPages] = useState(1)
     const [filter, setFilter] = useState<Filters["value"]>("all")
     const [tech, setTech] = useState<TopicsGitHub["value"]>("all")
     const perPage = 4
@@ -30,7 +29,6 @@ export function useProjects() {
             } catch (error) {
                 console.error("Error fetching GitHub projects:", error)
                 setError(true)
-                return
             } finally {
                 setLoading(false)
             }

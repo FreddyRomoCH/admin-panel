@@ -6,22 +6,31 @@ interface SelectProps {
     title?: string
     name: string
     id: string
-    validation: string
+    validation?: string
     options: Option[],
     labelClass?: string,
     selectClass?: string
     optionClass?: string
+    value: string
 }
 
-export default function Select({ title, name, id, validation, options, labelClass, selectClass, optionClass }: SelectProps) {
-    const [selectedValue, setSelectedValue] = useState("Pending")
-    const {setValue, formState: {errors}} = useFormContext()
+export default function Select({ title, name, id, validation, options, labelClass, selectClass, optionClass, value }: SelectProps) {
+    const form = useFormContext()
+    const setValue = form?.setValue
+    const errors = form?.formState?.errors
+
+    const [selectedValue, setSelectedValue] = useState(value ? value : "")
+
+    const selectedOption = options.find(opt => opt.value === selectedValue)
 
     const handleChangeValue = (val: string) => {
         setSelectedValue(val)
-        setValue(validation, val, {shouldValidate: true})
+
+        if (validation && setValue) {
+            setValue(validation, val, { shouldValidate: true })
+        }
     }
-    
+
     return (
         <>
             { title && <label htmlFor={id} className={labelClass ? labelClass : ""}>{ title }</label> }
@@ -29,7 +38,12 @@ export default function Select({ title, name, id, validation, options, labelClas
             <select 
                 value={selectedValue} 
                 name={name} id={id} 
-                className={`${selectClass ? selectClass : ""} ${errors[validation] && "border-red-600"}`} 
+                className={`
+                    ${selectClass ?? ""} 
+                    ${selectedOption?.bg ?? ""}
+                    ${selectedOption?.text ?? ""}
+                    ${validation && errors?.[validation] && "border-red-600"}
+                `} 
                 onChange={(e) => handleChangeValue(e.target.value)}>
                 {
                     options.map((option: Option) => (
@@ -43,11 +57,12 @@ export default function Select({ title, name, id, validation, options, labelClas
                 }
             </select>
 
-            {errors[validation] && (
-                <p className="text-red-600 text-xs mt-1">
-                    {String(errors[validation].message)}
-                </p>
-            )}
+            { validation && errors?.[validation] && (
+                    <p className="text-red-600 text-xs mt-1">
+                        {String(errors[validation].message)}
+                    </p>
+                )
+            }
         </>
     )
 }

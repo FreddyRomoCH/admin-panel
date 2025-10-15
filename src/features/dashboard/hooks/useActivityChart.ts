@@ -6,6 +6,7 @@ import { fetchGitHubRepos } from "@/lib/api/gitHubClient"
 
 export function useActivityChart() {
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
     const [totalRecipesChart, setTotalRecipesChart] = useState<ActivityDataPoint[]>([])
 
     useEffect(() => {
@@ -16,8 +17,12 @@ export function useActivityChart() {
                     fetchGitHubRepos(),
                 ])
 
-                // Recipes by weekle updating
+                if (!repos.data.length) {
+                    setError(true)
+                    throw error
+                }
 
+                // Recipes by weekle updating
                 const recipesChart = recipes.reduce((acc, recipe) => {
                     const week = getWeekNumber(recipe.created_at)
 
@@ -56,11 +61,12 @@ export function useActivityChart() {
                 // If no recipes, creates a no data object
                 if (formatted.length === 0) {
                     formatted.push({ name: "No data", recipes: 0, projects: 0 });
+                    setError(true)
                 }
 
                 setTotalRecipesChart(formatted)
             } catch (error) {
-                console.error(`error ${error}: Unable to fetch`)
+                setError(true)
             } finally {
                 setLoading(false)
             }
@@ -69,5 +75,5 @@ export function useActivityChart() {
         getActivityChart()
     }, [])
 
-    return { loading, totalRecipesChart }
+    return { error, loading, totalRecipesChart }
 }

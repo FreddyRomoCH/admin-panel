@@ -10,11 +10,20 @@ interface RecipesState {
     updateRecipes: (updateRecipes: Recipes) => void
 }
 
-export const useRecipesStore = create<RecipesState>((set) => ({
+export const useRecipesStore = create<RecipesState>((set, get) => ({
     recipes: [],
     loading: true,
     error: false,
     fetchRecipes: async () => {
+        // Checking if we have Recipes already mounted
+        const { recipes } = get()
+
+        // if there is data, we use it and dont load again
+        if (recipes.length > 0) {
+            set({ loading: false }) // ✅ aseguras que se apague el loading
+            return
+        }
+
         try {
             const data = await fetchRecipesWithCategories()
 
