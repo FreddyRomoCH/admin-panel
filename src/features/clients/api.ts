@@ -32,7 +32,7 @@ export async function addClientToBD({ client }: ClientData) {
             status: client.project_status,
             due_date: client.due_date
         })
-        .select("status, due_date")
+        .select("id_project, status, due_date")
 
     if (paymentError) throw paymentError
 
@@ -40,7 +40,8 @@ export async function addClientToBD({ client }: ClientData) {
         client_name: clientData[0].name,
         project_name: projectData[0].name,
         project_status: paymentsData[0].status,
-        due_date: paymentsData[0].due_date 
+        due_date: paymentsData[0].due_date,
+        id_project: paymentsData[0].id_project 
     } as Clients
 }
 
@@ -52,6 +53,7 @@ export async function fetchClientsFromBD() {
             projects (
                 name,
                 Payments (
+                id_project,
                 status,
                 due_date
                 )
@@ -67,6 +69,7 @@ export async function fetchClientsFromBD() {
             return {
                 client_name: client.name,
                 project_name: project.name,
+                project_id: payment?.id_project,
                 project_status: payment?.status ?? "",
                 due_date: payment?.due_date ?? ""
             }
@@ -74,4 +77,16 @@ export async function fetchClientsFromBD() {
     )
 
     return flat
+}
+
+export async function updatePaymentStatus(project_id: Clients["project_id"] | undefined, newStatus: string) {
+    const {error, data} = await supabaseClients
+        .from("Payments")
+        .update({ status: newStatus })
+        .eq("id_project", project_id)
+        .select("*")
+
+    if (error) throw error
+
+    return data
 }

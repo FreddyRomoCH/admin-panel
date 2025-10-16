@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { addClientToBD, fetchClientsFromBD } from "@/features/clients/api";
+import { addClientToBD, fetchClientsFromBD, updatePaymentStatus } from "@/features/clients/api";
 import type { Clients } from "@/features/clients/types/clients";
 
 interface ClientsState {
@@ -7,6 +7,7 @@ interface ClientsState {
     loading: boolean
     error: boolean
     addClient: (client: Clients) => Promise<void>
+    changePaymentStatus: (project_id: Clients["project_id"] | undefined, newValue: string) => Promise<void>
     showClients: () => Promise<void>
 }
 
@@ -28,6 +29,15 @@ export const useClientsStore = create<ClientsState>((set) => ({
                 clients: [newClient, ...state.clients],
                 loading: false
             }))
+        } catch (error) {
+            set({ error: true, loading: false })
+        }
+    },
+
+    changePaymentStatus: async (project_id, newStatus) => {
+        console.log(project_id, newStatus)
+        try {
+            await updatePaymentStatus(project_id, newStatus)
         } catch (error) {
             set({ error: true, loading: false })
         }

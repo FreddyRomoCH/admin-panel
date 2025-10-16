@@ -4,9 +4,11 @@ import Dashboard from "@features/dashboard";
 import Projects from "@features/projects";
 import Recipes from "@/features/recipes";
 import Clients from "@/features/clients";
+import { Toaster } from "react-hot-toast"
 
 export default function App() {
   return (
+    <>
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Dashboard />} />
@@ -15,5 +17,7 @@ export default function App() {
           <Route path="/clients" element={<Clients />} />
         </Route>
       </Routes>
+      <Toaster/>
+    </>
   )
 }
