@@ -88,5 +88,5 @@ export async function updatePaymentStatus(project_id: Clients["project_id"] | un
 
     if (error) throw error
 
-    return data
+    return data ?? []
 }

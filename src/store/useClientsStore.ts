@@ -7,7 +7,7 @@ interface ClientsState {
     loading: boolean
     error: boolean
     addClient: (client: Clients) => Promise<void>
-    changePaymentStatus: (project_id: Clients["project_id"] | undefined, newValue: string) => Promise<void>
+    changePaymentStatus: (project_id: Clients["project_id"] | undefined, newValue: string) => Promise<boolean>
     showClients: () => Promise<void>
 }
 
@@ -30,16 +30,27 @@ export const useClientsStore = create<ClientsState>((set) => ({
                 loading: false
             }))
         } catch (error) {
+            console.error("Error fetching database", error)
             set({ error: true, loading: false })
         }
     },
 
     changePaymentStatus: async (project_id, newStatus) => {
-        console.log(project_id, newStatus)
         try {
-            await updatePaymentStatus(project_id, newStatus)
+            const data = await updatePaymentStatus(project_id, newStatus)
+
+            if (!data || !data.length) {
+                set({ error: true, loading: false })
+                return false
+            }
+
+            set({ error: false, loading: false })
+            return true
+
         } catch (error) {
+            console.error("Error updating payment status", error)
             set({ error: true, loading: false })
+            return false
         }
     },
 
@@ -53,6 +64,7 @@ export const useClientsStore = create<ClientsState>((set) => ({
 
             set({ clients: allClients, loading: false })
         } catch (error) {
+            console.error("Error fetching clients", error)
             set({ error: true, loading: false })
         }
     },

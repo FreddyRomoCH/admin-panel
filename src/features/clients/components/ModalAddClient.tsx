@@ -7,6 +7,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import { clientSchema } from "@features/clients/lib/schema/client"
 import type { Clients } from "@features/clients/types/clients"
 import { useClientsStore } from "@/store/useClientsStore"
+import toast from "react-hot-toast"
 
 interface ModalAddClientProps {
     handleOnClose: () => void
@@ -27,12 +28,25 @@ export default function ModalAddClient({ handleOnClose, isOpen }: ModalAddClient
 
     const onSubmit = (client: Clients) => {
         if (error) {
+            toast.error(`Unable to add the client. Try again later`, {
+                style: {
+                    background: 'oklch(0.96 0.04 155.41)',
+                    color: '#475569',
+                    fontSize: '14px'
+                }
+            })
             throw error
-            return
         }
 
         addClient(client)
         handleOnClose()
+        toast.success(`${client.client_name} - ${client.project_name} added successfully!`, {
+            style: {
+                background: 'oklch(0.96 0.04 155.41)',
+                color: '#475569',
+                fontSize: '14px'
+            }
+        })
     }
 
     return (

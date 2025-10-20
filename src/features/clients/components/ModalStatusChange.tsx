@@ -24,7 +24,7 @@ export default function ModalStatusChange({ isOpen, onConfirm, onCancel }: Modal
 
                         <footer className="border-t-2 border-border p-4 flex justify-end items-center gap-4 bg-card sticky bottom-0 shrink-0 rounded-b-2xl">
                             <button type="button" onClick={onCancel} className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer">Cancel</button>
-                            <button type="submit" onClick={onConfirm} form="form-add-client" className="bg-primary text-card rounded-2xl px-4 py-2 cursor-pointer">Change</button>
+                            <button type="submit" onClick={onConfirm} className="bg-primary text-card rounded-2xl px-4 py-2 cursor-pointer">Change</button>
                         </footer>
                     </div>
                 </DialogPanel>
