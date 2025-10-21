@@ -1,14 +1,15 @@
 import { create } from "zustand";
-import { addClientToBD, fetchClientsFromBD, updatePaymentStatus } from "@/features/clients/api";
-import type { Clients } from "@/features/clients/types/clients";
+import { addClientToBD, fetchClientsFromBD, updatePaymentStatus, updateClientFromDB } from "@/features/clients/api";
+import type { Clients, NewClient } from "@/features/clients/types/clients";
 
 interface ClientsState {
     clients: Clients[]
     loading: boolean
     error: boolean
-    addClient: (client: Clients) => Promise<void>
+    addClient: (client: NewClient) => Promise<void>
     changePaymentStatus: (project_id: Clients["project_id"] | undefined, newValue: string) => Promise<boolean>
     showClients: () => Promise<void>
+    updateClient: (client: Clients) => Promise<boolean>
 }
 
 export const useClientsStore = create<ClientsState>((set) => ({
@@ -16,7 +17,7 @@ export const useClientsStore = create<ClientsState>((set) => ({
     loading: true,
     error: false,
 
-    addClient: async (client: Clients) => {
+    addClient: async (client: NewClient) => {
         try {
             const newClient = await addClientToBD({client})
 
@@ -68,4 +69,29 @@ export const useClientsStore = create<ClientsState>((set) => ({
             set({ error: true, loading: false })
         }
     },
+
+    updateClient: async (client) => {
+        try {
+            const updated = await updateClientFromDB(client)
+
+            if (!updated) {
+                set({error: true, loading: false})
+                return false
+            }
+
+            set((state) => ({
+                clients: state.clients.map((c) => 
+                    c.project_id === client.project_id ? { ...c, ...client } : c
+                ),
+                loading: false,
+                error: false
+            }))
+            return true
+
+        } catch (error) {
+            console.log("Error updating client", error)
+            set({ error: true, loading: false })
+            return false
+        }
+    }
 }))

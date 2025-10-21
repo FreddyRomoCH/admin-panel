@@ -8,3 +8,8 @@ export const clientSchema = z.object({
 })
 
 export type clientFormData = z.infer<typeof clientSchema>
+
+export const cientSchemaEdit = clientSchema.extend({
+    client_id: z.number().int().positive(),
+    project_id: z.number().int().positive()
+})

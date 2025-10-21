@@ -5,8 +5,9 @@ import { PROJECT_STATUS, type Status } from "@features/clients/constants/status"
 import Error from "@/components/shared/Error"
 import Skeleton from "@/components/ui/Skeleton"
 import TableClients from "@features/clients/components/TableClients"
-import ModalStatusChange from "./components/ModalStatusChange"
+import ModalStatusChange from "@features/clients/components/ModalStatusChange"
 import toast from "react-hot-toast"
+import ModalClientForm from "@features/clients/components/ModalClientForm"
 
 export default function Clients() {
     const {loading, error, showClients, clients, changePaymentStatus} = useClientsStore()
@@ -15,6 +16,8 @@ export default function Clients() {
     const [previousValue, setPreviousValue] = useState("")
     const [draftValue, setDraftValue] = useState("")
     const [selectedClientId, setSelectedClientId] = useState<number | undefined>(undefined)
+    const [isEditModaOpen, setIsEditModalOpen] = useState<boolean>(false)
+    const [selectedClient, setSelectedClient] = useState<Clients | null>(null)
 
     useEffect(() => {
         showClients()
@@ -49,24 +52,34 @@ export default function Clients() {
     const onConfirm = async () => {
         setIsOpen(false)
         const success = await changePaymentStatus(selectedClientId, draftValue)
-        console.log(success)
         
         if (!success) {
             toast.error("Unable to save the new payment status. Try again later.", {
                 style: {
-                    color: 'rgb(193 0 8)',
-                    background: 'rgb(255 226 227)'
+                    color: '#c10008',
+                    background: '#ffe2e3',
+                    fontSize: '14px'
                 }
             })
             setDraftValue(previousValue)
         }else{
             toast.success("New status changed successfully!", {
                 style: {
-                    color: 'rgb(0 130 54)',
-                    background: 'rgb(219 252 229)'
+                    background: "#defae6",
+                    color: "#475569",
+                    fontSize: "14px",
                 }
             })
         }
+    }
+
+    const handleClickEditClient = (client: Clients) => {
+        setSelectedClient(client)
+        setIsEditModalOpen(true)
+    }
+
+    const handleCloseModal = () => {
+        setIsEditModalOpen(false)
     }
             
     return (
@@ -78,6 +91,7 @@ export default function Clients() {
                         <th className="px-4 py-2 text-left">Project</th>
                         <th className="px-4 py-2 text-left">Invoice Status</th>
                         <th className="px-4 py-2 text-left">Due Date</th>
+                        <th className="px-4 py-2 text-left">Edit Client</th>
                     </tr>
                 </thead>
 
@@ -102,6 +116,7 @@ export default function Clients() {
                                     found={statusFound} 
                                     client={client} 
                                     handleChangeOut={(val, oldVal) => onChangeSelect(val, oldVal, client.project_id)}
+                                    handleClickEditClient={() => handleClickEditClient(client)}
                                 />
                             )
                         })
@@ -109,13 +124,20 @@ export default function Clients() {
                 </tbody>
             </table>
 
-
-
             {isOpen && (
                 <ModalStatusChange
                     isOpen={isOpen}
                     onConfirm={onConfirm}
                     onCancel={onCancel}    
+                />
+            )}
+
+            {isEditModaOpen && (
+                <ModalClientForm 
+                    isOpen={isEditModaOpen} 
+                    handleOnClose={handleCloseModal} 
+                    mode="edit"
+                    clientToEdit={selectedClient}
                 />
             )}
         </main>

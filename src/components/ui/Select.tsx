@@ -13,7 +13,7 @@ interface SelectProps {
     optionClass?: string
     value: string
     client_id?: number
-    handleChangeOut: (val: string, draft: string, clientId?: number) => void
+    handleChangeOut?: (val: string, draft: string, clientId?: number) => void
 }
 
 export default function Select({ 
@@ -36,15 +36,13 @@ export default function Select({
 
     const [selectedValue, setSelectedValue] = useState(value || "")
 
-    // const selectedOption = options.find(opt => opt.value === selectedValue)
-
     const handleChangeValue = (val: string, draft: string) => {
         setSelectedValue(val)
 
         if (validation && setValue) {
             setValue(validation, val, { shouldValidate: true })
         }else{
-            handleChangeOut(val, draft, client_id)
+            handleChangeOut?.(val, draft, client_id)
         }
     }
 
@@ -54,7 +52,14 @@ export default function Select({
 
     return (
         <>
-            { title && <label htmlFor={id} className={labelClass ??  ""}>{ title }</label> }
+            { title && 
+                <label 
+                    htmlFor={id} 
+                    className={labelClass ??  ""}
+                >
+                    { title }
+                </label> 
+            }
             
             <select 
                 value={selectedValue} 

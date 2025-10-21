@@ -1,8 +1,8 @@
 import { supabaseClients } from "@/lib/supabaseClient";
-import type { Clients } from "@/features/clients/types/clients";
+import type { Clients, NewClient } from "@/features/clients/types/clients";
 
 interface ClientData {
-    client: Clients
+    client: NewClient
 }
 
 export async function addClientToBD({ client }: ClientData) {
@@ -37,11 +37,12 @@ export async function addClientToBD({ client }: ClientData) {
     if (paymentError) throw paymentError
 
     return {
+        client_id: clientData[0].id,
         client_name: clientData[0].name,
         project_name: projectData[0].name,
         project_status: paymentsData[0].status,
         due_date: paymentsData[0].due_date,
-        id_project: paymentsData[0].id_project 
+        project_id: paymentsData[0].id_project 
     } as Clients
 }
 
@@ -49,6 +50,7 @@ export async function fetchClientsFromBD() {
     const { error, data } = await supabaseClients
         .from("clients")
         .select(`
+            id,
             name,
             projects (
                 name,
@@ -67,6 +69,7 @@ export async function fetchClientsFromBD() {
         client.projects.map(project => {
             const payment = project.Payments?.[0]
             return {
+                client_id: client.id,
                 client_name: client.name,
                 project_name: project.name,
                 project_id: payment?.id_project,
@@ -89,4 +92,45 @@ export async function updatePaymentStatus(project_id: Clients["project_id"] | un
     if (error) throw error
 
     return data ?? []
+}
+
+export async function updateClientFromDB(client: Clients) {
+    const {error: clientError} = await supabaseClients
+        .from("clients")
+        .update({
+            name: client.client_name
+        })
+        .eq("id", client.client_id)
+
+    if (clientError) throw clientError
+
+    const { error: projectError } = await supabaseClients
+        .from("projects")
+        .update({
+            name: client.project_name
+        })
+        .eq("id", client.project_id)
+
+    if (projectError) throw projectError
+
+    const { error: paymentError } = await supabaseClients
+        .from("Payments")
+        .update({
+            status: client.project_status,
+            due_date: client.due_date
+        })
+        .eq("id_project", client.project_id)
+        .select("id_project, status, due_date")
+        .single()
+
+    if (paymentError) throw paymentError
+
+    return {
+        client_id: client.client_id,
+        client_name: client.client_name,
+        project_name: client.project_name,
+        project_status: client.project_status,
+        due_date: client.due_date,
+        project_id: client.project_id
+    } as Clients
 }

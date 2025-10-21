@@ -1,9 +1,9 @@
 import { useLocation } from "react-router-dom"
 import { sidebarNavs } from "@layouts/AppLayout/constants/sidebarNavs";
-import ModalAddClient from "@/features/clients/components/ModalAddClient"
 import IconPlus from "@/assets/IconPlus";
 import Button from "@/components/ui/Button";
 import { useState } from "react";
+import ModalClientForm from "@/features/clients/components/ModalClientForm";
 
 export default function Header() {
     const location = useLocation();
@@ -55,9 +55,10 @@ export default function Header() {
 
             {
                 isOpen && (
-                    <ModalAddClient 
+                    <ModalClientForm 
                         handleOnClose={handleCloseModal}
                         isOpen={isOpen}
+                        mode="create"
                     />
                 )
             }
