@@ -54,7 +54,10 @@ export default function Recipes() {
                 </thead>
 
                 <tbody className="bg-card text-text-primary font-inter">
-                    <TableRecipes recipes={recipes} onEdit={handleOpenModal} />
+                    <TableRecipes 
+                        recipes={recipes} 
+                        onEdit={handleOpenModal} 
+                    />
                 </tbody>
             </table>
 
@@ -63,6 +66,7 @@ export default function Recipes() {
                     isOpen={isOpen} 
                     handleOnClose={handleOnClose} 
                     recipe={selectedRecipe} 
+                    mode="edit"
                 />
             )}
         </main>

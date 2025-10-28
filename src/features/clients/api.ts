@@ -134,3 +134,40 @@ export async function updateClientFromDB(client: Clients) {
         project_id: client.project_id
     } as Clients
 }
+
+export async function deleteClientFromDB(clientID: Clients["client_id"]) {
+
+    // GET PROJECT ID TO DELETE PAYMENTS INFO
+    const { error: projectSelectError, data: projectData } = await supabaseClients
+        .from("projects")
+        .select("id")
+        .eq("client_id", clientID)
+
+    if (projectSelectError) throw projectSelectError
+
+    // DELETE PAYMENT
+    const { error: paymentError } = await supabaseClients
+        .from("Payments")
+        .delete()
+        .eq("id_project", projectData[0].id)
+
+    if (paymentError) throw paymentError
+
+    // DELETE PROJECT
+    const { error: projectError } = await supabaseClients
+        .from("projects")
+        .delete()
+        .eq("client_id", clientID)
+
+    if (projectError) throw projectError
+
+    // DELETE CLIENT
+    const { error: clientError } = await supabaseClients
+        .from("clients")
+        .delete()
+        .eq("id", clientID)
+
+    if (clientError) throw clientError
+
+    if (!paymentError && !projectError && !clientError) return true
+}

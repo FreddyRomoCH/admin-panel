@@ -18,7 +18,9 @@ export default function RecipeLists({ list, toValidate }:RecipeListsProps) {
     const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
 
     useEffect(() => {
-        setRecipeList(list)
+        if (recipelist.length === 0 && list.length > 0 ) {
+            setRecipeList(list)
+        }
     }, list)
 
     const handleChangeList = (step: number, inst: string) => {
@@ -50,9 +52,12 @@ export default function RecipeLists({ list, toValidate }:RecipeListsProps) {
     useEffect(() => {
         const lastInput = itemsRefs.current.length - 1
 
-        !hasMounted.current
-            ? hasMounted.current = true
-            : itemsRefs.current[lastInput]?.focus()
+        if (lastInput > 0 && !hasMounted.current) {
+            hasMounted.current = true
+            
+        } else {
+            itemsRefs.current[lastInput]?.focus()
+        }
 
     }, [recipelist])
 
@@ -77,7 +82,10 @@ export default function RecipeLists({ list, toValidate }:RecipeListsProps) {
                         <div 
                             key={step} 
                             className={`flex justify-between items-center gap-2 mb-2 rounded-md transition-all duration-200 cursor-grab 
-                                ${draggingIndex === index ? "opacity-50 scale-[0.98]" : "opacity-100 scale-100"}
+                                ${draggingIndex === index 
+                                    ? "opacity-50 scale-[0.98]" 
+                                    : "opacity-100 scale-100"
+                                }
                             `}
                             draggable
                             onDragStart={() => {
@@ -88,9 +96,27 @@ export default function RecipeLists({ list, toValidate }:RecipeListsProps) {
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={() => handleDrop(index)}
                         >
-                            <label className="text-xs text-text-secondary w-16" htmlFor={`instruction-${step}`}>{`Step ${step}`}</label>
-                            <input ref={el => {itemsRefs.current[index] = el}} id={`instruction-${step}`} className={`bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 ${errors.toValidate ? "text-red-600" : "border-border"} px-4 py-1`} type="text" value={listItem} onChange={(e) => handleChangeList(index, e.target.value)} />
-                            <button type="button" onClick={() => handleClickClose(index)}>
+                            <label 
+                                className="text-xs text-text-secondary w-16" 
+                                htmlFor={`instruction-${step}`}>
+                                    {`Step ${step}`}
+                            </label>
+                            <input 
+                                ref={el => {itemsRefs.current[index] = el}} 
+                                id={`instruction-${step}`} 
+                                className={`bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 
+                                    ${errors[toValidate] 
+                                        ? "text-red-600" 
+                                        : "border-border"
+                                    } px-4 py-1`} 
+                                type="text" 
+                                value={listItem}
+                                onChange={(e) => handleChangeList(index, e.target.value)} 
+                            />
+                            <button 
+                                type="button" 
+                                onClick={() => handleClickClose(index)}
+                            >
                                 <IconClose className="text-primary w-8 h-8 cursor-pointer" />
                             </button>
                         </div>
@@ -100,15 +126,19 @@ export default function RecipeLists({ list, toValidate }:RecipeListsProps) {
             
             {/* Agregar botón para "Add more Steps" */}
             <div className="flex justify-end">
-                <button onClick={handleMoreSteps} type="button" className="flex justify-center items-center bg-background-light rounded-2xl text-text-primary px-3 py-2 text-sm cursor-pointer">
+                <button 
+                    onClick={handleMoreSteps} 
+                    type="button" 
+                    className="flex justify-center items-center bg-background-light rounded-2xl text-text-primary px-3 py-2 text-sm cursor-pointer"
+                >
                     <IconPlus className="w-6 h-6 text-text-primary" />
                     <span>Add Step</span>
                 </button>
             </div>
 
-            {errors.toValidate && (
+            {(errors[toValidate] || recipelist.length < 1) && (
                 <p className="text-red-600 text-sm mt-1">
-                    {String(errors.toValidate.message)}
+                    {String(errors[toValidate]?.message || "You must select at least one item")}
                 </p>
             )}
 

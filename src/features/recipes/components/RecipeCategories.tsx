@@ -7,8 +7,10 @@ interface RecipeCategoriesProps {
     categories: RecipeCategory[]
 }
 
-export default function RecipeCategories({ categories }: RecipeCategoriesProps) {
-    const [categoryList, setCategoryList] = useState(categories)
+export default function RecipeCategories({ 
+        categories 
+    }: RecipeCategoriesProps) {
+    const [categoryList, setCategoryList] = useState<RecipeCategory[]>(categories)
     const {setValue, formState: {errors}} = useFormContext()
 
     const handleChangeCategories = (newCate: Category) => {
@@ -23,25 +25,44 @@ export default function RecipeCategories({ categories }: RecipeCategoriesProps) 
     }
 
     useEffect(() => {
-        setCategoryList(categories)
+        if (categoryList.length === 0 && categories.length > 0) {
+            setCategoryList(categories)
+        }
     }, [categories])
 
     return (
         <>
-            <label htmlFor="category" className="text-text-secondary text-sm">Categories</label>
-            <div className={`grid grid-cols-1 md:grid-cols-6 justify-between items-center gap-2 bg-background-light rounded-lg border-2 ${errors.recipe_categories ? "border-red-600" : "border-border"} p-4 w-full`}>
+            <label 
+                htmlFor="category" 
+                className="text-text-secondary text-sm">
+                    Categories
+            </label>
+
+            <div 
+                className={`grid grid-cols-1 md:grid-cols-6 justify-between items-center gap-2 bg-background-light rounded-lg border-2 
+                    ${errors.recipe_categories 
+                        ? "border-red-600" 
+                        : "border-border"
+                    } p-4 w-full`}
+                >
             {
-                GET_CATEGORIES.map((cate) => (
-                    <label key={cate.id} className="flex items-center gap-2 text-text-secondary text-xs">
-                        <input 
-                            type="checkbox" 
-                            checked={categoryList.some(c => c.categories.id === cate.id)}
-                            onChange={() => handleChangeCategories(cate)}
-                            className="accent-primary w-4 h-4 cursor-pointer"
-                        />
-                        <span>{cate.name}</span>
-                    </label>
-                ))
+                GET_CATEGORIES.map((cate) => {
+
+                    return (
+                        <label 
+                            key={cate.id} 
+                            className="flex items-center gap-2 text-text-secondary text-xs"
+                        >
+                            <input 
+                                type="checkbox" 
+                                checked={categoryList.some(c => c.categories.id === cate.id)}
+                                onChange={() => handleChangeCategories(cate)}
+                                className="accent-primary w-4 h-4 cursor-pointer"
+                            />
+                            <span>{cate.name}</span>
+                        </label>
+                    )
+                })
             }
             </div>
 

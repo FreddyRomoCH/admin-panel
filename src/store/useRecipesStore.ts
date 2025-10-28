@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { fetchRecipesWithCategories } from "@/features/recipes/api"
+import { addingRecipeToBD, fetchRecipesWithCategories, updateRecipeFromBD } from "@/features/recipes/api"
 import type { Recipes } from "@/features/recipes/types"
 
 interface RecipesState {
@@ -7,7 +7,8 @@ interface RecipesState {
     loading: boolean
     error: boolean
     fetchRecipes: () => Promise<void>
-    updateRecipes: (updateRecipes: Recipes) => void
+    addRecipes: (newRecipes: Recipes) => Promise<void>
+    updateRecipe: (updateRecipes: Recipes) => Promise<boolean>
 }
 
 export const useRecipesStore = create<RecipesState>((set, get) => ({
@@ -20,7 +21,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
 
         // if there is data, we use it and dont load again
         if (recipes.length > 0) {
-            set({ loading: false }) // ✅ aseguras que se apague el loading
+            set({ loading: false })
             return
         }
 
@@ -35,14 +36,59 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
             }))
 
             set({ recipes: recipesNormalized, loading: false })
-        } catch (err) {
+        } catch (error) {
+            console.log("Unable to fetch recipes", error)
             set({ error: true, loading: false })
         }
     },
-    updateRecipes: (updateRecipe) =>
-        set((state) => ({
-            recipes: state.recipes.map((r) =>
-                r.id === updateRecipe.id ? updateRecipe : r
-            )
-        }))
+    addRecipes: async (newRecipe: Recipes) => {
+        set({ loading: true })
+        
+        try {
+            const added = await addingRecipeToBD(newRecipe)
+
+        if (!added) {
+                set({ error: true, loading: false })
+                return
+            }
+
+            set((state) => ({
+                recipes: [newRecipe, ...state.recipes],
+                loading: false,
+                error: false
+            }))
+            return
+        } catch (error) {
+            console.error("Error Adding recipe", error)
+            set({ error: true, loading: false })
+            return
+        }
+    },
+    updateRecipe: async (updateRecipe: Recipes) => {
+
+        try {
+            set({ loading: true })
+
+            const updated = await updateRecipeFromBD(updateRecipe)
+
+            if (!updated) {
+                set({error: true, loading: false})
+                return false
+            }
+
+            set((state) => ({
+                recipes: state.recipes.map((recipe) => 
+                    recipe.id === updateRecipe.id ? { ...recipe, ...updateRecipe } : recipe
+                ),
+                loading: false,
+                error: false
+            }))
+            return true
+
+        } catch (error) {
+            console.log("Error updating recipe", error)
+            set({ error: true, loading: false })
+            return false
+        }
+    }
 }))

@@ -5,18 +5,19 @@ import { PROJECT_STATUS, type Status } from "@features/clients/constants/status"
 import Error from "@/components/shared/Error"
 import Skeleton from "@/components/ui/Skeleton"
 import TableClients from "@features/clients/components/TableClients"
-import ModalStatusChange from "@features/clients/components/ModalStatusChange"
+import ModalConfirmation from "@/features/clients/components/ModalConfirmation"
 import toast from "react-hot-toast"
 import ModalClientForm from "@features/clients/components/ModalClientForm"
 
 export default function Clients() {
-    const {loading, error, showClients, clients, changePaymentStatus} = useClientsStore()
+    const {loading, error, showClients, clients, changePaymentStatus, deleteClient} = useClientsStore()
 
     const [isOpen, setIsOpen] = useState(false)
+    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
     const [previousValue, setPreviousValue] = useState("")
     const [draftValue, setDraftValue] = useState("")
-    const [selectedClientId, setSelectedClientId] = useState<number | undefined>(undefined)
-    const [isEditModaOpen, setIsEditModalOpen] = useState<boolean>(false)
+    const [selectedClientId, setSelectedClientId] = useState<number>(0)
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false)
     const [selectedClient, setSelectedClient] = useState<Clients | null>(null)
 
     useEffect(() => {
@@ -28,42 +29,57 @@ export default function Clients() {
     if (loading) {
         return (
             <main className="flex justify-center items-center gap-2">
-                {
-                    Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i}><Skeleton /></div>
-                    ))
-                }
+            {
+                Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i}><Skeleton /></div>
+                ))
+            }
             </main>
         )
     }
 
-    const onChangeSelect = (newValue: string, oldValue: string, clientID?: number) => {
+    const onChangeSelect = (newValue: string, oldValue: string, clientID: number) => {
         setPreviousValue(oldValue)
         setDraftValue(newValue)
-        setSelectedClientId(clientID ?? undefined)
+        setSelectedClientId(clientID)
         setIsOpen(true)
     }
 
-    const onCancel = () => {
-        setIsOpen(false)
-        setDraftValue(previousValue)
+    const onCancel = (mode: "delete" | "status") => {
+        if (mode === "status") {
+            setIsOpen(false)
+            setDraftValue(previousValue)
+        }
+
+        if (mode === "delete") {
+            setIsOpenDeleteModal(false)
+        }
     }
 
-    const onConfirm = async () => {
-        setIsOpen(false)
-        const success = await changePaymentStatus(selectedClientId, draftValue)
-        
+    const onConfirm = async (mode: "delete" | "status") => {
+        let success
+
+        if (mode === "status") {
+            setIsOpen(false)
+            success = await changePaymentStatus(selectedClientId, draftValue)
+            // setDraftValue(previousValue)
+        }
+
+        if (mode === "delete") {
+            setIsOpenDeleteModal(false)
+            success = await deleteClient(selectedClientId)
+        }
+            
         if (!success) {
-            toast.error("Unable to save the new payment status. Try again later.", {
+            toast.error(`Unable to ${mode === "status" ? "save the new payment status" : "delete the client"}. Try again later.`, {
                 style: {
                     color: '#c10008',
                     background: '#ffe2e3',
                     fontSize: '14px'
                 }
             })
-            setDraftValue(previousValue)
         }else{
-            toast.success("New status changed successfully!", {
+            toast.success(`${mode === "status" ? "New status changed" : "Client deleted"} successfully!`, {
                 style: {
                     background: "#defae6",
                     color: "#475569",
@@ -81,6 +97,11 @@ export default function Clients() {
     const handleCloseModal = () => {
         setIsEditModalOpen(false)
     }
+
+    const handleClickDeleteClient = (client_id: Clients["client_id"]) => {
+        setSelectedClientId(client_id)
+        setIsOpenDeleteModal(true)
+    }
             
     return (
         <main className="flex flex-col justify-center items-center">
@@ -91,7 +112,8 @@ export default function Clients() {
                         <th className="px-4 py-2 text-left">Project</th>
                         <th className="px-4 py-2 text-left">Invoice Status</th>
                         <th className="px-4 py-2 text-left">Due Date</th>
-                        <th className="px-4 py-2 text-left">Edit Client</th>
+                        <th className="px-4 py-2 text-left">Edit</th>
+                        <th className="px-4 py-2 text-left">Delete</th>
                     </tr>
                 </thead>
 
@@ -117,6 +139,7 @@ export default function Clients() {
                                     client={client} 
                                     handleChangeOut={(val, oldVal) => onChangeSelect(val, oldVal, client.project_id)}
                                     handleClickEditClient={() => handleClickEditClient(client)}
+                                    handleClickDeleteClient={() => handleClickDeleteClient(client.client_id)}
                                 />
                             )
                         })
@@ -125,16 +148,27 @@ export default function Clients() {
             </table>
 
             {isOpen && (
-                <ModalStatusChange
+                <ModalConfirmation
                     isOpen={isOpen}
-                    onConfirm={onConfirm}
-                    onCancel={onCancel}    
+                    onConfirm={() => onConfirm("status")}
+                    onCancel={() => onCancel("status")}
+                    mode="status"   
                 />
             )}
 
-            {isEditModaOpen && (
+            {isOpenDeleteModal && (
+                <ModalConfirmation
+                    isOpen={isOpenDeleteModal}
+                    onConfirm={() => onConfirm("delete")}
+                    onCancel={() => onCancel("delete")}
+                    mode="delete"
+                    clientID={selectedClientId}
+                />
+            )}
+
+            {isEditModalOpen && (
                 <ModalClientForm 
-                    isOpen={isEditModaOpen} 
+                    isOpen={isEditModalOpen} 
                     handleOnClose={handleCloseModal} 
                     mode="edit"
                     clientToEdit={selectedClient}

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { addClientToBD, fetchClientsFromBD, updatePaymentStatus, updateClientFromDB } from "@/features/clients/api";
+import { addClientToBD, fetchClientsFromBD, updatePaymentStatus, updateClientFromDB, deleteClientFromDB } from "@/features/clients/api";
 import type { Clients, NewClient } from "@/features/clients/types/clients";
 
 interface ClientsState {
@@ -10,6 +10,7 @@ interface ClientsState {
     changePaymentStatus: (project_id: Clients["project_id"] | undefined, newValue: string) => Promise<boolean>
     showClients: () => Promise<void>
     updateClient: (client: Clients) => Promise<boolean>
+    deleteClient: (client_id: Clients["client_id"]) => Promise<boolean>
 }
 
 export const useClientsStore = create<ClientsState>((set) => ({
@@ -19,6 +20,8 @@ export const useClientsStore = create<ClientsState>((set) => ({
 
     addClient: async (client: NewClient) => {
         try {
+            set({ loading: true })
+            
             const newClient = await addClientToBD({client})
 
             if (!newClient) {
@@ -57,6 +60,7 @@ export const useClientsStore = create<ClientsState>((set) => ({
 
     showClients: async () =>  {
         try {
+
             const allClients = await fetchClientsFromBD()
 
             if (!allClients) {
@@ -72,6 +76,8 @@ export const useClientsStore = create<ClientsState>((set) => ({
 
     updateClient: async (client) => {
         try {
+            set({ loading: true })
+
             const updated = await updateClientFromDB(client)
 
             if (!updated) {
@@ -91,6 +97,34 @@ export const useClientsStore = create<ClientsState>((set) => ({
         } catch (error) {
             console.log("Error updating client", error)
             set({ error: true, loading: false })
+            return false
+        }
+    },
+
+    deleteClient: async (clientID) => {
+        try {
+            set({ loading: true })
+
+            const deleted = await deleteClientFromDB(clientID)
+
+            if (!deleted) {
+                set({error: true, loading: false})
+                return false
+            }
+
+            set((state) => ({
+                clients: state.clients.filter((c) => 
+                    c.client_id !== clientID
+                ),
+                error: false,
+                loading: false
+            }))
+
+            return true
+
+        } catch (error) {
+            console.log("Error deleting client", error)
+            set({error: true, loading: false})
             return false
         }
     }

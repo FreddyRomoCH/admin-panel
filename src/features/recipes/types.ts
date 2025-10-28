@@ -1,5 +1,5 @@
 export interface Recipes {
-    id: string,
+    id?: string,
     title: string,
     description: string,
     main_image: string,

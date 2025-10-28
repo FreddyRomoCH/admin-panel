@@ -31,7 +31,9 @@ export default function TableRecipes({ onEdit, recipes }: TableRecipesProps) {
                     
                     <td>
                         <button onClick={() => onEdit(recipe)}>
-                            <IconEdit color="text-text-secondary" className="cursor-pointer"  />
+                            <IconEdit 
+                                className="text-text-secondary cursor-pointer" 
+                            />
                         </button>
                     </td>
                 </tr>

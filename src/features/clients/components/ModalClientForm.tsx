@@ -29,7 +29,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                     client_name: "",
                     project_name: "",
                     project_status: "paid",
-                    due_date: ""
+                    due_date: new Date().toISOString().split("T")[0]
                 }
                 : {
                     client_id: clientToEdit?.client_id,
@@ -37,7 +37,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                     project_name: clientToEdit?.project_name,
                     project_id: clientToEdit?.project_id,
                     project_status: clientToEdit?.project_status,
-                    due_date: clientToEdit?.due_date
+                    due_date: clientToEdit?.due_date ? new Date(clientToEdit.due_date).toISOString().split("T")[0] : ""
                 }
     })
 
@@ -89,16 +89,6 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                 }
             })
         }
-
-        // addClient(client)
-        // handleOnClose()
-        // toast.success(`${client.client_name} - ${client.project_name} added successfully!`, {
-        //     style: {
-        //         background: '#defae6',
-        //         color: '#475569',
-        //         fontSize: '14px'
-        //     }
-        // })
     }
 
     return (
@@ -156,7 +146,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                             <Input 
                                                 value={clientToEdit?.due_date 
                                                     ? new Date(clientToEdit.due_date).toISOString().split("T")[0] 
-                                                    : ""
+                                                    : new Date().toISOString().split("T")[0]
                                                 }
                                                 type="date" 
                                                 id="project-due-date" 

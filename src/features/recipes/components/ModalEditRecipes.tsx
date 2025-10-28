@@ -2,33 +2,82 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import { FormProvider, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Recipes } from "@features/recipes/types"
-import RecipeName from "@features/recipes/components/RecipeName"
 import RecipeDescription from "@features/recipes/components/RecipeDescription"
 import RecipeServings from "@features/recipes/components/RecipeServings"
 import RecipePrepTime from "@features/recipes/components/RecipePrepTime"
 import RecipeCountry from "@features/recipes/components/RecipeCountry"
 import RecipeCategories from "@features/recipes/components/RecipeCategories"
 import RecipeImage from "@features/recipes/components/RecipeImage"
-import { recipeSchema } from "@features/recipes/lib/schema/recipe"
+import { recipeSchema, recipeSchemaEdit } from "@features/recipes/lib/schema/recipe"
 import RecipeLists from "@features/recipes/components/RecipeLists"
-import { supabase } from "@/lib/supabaseClient"
+// import { supabase } from "@/lib/supabaseClient"
 import { useRecipesStore } from "@/store/useRecipesStore"
 import { useEffect } from "react"
+import Input from "@/components/ui/Input"
+import toast from "react-hot-toast"
 
 interface ModalEditRecipesProps {
     isOpen: boolean,
     handleOnClose: () => void,
-    recipe: Recipes
+    recipe?: Recipes
+    mode: "edit" | "create"
 }
 
-export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: ModalEditRecipesProps) {
-    const {title, description, main_image, servings, prep_time, country, recipe_categories, ingredients, instructions} = recipe
-    const updateRecipe = useRecipesStore((state) => state.updateRecipes)
+export default function ModalEditRecipes({ 
+        isOpen, 
+        handleOnClose, 
+        recipe,
+        mode
+    }: ModalEditRecipesProps) {
 
-    const methods = useForm<Recipes>({
-        resolver: zodResolver(recipeSchema),
-        defaultValues: recipe
-    })
+    const {
+        title = "", 
+        description = "", 
+        main_image = "", 
+        servings = 0, 
+        prep_time = 0, 
+        country = "", 
+        recipe_categories = [], 
+        ingredients = [], 
+        instructions = []
+    } = recipe || {}
+
+    // const updateRecipe = useRecipesStore((state) => state.updateRecipes)
+    const { updateRecipe, addRecipes, error } = useRecipesStore()
+
+    const schema = mode === "create" ? recipeSchema : recipeSchemaEdit
+
+    // const adminKey = import.meta.env.VITE_ADMIN_KEY
+
+    const defaultValues = mode === "create"
+        ? {
+            title: "",
+            description: "",
+            main_image: "",
+            servings: 0,
+            prep_time: 0,
+            country: "",
+            recipe_categories: [],
+            ingredients: [],
+            instructions: []
+        }
+        : {
+            id: recipe?.id ?? "",
+            title: recipe?.title ?? "",
+            description: recipe?.description ?? "",
+            main_image: recipe?.main_image ?? "",
+            servings: recipe?.servings ?? 0,
+            prep_time: recipe?.prep_time ?? 0,
+            country: recipe?.country ?? "",
+            recipe_categories: recipe?.recipe_categories ?? [],
+            ingredients: recipe?.ingredients ?? [],
+            instructions: recipe?.instructions ?? []
+        }
+
+        const methods = useForm<Recipes>({
+            resolver: zodResolver(schema),
+            defaultValues: defaultValues as Recipes
+        })
 
     useEffect(() => {
         methods.reset(recipe)
@@ -38,53 +87,53 @@ export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: Moda
 
     const onSubmit = async (data: Recipes) => {
         // Save data on recipes table
-        const {error: recipeError} = await supabase
-            .from("recipes")
-            .update({
-                title: data.title,
-                description: data.description,
-                main_image: data.main_image,
-                servings: data.servings,
-                prep_time: data.prep_time,
-                country: data.country,
-                ingredients: data.ingredients,
-                instructions: data.instructions
-            })
-            .eq("id", data.id)
 
-        if (recipeError) {
-            throw recipeError
+        if (mode === "edit") {
+
+            await updateRecipe(data as Recipes)
+
+            if (error) {
+                toast.error(`Unable to update the recipe. Try again later`, {
+                    style: {
+                        background: '#ffe2e3',
+                        color: '#475569',
+                        fontSize: '14px'
+                    }
+                })
+            } else {
+                toast.success(`Recipe ${data.title} updated successfully!`, {
+                    style: {
+                        background: '#defae6',
+                        color: '#475569',
+                        fontSize: '14px'
+                    }
+                })
+            }
+
+        } else if (mode === "create") {
+
+            await addRecipes(data as Recipes)
+
+            if (error) {
+                toast.error(`Unable to add the recipe. Try again later`, {
+                    style: {
+                        background: '#ffe2e3',
+                        color: '#475569',
+                        fontSize: '14px'
+                    }
+                })
+            } else {
+                toast.success(`Recipe ${data.title} added successfully!`, {
+                    style: {
+                        background: '#defae6',
+                        color: '#475569',
+                        fontSize: '14px'
+                    }
+                })
+            }
         }
 
-        // Save data recipe_categories
-        const categoryIds = data.recipe_categories
-            .map(c => Number(c.categories?.id))
-            .filter(id => !isNaN(id))
-
-        //Delete old relation between recipe and category
-        const {error: errorRecipeCategories} = await supabase
-            .from("recipe_categories")
-            .delete()
-            .eq("recipe_id", data.id)
-
-        if (errorRecipeCategories) {
-            throw errorRecipeCategories
-        }
-
-        const {error: newRecipeCategories} = await supabase
-            .from("recipe_categories")
-            .insert(
-                categoryIds.map(catId => ({
-                    recipe_id: data.id,
-                    categories_id: catId
-                }))
-            )
-
-        if (newRecipeCategories) {
-            throw newRecipeCategories
-        }
-        
-        updateRecipe(data)
+        // updateRecipe(data)
         handleOnClose()
     }
 
@@ -95,7 +144,9 @@ export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: Moda
                 {/* <Button onClick={handleOnClose}>Close Recipe</Button> */}
                 <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white rounded-2xl">
                     <header className="border-b-2 border-border p-6">
-                        <DialogTitle className="text-lg font-semibold">Edit Recipe</DialogTitle>
+                        <DialogTitle className="text-lg font-semibold">
+                            {mode === "edit" ? "Edit Recipe" : "Create recipe"}
+                        </DialogTitle>
                     </header>
 
                     <div className="overflow-y-auto max-h-[calc(80vh-6rem)] scrollbar-thin scrollbar-thumb-primary scrollbar-track-background-light">
@@ -107,10 +158,21 @@ export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: Moda
 
                                         <div className="flex flex-col justify-start items-left gap-4 w-full">
                                             <div>
-                                                <RecipeName title={title} />
+                                                {/* <RecipeName title={title} /> */}
+                                                <Input 
+                                                    value={mode === "edit" ? title : ""}
+                                                    type="text"
+                                                    title="Name"
+                                                    id="title"
+                                                    validation="title"
+                                                    labelClass="text-text-secondary text-sm"
+                                                    inputClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 px-4 py-1"
+                                                />
                                             </div>
                                             <div>
-                                                <RecipeDescription description={description} />
+                                                <RecipeDescription 
+                                                    description={description}
+                                                />
                                             </div>
                                         </div>
                                     </section>
@@ -146,8 +208,21 @@ export default function ModalEditRecipes({ isOpen, handleOnClose, recipe }: Moda
                     </div>
 
                     <footer className="border-t-2 border-border p-4 flex justify-end items-center gap-4 bg-card sticky bottom-0 shrink-0">
-                        <button type="button" onClick={() => handleOnClose()} className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer">Cancel</button>
-                        <button type="submit" form="form-edit-recipe" className="bg-primary text-card rounded-2xl px-4 py-2 cursor-pointer">Save Changes</button>
+                        <button 
+                            type="button" 
+                            onClick={() => handleOnClose()} 
+                            className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer"
+                        >
+                                Cancel
+                        </button>
+
+                        <button 
+                            type="submit" 
+                            form="form-edit-recipe" 
+                            className="bg-primary text-card rounded-2xl px-4 py-2 cursor-pointer"
+                        >
+                            {mode === "edit" ? "Save Changes" : "Add Recipe"}
+                        </button>
                     </footer>
                 </DialogPanel>
             </div>

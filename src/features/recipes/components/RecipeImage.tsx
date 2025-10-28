@@ -45,7 +45,9 @@ export default function RecipeImage({ mainImage, title }: RecipeImageProps) {
 
     return (
         <div className={`relative bg-background-light w-full max-w-52 aspect-square flex flex-col justify-center items-center rounded-lg border-2 ${errors.main_image ? "border-red-600" : "border-border"} border-dashed`}>
-            <img className="aspect-square h-24 rounded-2xl object-cover" src={recipeImage} alt={title} />
+            {recipeImage && (
+                <img className="aspect-square h-24 rounded-2xl object-cover" src={recipeImage} alt={title} />
+            )}
             <input className="absolute text-text-secondary text-xs text-center cursor-pointer inset-0 w-full h-full" type="file" accept="image/*" onChange={(e) => handleChangeImage(e)} />
 
             {errors.main_image && (

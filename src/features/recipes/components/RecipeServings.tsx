@@ -22,19 +22,30 @@ export default function RecipeServings({servings}: RecipeServingsProps) {
 
     return (
         <>
-        <label htmlFor="servings" className="text-text-secondary text-sm">Servings</label>
-        <select value={selectedServings} onChange={(e) => handleChangeServings(Number(e.target.value))} name="servings" id="servings" className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1">
-            {
-                Array.from({ length: 21 }).map((_, i) => {
-                    if (i !== 0) return <option key={i} value={i}>{i}</option>
-                })
-            }
+            <label htmlFor="servings" className="text-text-secondary text-sm">Servings</label>
+            <select 
+                value={selectedServings} 
+                onChange={(e) => handleChangeServings(Number(e.target.value))} 
+                name="servings" 
+                id="servings" 
+                className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1"
+            >
+                {
+                    !selectedServings && <option value="">Select number of servings</option>
+                }
+
+                {
+                    Array.from({ length: 21 }).map((_, i) => 
+                        i > 0 && <option key={i} value={i}>{i}</option>
+                    )
+                }
+            </select>
+            
             { errors.servings && (
                 <p className="text-red-600 text-xs mt-1">
                     {String(errors.servings.message)}
                 </p>
             )}
-        </select>
         </>
     )
 }

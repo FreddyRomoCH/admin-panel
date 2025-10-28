@@ -6,7 +6,9 @@ interface RecipeDescriptionProps {
     description: Recipes["description"]
 }
 
-export default function RecipeDescription({ description }: RecipeDescriptionProps) {
+export default function RecipeDescription({ 
+        description, 
+    }: RecipeDescriptionProps) {
     const [selectedDescription, setSelectedDescription] = useState<Recipes["description"]>(description)
 
     const { setValue, formState: {errors} } = useFormContext()
@@ -23,7 +25,17 @@ export default function RecipeDescription({ description }: RecipeDescriptionProp
     return (
         <>
             <label htmlFor="description" className="text-text-secondary text-sm">Description</label>
-            <textarea value={selectedDescription} onChange={(e) => handleChangeDescription(e.target.value)} name="description" id="description" className={`bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 ${errors.description ? "border-red-600" : "border-border"} px-4 py-1 field-sizing-content min-h-28`} />
+            <textarea 
+                value={selectedDescription} 
+                onChange={(e) => handleChangeDescription(e.target.value)} 
+                name="description" 
+                id="description" 
+                className={`bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 px-4 py-1 field-sizing-content min-h-28
+                    ${errors.description 
+                        ? "border-red-600" 
+                        : "border-border"} 
+                    `} 
+                />
 
             {errors.description && (
                 <p className="text-red-600 text-xs mt-1">

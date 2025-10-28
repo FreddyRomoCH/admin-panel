@@ -1,5 +1,6 @@
 // import Button from "@/components/ui/Button"
 import IconEdit from "@/assets/IconEdit"
+import IconClose from "@/assets/icons/IconClose"
 import Select from "@/components/ui/Select"
 import { dateFormatted } from "@/features/clients/constants/date"
 import { PROJECT_STATUS, type Status } from "@features/clients/constants/status"
@@ -11,9 +12,17 @@ interface TableClientsProps {
     client: Clients
     handleChangeOut: (val: string, draft: string, clientId?: number) => void
     handleClickEditClient: (client: Clients) => void
+    handleClickDeleteClient: (client_id: Clients["client_id"]) => void
 }
 
-export default function TableClients({ found, client, handleChangeOut, value, handleClickEditClient }: TableClientsProps) {
+export default function TableClients({ 
+    found, 
+    client, 
+    handleChangeOut, 
+    value, 
+    handleClickEditClient, 
+    handleClickDeleteClient 
+}: TableClientsProps) {
 
     return (
         <>
@@ -51,6 +60,15 @@ export default function TableClients({ found, client, handleChangeOut, value, ha
                     onClick={() => handleClickEditClient(client)}
                 >
                     <IconEdit className="text-text-secondary" />
+                </button>
+            </td>
+
+            <td className="px-4 py-2">
+                <button 
+                    className="cursor-pointer"
+                    onClick={() => handleClickDeleteClient(client.client_id)}
+                >
+                    <IconClose className="text-red-600 w-6 h-6" />
                 </button>
             </td>
         </tr>
