@@ -1,12 +1,21 @@
 import IconEdit from "@/assets/IconEdit";
+import IconClose from "@/assets/icons/IconClose";
+import Select from "@/components/ui/Select";
 import type { RecipeCategory, Recipes } from "@features/recipes/types";
 
 interface TableRecipesProps {
     recipes: Recipes[]
+    onDelete: (recipe: Recipes) => void
     onEdit: (recipe: Recipes) => void
+    handleChangeActiveRecipe?: (val: string, recipe: Recipes) => void
 }
 
-export default function TableRecipes({ onEdit, recipes }: TableRecipesProps) {
+export default function TableRecipes({ 
+    onEdit,
+    onDelete,
+    recipes,
+    handleChangeActiveRecipe
+}: TableRecipesProps) {
 
     return (
         <>
@@ -35,6 +44,31 @@ export default function TableRecipes({ onEdit, recipes }: TableRecipesProps) {
                                 className="text-text-secondary cursor-pointer" 
                             />
                         </button>
+                    </td>
+
+                    <td>
+                        <button onClick={() => onDelete(recipe)}>
+                            <IconClose 
+                                className="text-red-600 w-6 h-6 cursor-pointer" 
+                            />
+                        </button>
+                    </td>
+
+                    <td>
+                        <Select  
+                            name={`recipe-${recipe.title}-active`}
+                            id={`recipe-${recipe.title}-active`}
+                            options={[
+                                {label: "Yes", value: "yes"},
+                                {label: "No", value: "no"}
+                            ]}
+                            labelClass=""
+                            selectClass="border border-primary rounded-sm px-3 py-1 text-text-secondary"
+                            optionClass=""
+                            value={recipe.is_active ? "yes" : "no"}
+                            recipe={recipe}
+                            handleChangeActiveRecipe={handleChangeActiveRecipe}
+                        />
                     </td>
                 </tr>
             ))

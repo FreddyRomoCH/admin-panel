@@ -1,3 +1,4 @@
+import type { Recipes } from "@/features/recipes/types"
 import type { Option } from "@/types/ui"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
@@ -13,7 +14,9 @@ interface SelectProps {
     optionClass?: string
     value: string
     client_id?: number
+    recipe?: Recipes
     handleChangeOut?: (val: string, draft: string, clientId?: number) => void
+    handleChangeActiveRecipe?: (val: string, recipe: Recipes) => void
 }
 
 export default function Select({ 
@@ -27,7 +30,9 @@ export default function Select({
         optionClass, 
         value, 
         handleChangeOut, 
-        client_id 
+        client_id,
+        recipe,
+        handleChangeActiveRecipe
     }: SelectProps) {
 
     const form = useFormContext()
@@ -41,8 +46,10 @@ export default function Select({
 
         if (validation && setValue) {
             setValue(validation, val, { shouldValidate: true })
-        }else{
+        }else if (client_id) {
             handleChangeOut?.(val, draft, client_id)
+        } else if (recipe) {
+            handleChangeActiveRecipe?.(val, recipe)
         }
     }
 

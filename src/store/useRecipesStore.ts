@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { addingRecipeToBD, fetchRecipesWithCategories, updateRecipeFromBD } from "@/features/recipes/api"
+import { addingRecipeToBD, changeStatusRecipeFromDB, deleteRecipeFromBD, fetchRecipesWithCategories, updateRecipeFromBD } from "@/features/recipes/api"
 import type { Recipes } from "@/features/recipes/types"
 
 interface RecipesState {
@@ -9,6 +9,8 @@ interface RecipesState {
     fetchRecipes: () => Promise<void>
     addRecipes: (newRecipes: Recipes) => Promise<void>
     updateRecipe: (updateRecipes: Recipes) => Promise<boolean>
+    deleteRecipe: (deleteRecipeID: Recipes["id"]) => Promise<boolean>
+    recipeStatus: (status: string, recipe: Recipes["id"]) => Promise<boolean>
 }
 
 export const useRecipesStore = create<RecipesState>((set, get) => ({
@@ -42,9 +44,9 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
         }
     },
     addRecipes: async (newRecipe: Recipes) => {
-        set({ loading: true })
-        
         try {
+            set({ loading: true })
+
             const added = await addingRecipeToBD(newRecipe)
 
         if (!added) {
@@ -85,6 +87,71 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
             }))
             return true
 
+        } catch (error) {
+            console.log("Error updating recipe", error)
+            set({ error: true, loading: false })
+            return false
+        }
+    },
+    deleteRecipe: async (deleteRecipeID: Recipes["id"]) => {
+
+        try {
+            set({ loading: true })
+
+            const deleted = await deleteRecipeFromBD(deleteRecipeID)
+
+            if (!deleted) {
+                set({error: true, loading: false})
+                return false
+            }
+
+            set((state) => ({
+                recipes: state.recipes.filter((recipe) => 
+                    recipe.id !== deleteRecipeID
+                    
+                ),
+                loading: false,
+                error: false
+            }))
+
+            return true
+            
+        } catch (error) {
+            console.log("Error deleting recipe", error)
+            set({ error: true, loading: false })
+            return false
+        }
+    },
+    recipeStatus: async (newStatus: string , recipeID: Recipes["id"]) => {
+        
+        try {
+            set({
+                loading: true
+            })
+
+            const updated = await changeStatusRecipeFromDB(newStatus, recipeID)
+
+            if (!updated) {
+                set({
+                    error: true,
+                    loading: false
+                })
+                
+                return false
+            }
+
+            set((state) => ({
+                recipes: state.recipes.map((recipe) => 
+                    recipe.id === recipeID 
+                        ? { ...recipe, is_active: newStatus === "yes" ? true : false }
+                        : recipe
+                ),
+                loading: false,
+                error: false
+            }))
+
+            return true
+            
         } catch (error) {
             console.log("Error updating recipe", error)
             set({ error: true, loading: false })

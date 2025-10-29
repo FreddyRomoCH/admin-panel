@@ -8,7 +8,8 @@ export interface Recipes {
     country: string,
     recipe_categories: RecipeCategory[],
     ingredients: string[],
-    instructions: string[]
+    instructions: string[],
+    is_active?: boolean
 }
 
 export interface RecipeCategory {

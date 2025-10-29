@@ -17,6 +17,7 @@ export async function fetchRecipesWithCategories() {
             ingredients,
             instructions,
             user_id,
+            is_active,
             recipe_categories (
                 categories (
                     id,
@@ -146,4 +147,35 @@ export async function updateRecipeFromBD (updateRecipe: Recipes) {
         ingredients: updateRecipe.ingredients,
         instructions: updateRecipe.instructions
     } as Recipes
+}
+
+export async function deleteRecipeFromBD(deleteRecipeID: Recipes["id"]) {
+    const {error: recipeDeleteCateError} = await supabase
+        .from("recipe_categories")
+        .delete()
+        .eq("recipe_id", deleteRecipeID)
+
+    if (recipeDeleteCateError) throw recipeDeleteCateError
+
+    const {error: recipeDeleteRecipe} = await supabase
+        .from("recipes")
+        .delete()
+        .eq("id", deleteRecipeID)
+
+    if (recipeDeleteRecipe) throw recipeDeleteRecipe
+
+    if (!recipeDeleteCateError && !recipeDeleteRecipe) return true
+}
+
+export async function changeStatusRecipeFromDB(newStatus: string, recipeID: Recipes["id"]) {
+    const {error: statusRecipeError} = await supabase
+        .from("recipes")
+        .update({
+            is_active: newStatus === "yes" ? true : false
+        })
+        .eq("id", recipeID)
+
+    if (statusRecipeError) throw statusRecipeError
+
+    return true
 }

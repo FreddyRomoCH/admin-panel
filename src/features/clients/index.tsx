@@ -3,11 +3,11 @@ import type { Clients } from "@features/clients/types/clients"
 import { useEffect, useState } from "react"
 import { PROJECT_STATUS, type Status } from "@features/clients/constants/status"
 import Error from "@/components/shared/Error"
-import Skeleton from "@/components/ui/Skeleton"
 import TableClients from "@features/clients/components/TableClients"
 import ModalConfirmation from "@/features/clients/components/ModalConfirmation"
 import toast from "react-hot-toast"
 import ModalClientForm from "@features/clients/components/ModalClientForm"
+import Loading from "@/components/shared/Loading"
 
 export default function Clients() {
     const {loading, error, showClients, clients, changePaymentStatus, deleteClient} = useClientsStore()
@@ -24,19 +24,11 @@ export default function Clients() {
         showClients()
     }, [])
 
-    if (error && !previousValue) return <Error type="page" />
+    if (error && !previousValue) 
+        return <Error type="page" />
 
-    if (loading) {
-        return (
-            <main className="flex justify-center items-center gap-2">
-            {
-                Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i}><Skeleton /></div>
-                ))
-            }
-            </main>
-        )
-    }
+    if (loading) 
+        return <Loading length={4} />
 
     const onChangeSelect = (newValue: string, oldValue: string, clientID: number) => {
         setPreviousValue(oldValue)
@@ -153,6 +145,7 @@ export default function Clients() {
                     onConfirm={() => onConfirm("status")}
                     onCancel={() => onCancel("status")}
                     mode="status"   
+                    section="clients"
                 />
             )}
 
@@ -161,7 +154,8 @@ export default function Clients() {
                     isOpen={isOpenDeleteModal}
                     onConfirm={() => onConfirm("delete")}
                     onCancel={() => onCancel("delete")}
-                    mode="delete"
+                    mode="delete"   
+                    section="clients"
                     clientID={selectedClientId}
                 />
             )}
