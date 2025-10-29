@@ -33,6 +33,8 @@ export default function Header() {
         }
     }
 
+    const avatar = `https://unavatar.io/github/FreddyRomoCH`
+
     return (
         <div className="flex justify-between items-center py-8">
             <h1 className="font-inter text-3xl font-bold text-foreground-light">{title}</h1>
@@ -66,7 +68,7 @@ export default function Header() {
                         />
                     )
                 }
-                <img className="rounded-full h-12 w-12 object-cover drop-shadow-lg drop-shadow-black/50" src="/images/Freddy_pequeno.jpeg" alt="Admin Profile Image" />
+                <img className="rounded-full h-12 w-12 object-cover drop-shadow-lg drop-shadow-black/50" src={avatar} alt="Admin Profile Image" />
             </div>
 
             {
