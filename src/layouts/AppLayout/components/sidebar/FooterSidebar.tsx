@@ -1,7 +1,10 @@
 import IconSetting from "@/assets/IconSetting";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function FooterSidebar() {
+    const { t } = useTranslation()
+
     return (
         <NavLink 
             className={({ isActive }) => {
@@ -15,7 +18,7 @@ export default function FooterSidebar() {
             to="/settings"
         >
             <IconSetting />
-            Settings
+            { t("Settings") }
         </NavLink>
     )
 }

@@ -43,6 +43,7 @@ export function useRecentItems() {
                 setRecentItems(combinedItems.slice(0, 5))
 
             } catch (error) {
+                console.error("Error fetching repos", error)
                 setError(true)
             } finally {
                 setLoading(false)

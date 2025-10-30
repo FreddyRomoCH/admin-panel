@@ -1,6 +1,7 @@
 import { TOPICS } from "@/constants/getTopics"
 import type { TopicsGitHub } from "@/types/topicsGitHub"
 import IconArrowDown from "@/assets/IconArrowDown"
+import { useTranslation } from "react-i18next"
 
 interface FilterSelectorProps {
     tech: TopicsGitHub["value"],
@@ -8,6 +9,8 @@ interface FilterSelectorProps {
 }
 
 export default function FilterSelector({ tech, setTech }:FilterSelectorProps) {
+    const { t } = useTranslation()
+
     return (
         <div className="relative inline-block w-56">
             <select 
@@ -21,7 +24,7 @@ export default function FilterSelector({ tech, setTech }:FilterSelectorProps) {
                     className="text-text-secondary" 
                     value="all"
                 >
-                    Technology
+                    { t("Technology") }
                 </option>
                 {
                     TOPICS.map((technology:TopicsGitHub) => (

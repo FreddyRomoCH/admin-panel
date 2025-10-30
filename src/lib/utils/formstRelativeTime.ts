@@ -1,3 +1,5 @@
+import i18n from "@/i18n";
+
 export function formatRelativeTime(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
@@ -12,11 +14,11 @@ export function formatRelativeTime(dateString: string): string {
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
 
-    if (years > 0) return `${years} year${years > 1 ? "s" : ""} ago`;
-    if (months > 0) return `${months} month${months > 1 ? "s" : ""} ago`;
-    if (weeks > 0) return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
-    if (days > 0) return `${days} day${days > 1 ? "s" : ""} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    if (minutes > 0) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-    return "just now";
+    if (years > 0) return `${years} ${i18n.t("year")}${years > 1 ? "s" : ""} ${i18n.t("ago")}`;
+    if (months > 0) return `${months} ${i18n.t("month")}${months > 1 ? "s" : ""} ${i18n.t("ago")}`;
+    if (weeks > 0) return `${weeks} ${i18n.t("week")}${weeks > 1 ? "s" : ""} ${i18n.t("ago")}`;
+    if (days > 0) return `${days} ${i18n.t("day")}${days > 1 ? "s" : ""} ${i18n.t("ago")}`;
+    if (hours > 0) return `${hours} ${i18n.t("hour")}${hours > 1 ? "s" : ""} ${i18n.t("ago")}`;
+    if (minutes > 0) return `${minutes} ${i18n.t("minute")}${minutes > 1 ? "s" : ""} ${i18n.t("ago")}`;
+    return i18n.t("just_now")
 }

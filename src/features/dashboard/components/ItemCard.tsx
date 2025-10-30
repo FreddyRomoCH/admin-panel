@@ -2,8 +2,10 @@ import IconProject from "@/assets/IconProject";
 import IconRecipe from "@/assets/IconRecipe";
 import type { RecentItem } from "@features/dashboard/types";
 import { formatRelativeTime } from "@/lib/utils/formstRelativeTime";
+import { useTranslation } from "react-i18next";
 
 export default function ItemCard({ title, updatedAt, source }: RecentItem) {
+    const { t } = useTranslation()
     const isGithub = source === "github"
     const isRecipe = source === "recipe"
 
@@ -15,10 +17,12 @@ export default function ItemCard({ title, updatedAt, source }: RecentItem) {
             </div>
             <div>
                 <h3 className="text-text-primary dark:text-card text-sm font-bold font-inter">
-                    { isGithub && `Project: ${title}` }
-                    { isRecipe && `New Recipe: ${title}` }
+                    { isGithub && `${t('Project')}: ${title}` }
+                    { isRecipe && `${t('New Recipe')}: ${title}` }
                 </h3>
-                <small className="text-text-secondary">{ `Updated ${formatRelativeTime(updatedAt)}` }</small>
+                <small className="text-text-secondary">
+                    { t('Updated') } {`${formatRelativeTime(updatedAt)}`}
+                </small>
             </div>
         </article>
     )

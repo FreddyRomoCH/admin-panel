@@ -20,7 +20,6 @@ export default function Dashboard() {
 
     const totalClients = totalClientsError ? 0 : clients.length
     const isLoading = dashboardStatsLoading && clientsLoading
-
     const isPageError = statsError && recentItemsError && chartError
 
     if (isPageError) return <Error type="page" />
@@ -43,7 +42,11 @@ export default function Dashboard() {
                     {chartError ? (
                         <Error type="section" />
                     ) : (
-                        <ChartSection title="Activity" loading={chartLoading} data={totalRecipesChart} />
+                        <ChartSection 
+                            title="Activity" 
+                            loading={chartLoading} 
+                            data={totalRecipesChart} 
+                        />
                     )}
                     
                 </section>
@@ -52,7 +55,10 @@ export default function Dashboard() {
                     {recentItemsError ? (
                         <Error type="section" />
                     ) : (
-                        <RecentItemsSection loading={recentLoading} items={recentItems} />
+                        <RecentItemsSection 
+                            loading={recentLoading} 
+                            items={recentItems} 
+                        />
                     )}
                     
                 </section>

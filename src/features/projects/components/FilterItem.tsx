@@ -1,4 +1,5 @@
 import type { Filters } from "@features/projects/types"
+import { useTranslation } from "react-i18next"
 
 interface FilterItemsProps extends Filters {
     filter: Filters["value"],
@@ -7,6 +8,7 @@ interface FilterItemsProps extends Filters {
 
 
 export default function FilterItem({ filter, setFilter, label, value }:FilterItemsProps) {
+    const { t } = useTranslation()
 
     return (
         <li>
@@ -17,7 +19,7 @@ export default function FilterItem({ filter, setFilter, label, value }:FilterIte
                 text-text-secondary dark:text-text-secondary-dark hover:text-white hover:dark:text-text-secondary-dark text-sm hover:bg-primary/8 rounded-3xl px-3 py-1 cursor-pointer`
                 }
             >
-                {label}
+                { t(label) }
             </button>
         </li>
     )

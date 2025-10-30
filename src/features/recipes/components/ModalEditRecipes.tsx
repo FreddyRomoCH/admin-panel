@@ -15,6 +15,7 @@ import { useRecipesStore } from "@/store/useRecipesStore"
 import { useEffect } from "react"
 import Input from "@/components/ui/Input"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 interface ModalEditRecipesProps {
     isOpen: boolean,
@@ -41,6 +42,8 @@ export default function ModalEditRecipes({
         ingredients = [], 
         instructions = []
     } = recipe || {}
+
+    const { t } = useTranslation()
 
     // const updateRecipe = useRecipesStore((state) => state.updateRecipes)
     const { updateRecipe, addRecipes, error } = useRecipesStore()
@@ -93,7 +96,7 @@ export default function ModalEditRecipes({
             await updateRecipe(data as Recipes)
 
             if (error) {
-                toast.error(`Unable to update the recipe. Try again later`, {
+                toast.error(`${t("Unable to update the recipe. Try again later")}`, {
                     style: {
                         background: '#ffe2e3',
                         color: '#475569',
@@ -101,7 +104,7 @@ export default function ModalEditRecipes({
                     }
                 })
             } else {
-                toast.success(`Recipe ${data.title} updated successfully!`, {
+                toast.success(`Recipe ${data.title} ${t("updated successfully")}!`, {
                     style: {
                         background: '#defae6',
                         color: '#475569',
@@ -115,7 +118,7 @@ export default function ModalEditRecipes({
             await addRecipes(data as Recipes)
 
             if (error) {
-                toast.error(`Unable to add the recipe. Try again later`, {
+                toast.error(`${t("Unable to add the recipe. Try again later")}`, {
                     style: {
                         background: '#ffe2e3',
                         color: '#475569',
@@ -123,7 +126,7 @@ export default function ModalEditRecipes({
                     }
                 })
             } else {
-                toast.success(`Recipe ${data.title} added successfully!`, {
+                toast.success(`Recipe ${data.title} ${t("added successfully")}!`, {
                     style: {
                         background: '#defae6',
                         color: '#475569',
@@ -145,7 +148,7 @@ export default function ModalEditRecipes({
                 <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white dark:bg-card-dark rounded-2xl">
                     <header className="border-b-2 border-border dark:border-border-dark p-6">
                         <DialogTitle className="text-lg font-semibold text-text-primary dark:text-text-secondary-dark">
-                            {mode === "edit" ? "Edit Recipe" : "Create recipe"}
+                            {mode === "edit" ? t("Edit Recipe") : t("Create Recipe")}
                         </DialogTitle>
                     </header>
 
@@ -162,7 +165,7 @@ export default function ModalEditRecipes({
                                                 <Input 
                                                     value={mode === "edit" ? title : ""}
                                                     type="text"
-                                                    title="Name"
+                                                    title={t("Name")}
                                                     id="title"
                                                     validation="title"
                                                     labelClass="text-text-secondary text-sm dark:text-text-secondary-dark"
@@ -213,7 +216,7 @@ export default function ModalEditRecipes({
                             onClick={() => handleOnClose()} 
                             className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer"
                         >
-                                Cancel
+                                { t("Cancel") }
                         </button>
 
                         <button 

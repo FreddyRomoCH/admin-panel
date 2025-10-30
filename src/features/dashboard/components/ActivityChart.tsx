@@ -9,18 +9,19 @@ import {
     Legend,
 } from "recharts";
 import type { ActivityDataPoint } from "@features/dashboard/types"
+import { useTranslation } from "react-i18next";
 
 interface ActivityChartProps {
     data: ActivityDataPoint[]
 }
 
 export default function ActivityChart({ data }:ActivityChartProps) {
-
+    const { t } = useTranslation()
     const theme = document.documentElement.getAttribute("data-theme")
     const isDark = theme === "dark"
 
     return (
-         <div className="w-full h-64 animate-blurred-fade-in">
+        <div className="w-full h-64 animate-blurred-fade-in">
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" className="text-border" />
@@ -34,7 +35,7 @@ export default function ActivityChart({ data }:ActivityChartProps) {
                     stroke={`${isDark ? "#92adc9" : "#0F172A" }`}
                     strokeWidth={2}
                     dot={false}
-                    name="Recipes"
+                    name={`${t("Recipes")}`}
                 />
                 <Line
                     type="monotone"
@@ -42,7 +43,7 @@ export default function ActivityChart({ data }:ActivityChartProps) {
                     stroke="#137FEC"
                     strokeWidth={2}
                     dot={false}
-                    name="Projects"
+                    name={`${t("Projects")}`}
                 />
                 </LineChart>
             </ResponsiveContainer>

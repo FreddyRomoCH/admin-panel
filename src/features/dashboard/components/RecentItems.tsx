@@ -5,7 +5,6 @@ import { toSlug } from "@/constants/titleToSlug"
 
 export default function RecentItems({ id, title, updatedAt, source, url }: RecentItem) {
     const isGithub = source === "github"
-
     const titleSlug = toSlug(title)
     const recipeUrl = `${recipesWebURL}/${id}/${titleSlug}`
 

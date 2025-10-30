@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button";
 import { useState } from "react";
 import ModalClientForm from "@/features/clients/components/ModalClientForm";
 import ModalEditRecipes from "@/features/recipes/components/ModalEditRecipes";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
     const location = useLocation();
@@ -12,6 +13,7 @@ export default function Header() {
     const title = currentLocation ? currentLocation.label : "Settings"
     const [isClientModalOpen, setIsClientModalOpen] = useState(false)
     const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false)
+    const { t } = useTranslation()
 
     const handleOpenModal = (mode: "edit" | "create") => {
         if (mode === "edit") {
@@ -37,7 +39,10 @@ export default function Header() {
 
     return (
         <div className="flex justify-between items-center py-8">
-            <h1 className="font-inter text-3xl font-bold text-text-primary dark:text-card">{title}</h1>
+            <h1 
+                className="font-inter text-3xl font-bold text-text-primary dark:text-card">
+                { t(title) }
+            </h1>
             <div className="flex justify-center items-center gap-10">
                 {
                     title === "Recipes" && (

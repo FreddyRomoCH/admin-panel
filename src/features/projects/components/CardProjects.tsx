@@ -1,6 +1,7 @@
 import type { GHProjects } from "@features/projects/types";
 import TopicItem from "@features/projects/components/TopicItem";
 import type { TopicsGitHub } from "@/types/topicsGitHub";
+import { useTranslation } from "react-i18next";
 
 interface CardProjectsProps extends GHProjects {
   setTech: (value: TopicsGitHub["value"]) => void;
@@ -8,6 +9,7 @@ interface CardProjectsProps extends GHProjects {
 
 
 export default function CardProjects({ name, html_url, homepage, topics, setTech  }:CardProjectsProps) {
+    const { t } = useTranslation()
 
     return (
         <article 
@@ -26,7 +28,7 @@ export default function CardProjects({ name, html_url, homepage, topics, setTech
 
             <div className="flex flex-col p-3 w-full justify-between gap-1 flex-1">
                 <h3 
-                    className="font-semibold capitalize text-base text-text-primary dark:text-card font-inter"
+                    className="font-semibold capitalize text-base text-text-primary dark:text-card font-inter mb-4"
                 >
                     {name}
                 </h3>
@@ -54,7 +56,14 @@ export default function CardProjects({ name, html_url, homepage, topics, setTech
                 </a>
 
                 {homepage && (
-                    <a href={homepage} target="_blank" rel="noopener noreferrer" className="font-light text-primary text-sm">Live Site</a>
+                    <a 
+                        href={homepage} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="font-light text-primary text-sm"
+                    >
+                        { t("Live Site") }
+                    </a>
                 )}
             </nav>
         </article>

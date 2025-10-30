@@ -7,6 +7,7 @@ import Error from "@/components/shared/Error"
 import Loading from "@/components/shared/Loading"
 import ModalConfirmation from "@features/clients/components/ModalConfirmation"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 export default function Recipes() {
     const [isOpen, setIsOpen] = useState(false)
@@ -15,6 +16,7 @@ export default function Recipes() {
     const [newStatus, setNewStatus] = useState<string>("")
     const { recipes, loading, error, fetchRecipes, deleteRecipe, recipeStatus} = useRecipesStore()
     const isChangingActiveRecipe = useRef(false)
+    const { t } = useTranslation()
 
     const handleOpenModal = (recipe: Recipes) => {
         setIsOpen(true)
@@ -37,7 +39,7 @@ export default function Recipes() {
         const success = await deleteRecipe(selectedRecipe?.id)
 
         if (!success) {
-            toast.error(`Unable to delete the recipe. Try again later`, {
+            toast.error(`${t("Unable to delete the recipe. Try again later")}`, {
                 style: {
                     background: '#ffe2e3',
                     color: '#475569',
@@ -45,7 +47,7 @@ export default function Recipes() {
                 }
             })
         } else {
-            toast.success(`${selectedRecipe?.title} deleted successfully!`, {
+            toast.success(`${selectedRecipe?.title} ${t("deleted successfully")}!`, {
                 style: {
                     background: "#defae6",
                     color: "#475569",
@@ -68,7 +70,7 @@ export default function Recipes() {
         setIsConfirmationOpen(false)
 
         if (!success) {
-            toast.error(`Unable to change status. Try again later`, {
+            toast.error(`${t("Unable to change status. Try again later")}`, {
                 style: {
                     background: '#ffe2e3',
                     color: '#475569',
@@ -76,7 +78,7 @@ export default function Recipes() {
                 }
             })
         } else {
-            toast.success(`${selectedRecipe?.title} status changed successfully!`, {
+            toast.success(`${selectedRecipe?.title} ${t("status changed successfully")}!`, {
                 style: {
                     background: "#defae6",
                     color: "#475569",
@@ -102,12 +104,12 @@ export default function Recipes() {
                 <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
                     <thead className="bg-background-light dark:bg-background-dark shadow rounded-t-2xl text-text-secondary dark:text-text-secondary-dark">
                         <tr>
-                            <th className="px-4 py-2 text-left">Image</th>
-                            <th className="px-4 py-2 text-left">Title</th>
-                            <th className="px-4 py-2 text-left">Category</th>
-                            <th className="px-4 py-2 text-left">Edit</th>
-                            <th className="px-4 py-2 text-left">Delete</th>
-                            <th className="px-4 py-2 text-left">Active</th>
+                            <th className="px-4 py-2 text-left">{t("Image")}</th>
+                            <th className="px-4 py-2 text-left">{t("Title")}</th>
+                            <th className="px-4 py-2 text-left">{t("Category")}</th>
+                            <th className="px-4 py-2 text-left">{t("Edit")}</th>
+                            <th className="px-4 py-2 text-left">{t("Delete")}</th>
+                            <th className="px-4 py-2 text-left">{t("Active")}</th>
                         </tr>
                     </thead>
 

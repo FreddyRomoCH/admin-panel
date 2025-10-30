@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next"
+
 interface ButtonProps {
     title?: string
     type?: "button" | "submit" | "reset" | undefined
@@ -11,6 +13,7 @@ interface ButtonProps {
 }
 
 export default function Button ({ title, type, titleCss, icon: Icon, iconCss, href, target, buttonCss, handleClick }: ButtonProps) {
+    const { t } = useTranslation()
 
     return (
         href 
@@ -49,7 +52,7 @@ export default function Button ({ title, type, titleCss, icon: Icon, iconCss, hr
                         <span 
                             className={titleCss ? titleCss : ""}
                         >
-                            { title }
+                            { t(title ?? "Add Recipes") }
                         </span>
                     </button>
                 </>
