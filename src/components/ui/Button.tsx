@@ -7,7 +7,7 @@ interface ButtonProps {
     href?: string
     target?: string
     buttonCss?: string
-    handleClick?: () => void
+    handleClick?: (arg?: unknown) => void
 }
 
 export default function Button ({ title, type, titleCss, icon: Icon, iconCss, href, target, buttonCss, handleClick }: ButtonProps) {
