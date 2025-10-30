@@ -22,13 +22,13 @@ export default function RecipeServings({servings}: RecipeServingsProps) {
 
     return (
         <>
-            <label htmlFor="servings" className="text-text-secondary text-sm">Servings</label>
+            <label htmlFor="servings" className="text-text-secondary dark:text-text-secondary-dark text-sm">Servings</label>
             <select 
                 value={selectedServings} 
                 onChange={(e) => handleChangeServings(Number(e.target.value))} 
                 name="servings" 
                 id="servings" 
-                className="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1"
+                className="bg-background-light dark:bg-car text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1"
             >
                 {
                     !selectedServings && <option value="">Select number of servings</option>

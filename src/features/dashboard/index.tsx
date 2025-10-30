@@ -5,8 +5,8 @@ import { useClientsStore } from "@/store/useClientsStore";
 import { useEffect } from "react";
 import Error from "@/components/shared/Error";
 import StatsSection from "@features/dashboard/components/StatsSection";
-import ChartSection from "@features/dashboard/components/chartSection";
 import RecentItemsSection from "@features/dashboard/components/RecentItemsSection";
+import ChartSection from "@features/dashboard/components/ChartSection";
 
 export default function Dashboard() {
     const { error: statsError , loading: dashboardStatsLoading, totalRepos, totalRecipes } = useDashboardStats()
@@ -39,7 +39,7 @@ export default function Dashboard() {
             )}
 
             <main className="grid grid-cols-9 gap-4 mt-8 w-full">
-                <section className="col-span-6 bg-card p-6 rounded-md shadow-md">
+                <section className="col-span-6 bg-card dark:bg-background-dark p-6 rounded-md shadow-md">
                     {chartError ? (
                         <Error type="section" />
                     ) : (
@@ -48,7 +48,7 @@ export default function Dashboard() {
                     
                 </section>
 
-                <section className="col-span-3 bg-card p-6 rounded-md shadow-md animate-slide-in-right">
+                <section className="col-span-3 bg-card dark:bg-background-dark p-6 rounded-md shadow-md animate-slide-in-right">
                     {recentItemsError ? (
                         <Error type="section" />
                     ) : (

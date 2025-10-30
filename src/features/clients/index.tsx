@@ -28,7 +28,7 @@ export default function Clients() {
         return <Error type="page" />
 
     if (loading) 
-        return <Loading length={4} />
+        return <Loading direction="cols" length={4} />
 
     const onChangeSelect = (newValue: string, oldValue: string, clientID: number) => {
         setPreviousValue(oldValue)
@@ -98,7 +98,7 @@ export default function Clients() {
     return (
         <main className="flex flex-col justify-center items-center">
             <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
-                <thead className="bg-background-light shadow rounded-t-2xl text-text-secondary">
+                <thead className="bg-background-light dark:bg-background-dark shadow rounded-t-2xl text-text-secondary dark:text-text-secondary-dark">
                     <tr>
                         <th className="px-4 py-2 text-left">Client Name</th>
                         <th className="px-4 py-2 text-left">Project</th>
@@ -109,7 +109,7 @@ export default function Clients() {
                     </tr>
                 </thead>
 
-                <tbody className="bg-card text-text-primary font-inter">
+                <tbody className="bg-card dark:bg-card-dark text-text-primary dark:text-text-secondary-dark font-inter">
                     {
                         clients && clients.map((client: Clients) => {
                             const isEdited = client.project_id === selectedClientId

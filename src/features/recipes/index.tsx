@@ -94,13 +94,13 @@ export default function Recipes() {
     if (error && !selectedRecipe) return <Error type="page" />
 
     if (loading) 
-            return <Loading length={4} />
+            return <Loading direction="cols" length={4} />
 
     return (
         <main className="flex flex-col justify-center items-center">
             <div className="overflow-y-auto max-h-[calc(80vh)] w-full scrollbar-thin scrollbar-thumb-primary scrollbar-track-background-light">
                 <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
-                    <thead className="bg-background-light shadow rounded-t-2xl text-text-secondary">
+                    <thead className="bg-background-light dark:bg-background-dark shadow rounded-t-2xl text-text-secondary dark:text-text-secondary-dark">
                         <tr>
                             <th className="px-4 py-2 text-left">Image</th>
                             <th className="px-4 py-2 text-left">Title</th>
@@ -111,7 +111,7 @@ export default function Recipes() {
                         </tr>
                     </thead>
 
-                    <tbody className="bg-card text-text-primary font-inter">
+                    <tbody className="bg-card dark:bg-card-dark text-text-primary dark:text-text-secondary-dark font-inter">
                         <TableRecipes 
                             recipes={recipes} 
                             onDelete={handleOpenOnDelete}

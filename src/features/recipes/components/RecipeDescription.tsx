@@ -24,7 +24,7 @@ export default function RecipeDescription({
 
     return (
         <>
-            <label htmlFor="description" className="text-text-secondary text-sm">Description</label>
+            <label htmlFor="description" className="text-text-secondary dark:text-text-secondary-dark text-sm">Description</label>
             <textarea 
                 value={selectedDescription} 
                 onChange={(e) => handleChangeDescription(e.target.value)} 

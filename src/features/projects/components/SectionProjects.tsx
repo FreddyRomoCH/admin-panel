@@ -13,7 +13,10 @@ export default function SectionProjects({ gitHubProjects, loading, setTech }:Sec
     return (
         loading ? (
             Array.from({ length: 4 }).map((_, i) => (
-                <article key={i} className="flex flex-col justify-between items-center rounded-lg bg-card overflow-hidden h-full">
+                <article 
+                    key={i} 
+                    className="flex flex-col justify-between items-center rounded-lg bg-card dark:bg-card-dark overflow-hidden h-full"
+                >
                     <Skeleton />
                 </article>
             ))
@@ -21,7 +24,9 @@ export default function SectionProjects({ gitHubProjects, loading, setTech }:Sec
             gitHubProjects?.length > 0 ? (
                 gitHubProjects.map((project: GHProjects) => (
                     <div key={project.id}>
-                        <CardProjects setTech={setTech} {...project} />
+                        <CardProjects 
+                            setTech={setTech} {...project} 
+                        />
                     </div>
                 ))
             ) : (

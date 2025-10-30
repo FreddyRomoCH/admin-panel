@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast"
 import Settings from "@/features/settings";
 
 export default function App() {
+
   return (
     <>
       <Routes>

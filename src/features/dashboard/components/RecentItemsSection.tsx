@@ -11,7 +11,7 @@ export default function RecentItemsSection({ loading, items }: RecentItemsSectio
 
     return (
         <>
-            <h2 className="text-lg text-text-primary font-bold">Recent Items</h2>
+            <h2 className="text-lg text-text-primary font-bold dark:text-card">Recent Items</h2>
             {
 
                 loading ? (

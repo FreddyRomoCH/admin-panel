@@ -73,7 +73,7 @@ export default function RecipeLists({ list, toValidate }:RecipeListsProps) {
 
     return (
         <>
-            <label className="text-sm text-text-secondary">{toValidate.charAt(0).toUpperCase() + toValidate.slice(1)}</label>
+            <label className="text-sm text-text-secondary dark:text-text-secondary-dark">{toValidate.charAt(0).toUpperCase() + toValidate.slice(1)}</label>
             {
                 recipelist && recipelist.map((listItem, index) => {
                     const step = index + 1
@@ -97,7 +97,7 @@ export default function RecipeLists({ list, toValidate }:RecipeListsProps) {
                             onDrop={() => handleDrop(index)}
                         >
                             <label 
-                                className="text-xs text-text-secondary w-16" 
+                                className="text-xs text-text-secondary dark:text-text-secondary-dark w-16" 
                                 htmlFor={`instruction-${step}`}>
                                     {`Step ${step}`}
                             </label>

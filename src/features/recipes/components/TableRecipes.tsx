@@ -41,7 +41,7 @@ export default function TableRecipes({
                     <td>
                         <button onClick={() => onEdit(recipe)}>
                             <IconEdit 
-                                className="text-text-secondary cursor-pointer" 
+                                className="text-text-secondary dark:text-text-secondary-dark cursor-pointer" 
                             />
                         </button>
                     </td>
@@ -63,8 +63,8 @@ export default function TableRecipes({
                                 {label: "No", value: "no"}
                             ]}
                             labelClass=""
-                            selectClass="border border-primary rounded-sm px-3 py-1 text-text-secondary"
-                            optionClass=""
+                            selectClass="border border-borde dark:border-border-dark rounded-sm px-3 py-1 text-text-secondary dark:text-secondary-dark"
+                            optionClass="text-text-secondary dark:text-secondary-dark"
                             value={recipe.is_active ? "yes" : "no"}
                             recipe={recipe}
                             handleChangeActiveRecipe={handleChangeActiveRecipe}

@@ -15,10 +15,10 @@ export default function NavItemSidebar({ item }: NavItemSidebarProps) {
          to={item.path}
          className={({ isActive }) => {
             return [
-                "text-base hover:bg-background-light hover:text-primary hover:font-medium transition-all px-3 w-full py-2 rounded-lg flex gap-2 items-center",
+                "text-base hover:bg-background-light dark:hover:bg-card-dark hover:text-primary hover:font-medium transition-all px-3 w-full py-2 rounded-lg flex gap-2 items-center",
                 isActive
-                    ? "bg-background-light text-primary font-medium"
-                    : "text-text-secondary font-light"
+                    ? "bg-background-light dark:bg-card-dark text-primary font-medium"
+                    : "text-text-secondary dark:text-text-secondary-dark font-light"
             ].join(" ")
         }}>
             { item.icon === "home" && <IconHome /> }

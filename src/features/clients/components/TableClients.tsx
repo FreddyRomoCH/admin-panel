@@ -28,10 +28,10 @@ export default function TableClients({
         <>
         <tr key={client.project_name}>
             <td className="px-4 py-2">
-                <h2 className="font-normal text-text-primary">{client.client_name}</h2>
+                <h2 className="font-normal text-text-primary dark:text-text-secondary-dark">{client.client_name}</h2>
             </td>
 
-            <td className="px-4 py-2 text-text-secondary text-sm">
+            <td className="px-4 py-2 text-text-secondary dark:text-text-secondary-dark text-sm">
                 <p>{ client.project_name }</p>
             </td>
 
@@ -50,7 +50,7 @@ export default function TableClients({
                 />
             </td>
 
-            <td className="px-4 py-2 text-text-secondary text-sm">
+            <td className="px-4 py-2 text-text-secondary dark:text-text-secondary-dark text-sm">
                 <p>{ dateFormatted(client.due_date) }</p>
             </td>
 
@@ -59,7 +59,7 @@ export default function TableClients({
                     className="cursor-pointer"
                     onClick={() => handleClickEditClient(client)}
                 >
-                    <IconEdit className="text-text-secondary" />
+                    <IconEdit className="text-text-secondary dark:text-text-secondary-dark" />
                 </button>
             </td>
 

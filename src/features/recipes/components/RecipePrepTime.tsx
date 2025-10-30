@@ -22,7 +22,7 @@ export default function RecipePrepTime({ prep_time }: RecipePrepTimeProps) {
 
     return (
         <>
-            <label htmlFor="prep_time" className="text-text-secondary text-sm">Prep Time</label>
+            <label htmlFor="prep_time" className="text-text-secondary dark:text-text-secondary-dark text-sm">Prep Time</label>
             <select 
                 value={selectedPrepTime} 
                 onChange={(e) => handleChangePrepTime(Number(e.target.value))} 

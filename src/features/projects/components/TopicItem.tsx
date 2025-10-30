@@ -17,7 +17,12 @@ export default function TopicItem({ topic, setTech }:TopicItemProps) {
             color: matchedTopic?.color
             }}
         >
-            <button onClick={() => { setTech(topic) }} className="cursor-pointer">{topic.charAt(0).toUpperCase() + topic.slice(1)}</button>
+            <button 
+                onClick={() => { setTech(topic) }} 
+                className="cursor-pointer"
+            >
+                {topic.charAt(0).toUpperCase() + topic.slice(1)}
+            </button>
         </li>
     )
 }

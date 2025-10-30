@@ -34,7 +34,7 @@ export default function RecipeCategories({
         <>
             <label 
                 htmlFor="category" 
-                className="text-text-secondary text-sm">
+                className="text-text-secondary dark:text-text-secondary-dark text-sm">
                     Categories
             </label>
 

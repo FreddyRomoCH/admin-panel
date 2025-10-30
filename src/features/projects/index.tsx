@@ -16,16 +16,33 @@ export default function Projects() {
                 {loading ? (
                     <Skeleton />
                 ) : (
-                    <FiltersProjects filter={filter} setFilter={setFilter} tech={tech} setTech={setTech} />
+                    <FiltersProjects 
+                        filter={filter} 
+                        setFilter={setFilter} 
+                        tech={tech} 
+                        setTech={setTech} 
+                    />
                 )}
             </header>
 
             <main className="grid grid-cols-2 md:grid-cols-4 gap-6 items-stretch mb-8">
-                <SectionProjects gitHubProjects={gitHubProjects} loading={loading} setTech={setTech} />
+                <SectionProjects 
+                    gitHubProjects={gitHubProjects} 
+                    loading={loading} 
+                    setTech={setTech} 
+                />
             </main>
 
             <footer className="flex justify-center items-center gap-4">
-                <ProjectsPagination totalPages={totalPages} currentPage={page} onPageChange={goToPage} onNextPage={nextPage} onPrevPage={prevPage} hasMore={hasMore} loading={loading} />
+                <ProjectsPagination 
+                    totalPages={totalPages} 
+                    currentPage={page} 
+                    onPageChange={goToPage} 
+                    onNextPage={nextPage} 
+                    onPrevPage={prevPage} 
+                    hasMore={hasMore} 
+                    loading={loading} 
+                />
             </footer>
         </div>
     )

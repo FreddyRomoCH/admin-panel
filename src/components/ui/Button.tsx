@@ -15,15 +15,42 @@ export default function Button ({ title, type, titleCss, icon: Icon, iconCss, hr
     return (
         href 
             ? 
-                <a href={href} target={target} rel="noopener noreferrer" className={buttonCss ? buttonCss : ""}>
-                    {Icon && <Icon className={iconCss} />}
-                    <span className={titleCss ? titleCss : ""}>{ title }</span>
+                <a 
+                    href={href} 
+                    target={target} 
+                    rel="noopener noreferrer" 
+                    className={buttonCss ? buttonCss : ""}
+                >
+                    {Icon && 
+                        <Icon 
+                            className={iconCss} 
+                        />
+                    }
+
+                    <span 
+                        className={titleCss ? titleCss : ""}
+                    >
+                        { title }
+                    </span>
                 </a>
             :
                 <>
-                    <button type={type} className={buttonCss ? buttonCss: ""} onClick={handleClick}>
-                        {Icon && <Icon className={iconCss} />}
-                        <span className={titleCss ? titleCss : ""}>{ title }</span>
+                    <button 
+                        type={type} 
+                        className={buttonCss ? buttonCss: ""} 
+                        onClick={handleClick}
+                    >
+                        {Icon && 
+                            <Icon 
+                                className={iconCss} 
+                            />
+                        }
+
+                        <span 
+                            className={titleCss ? titleCss : ""}
+                        >
+                            { title }
+                        </span>
                     </button>
                 </>
     )

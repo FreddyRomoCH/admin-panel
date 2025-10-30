@@ -95,9 +95,9 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
         <Dialog open={isOpen} onClose={handleOnClose}>
             <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center">
-                <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white rounded-2xl">
-                    <header className="border-b-2 border-border p-6">
-                        <DialogTitle className="text-lg font-semibold">{mode === "create" ? "Add Client" : "Edit Client"}</DialogTitle>
+                <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white dark:bg-card-dark rounded-2xl">
+                    <header className="border-b-2 border-border dark:border-border-dark p-6">
+                        <DialogTitle className="text-lg font-semibold text-text-primary dark:text-text-secondary-dark">{mode === "create" ? "Add Client" : "Edit Client"}</DialogTitle>
                     </header>
 
                     <div className="overflow-y-auto max-h-[calc(80vh-6rem)] scrollbar-thin scrollbar-thumb-primary scrollbar-track-background-light">
@@ -112,7 +112,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                                 title="Client Name" 
                                                 id="client-name" 
                                                 validation="client_name" 
-                                                labelClass="text-text-secondary text-sm" 
+                                                labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
                                                 inputClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" 
                                             />
                                         </div>
@@ -124,7 +124,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                                 title="Project Name" 
                                                 id="project-name" 
                                                 validation="project_name" 
-                                                labelClass="text-text-secondary text-sm" 
+                                                labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
                                                 inputClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" 
                                             />
                                         </div>
@@ -136,7 +136,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                                 title="Project Status" 
                                                 validation="project_status" 
                                                 options={PROJECT_STATUS} 
-                                                labelClass="text-text-secondary text-sm" 
+                                                labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
                                                 selectClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" 
                                                 value={clientToEdit?.project_status ? clientToEdit.project_status : "Pending"}
                                             />
@@ -152,7 +152,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                                 id="project-due-date" 
                                                 title="Due Date" 
                                                 validation="due_date" 
-                                                labelClass="text-text-secondary text-sm" 
+                                                labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
                                                 inputClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" 
                                             />
                                         </div>
@@ -161,7 +161,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                             </FormProvider>
                         </main>
 
-                        <footer className="border-t-2 border-border p-4 flex justify-end items-center gap-4 bg-card sticky bottom-0 shrink-0 rounded-b-2xl">
+                        <footer className="border-t-2 border-border dark:border-border-dark p-4 flex justify-end items-center gap-4 bg-card dark:bg-card-dark sticky bottom-0 shrink-0 rounded-b-2xl">
                             <button type="button" onClick={() => handleOnClose()} className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer">Cancel</button>
                             <button 
                                 type="submit" 

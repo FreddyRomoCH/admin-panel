@@ -16,6 +16,9 @@ interface ActivityChartProps {
 
 export default function ActivityChart({ data }:ActivityChartProps) {
 
+    const theme = document.documentElement.getAttribute("data-theme")
+    const isDark = theme === "dark"
+
     return (
          <div className="w-full h-64 animate-blurred-fade-in">
             <ResponsiveContainer width="100%" height="100%">
@@ -28,7 +31,7 @@ export default function ActivityChart({ data }:ActivityChartProps) {
                 <Line
                     type="monotone"
                     dataKey="recipes"
-                    stroke="#0F172A"
+                    stroke={`${isDark ? "#92adc9" : "#0F172A" }`}
                     strokeWidth={2}
                     dot={false}
                     name="Recipes"

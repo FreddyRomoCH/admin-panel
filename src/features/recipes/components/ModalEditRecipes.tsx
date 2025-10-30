@@ -142,9 +142,9 @@ export default function ModalEditRecipes({
             <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center">
                 {/* <Button onClick={handleOnClose}>Close Recipe</Button> */}
-                <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white rounded-2xl">
-                    <header className="border-b-2 border-border p-6">
-                        <DialogTitle className="text-lg font-semibold">
+                <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white dark:bg-card-dark rounded-2xl">
+                    <header className="border-b-2 border-border dark:border-border-dark p-6">
+                        <DialogTitle className="text-lg font-semibold text-text-primary dark:text-text-secondary-dark">
                             {mode === "edit" ? "Edit Recipe" : "Create recipe"}
                         </DialogTitle>
                     </header>
@@ -165,7 +165,7 @@ export default function ModalEditRecipes({
                                                     title="Name"
                                                     id="title"
                                                     validation="title"
-                                                    labelClass="text-text-secondary text-sm"
+                                                    labelClass="text-text-secondary text-sm dark:text-text-secondary-dark"
                                                     inputClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 px-4 py-1"
                                                 />
                                             </div>
@@ -207,7 +207,7 @@ export default function ModalEditRecipes({
                         </main>
                     </div>
 
-                    <footer className="border-t-2 border-border p-4 flex justify-end items-center gap-4 bg-card sticky bottom-0 shrink-0">
+                    <footer className="border-t-2 border-border dark:border-border-dark p-4 flex justify-end items-center gap-4 bg-card dark:bg-card-dark sticky bottom-0 shrink-0">
                         <button 
                             type="button" 
                             onClick={() => handleOnClose()} 
