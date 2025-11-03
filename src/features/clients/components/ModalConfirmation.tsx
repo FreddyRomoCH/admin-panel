@@ -3,6 +3,7 @@ import type { Clients } from "@features/clients/types/clients";
 import { useClientsStore } from "@/store/useClientsStore";
 import { useRecipesStore } from "@/store/useRecipesStore";
 import type { Recipes } from "@/features/recipes/types";
+import { useTranslation } from "react-i18next";
 
 interface ModalConfirmationProps {
     isOpen: boolean
@@ -26,7 +27,7 @@ export default function ModalConfirmation({
 
     const { clients } = useClientsStore()
     const { recipes } = useRecipesStore()
-
+    const { t } = useTranslation()
     const clientName = clients.filter((client) => client.client_id === clientID)
     const recipeTitle = recipes.filter((recipe) => recipe.id === recipeID )
 
@@ -34,24 +35,24 @@ export default function ModalConfirmation({
 
     if (section === "clients") {
         title = mode === "status" 
-            ? "Invoice Status" 
-            : "Delete Client"
+            ? t("Invoice Status") 
+            : t("Delete Client")
     } else if (section === "recipes") {
         title = mode === "delete" 
-            ? "Delete Recipe"
-            : "Change Status"
+            ? t("Delete Recipe")
+            : t("Change Status")
     }
 
     let confirmation = ""
 
     if (section === "clients") {
         confirmation = mode === "status" 
-            ? "Are you sure you want to change the invoice status?"
-            : `Are you sure you want to delete ${clientName[0].client_name}?`
+            ? t("Are you sure you want to change the invoice status?")
+            : `${t("Are you sure you want to delete")} ${clientName[0].client_name}?`
     } else if (section === "recipes") {
         confirmation = mode === "delete"
-            ? `Are you sure you want to delete ${recipeTitle[0].title}`
-            : `Are you sure you want to change the status?`
+            ? `${t("Are you sure you want to delete")} ${recipeTitle[0].title}`
+            : t("Are you sure you want to change the status?")
     }  
 
     return (
@@ -78,7 +79,7 @@ export default function ModalConfirmation({
                                 onClick={onCancel} 
                                 className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer"
                             >
-                                Cancel
+                                {t("Cancel")}
                             </button>
 
                             <button 
@@ -86,7 +87,10 @@ export default function ModalConfirmation({
                                 onClick={onConfirm} 
                                 className="bg-primary text-card rounded-2xl px-4 py-2 cursor-pointer"
                             >
-                                { mode === "status" ? "Change" : "Confirm" }
+                                { mode === "status" 
+                                    ? t("Change") 
+                                    : t("Confirm" )
+                                }
                             </button>
                         </footer>
                     </div>

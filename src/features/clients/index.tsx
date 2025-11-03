@@ -8,10 +8,11 @@ import ModalConfirmation from "@/features/clients/components/ModalConfirmation"
 import toast from "react-hot-toast"
 import ModalClientForm from "@features/clients/components/ModalClientForm"
 import Loading from "@/components/shared/Loading"
+import { useTranslation } from "react-i18next"
 
 export default function Clients() {
     const {loading, error, showClients, clients, changePaymentStatus, deleteClient} = useClientsStore()
-
+    const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
     const [previousValue, setPreviousValue] = useState("")
@@ -63,7 +64,7 @@ export default function Clients() {
         }
             
         if (!success) {
-            toast.error(`Unable to ${mode === "status" ? "save the new payment status" : "delete the client"}. Try again later.`, {
+            toast.error(`Unable to ${mode === "status" ? t("save the new payment status") : t("delete the client")}. ${t("Try again later")}`, {
                 style: {
                     color: '#c10008',
                     background: '#ffe2e3',
@@ -71,7 +72,7 @@ export default function Clients() {
                 }
             })
         }else{
-            toast.success(`${mode === "status" ? "New status changed" : "Client deleted"} successfully!`, {
+            toast.success(`${mode === "status" ? t("New status changed") : t("Client deleted")} ${t("successfully")}!`, {
                 style: {
                     background: "#defae6",
                     color: "#475569",
@@ -82,8 +83,8 @@ export default function Clients() {
     }
 
     const handleClickEditClient = (client: Clients) => {
-        setSelectedClient(client)
         setIsEditModalOpen(true)
+        setSelectedClient(client)
     }
 
     const handleCloseModal = () => {
@@ -91,8 +92,8 @@ export default function Clients() {
     }
 
     const handleClickDeleteClient = (client_id: Clients["client_id"]) => {
-        setSelectedClientId(client_id)
         setIsOpenDeleteModal(true)
+        setSelectedClientId(client_id)
     }
             
     return (
@@ -100,12 +101,12 @@ export default function Clients() {
             <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
                 <thead className="bg-background-light dark:bg-background-dark shadow rounded-t-2xl text-text-secondary dark:text-text-secondary-dark">
                     <tr>
-                        <th className="px-4 py-2 text-left">Client Name</th>
-                        <th className="px-4 py-2 text-left">Project</th>
-                        <th className="px-4 py-2 text-left">Invoice Status</th>
-                        <th className="px-4 py-2 text-left">Due Date</th>
-                        <th className="px-4 py-2 text-left">Edit</th>
-                        <th className="px-4 py-2 text-left">Delete</th>
+                        <th className="px-4 py-2 text-left">{t("Client Name")}</th>
+                        <th className="px-4 py-2 text-left">{t("Project")}</th>
+                        <th className="px-4 py-2 text-left">{t("Invoice Status")}</th>
+                        <th className="px-4 py-2 text-left">{t("Due Date")}</th>
+                        <th className="px-4 py-2 text-left">{t("Edit")}</th>
+                        <th className="px-4 py-2 text-left">{t("Delete")}</th>
                     </tr>
                 </thead>
 

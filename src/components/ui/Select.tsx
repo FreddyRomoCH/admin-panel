@@ -2,6 +2,7 @@ import type { Recipes } from "@/features/recipes/types"
 import type { Option } from "@/types/ui"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 interface SelectProps {
     title?: string
@@ -34,6 +35,8 @@ export default function Select({
         recipe,
         handleChangeActiveRecipe
     }: SelectProps) {
+
+    const { t } = useTranslation()
 
     const form = useFormContext()
     const setValue = form?.setValue
@@ -83,7 +86,7 @@ export default function Select({
                             key={option.value} 
                             value={option.value} 
                             className={optionClass ?? ""}>
-                                { option.label }
+                                { t(option.label) }
                         </option>
                     ))
                 }

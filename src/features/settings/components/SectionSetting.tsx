@@ -3,6 +3,7 @@ import Dark from "@/assets/icons/Dark";
 import Light from "@/assets/icons/Light";
 import { useEffect, useState } from "react"
 import i18n from "@/i18n";
+import { useTranslation } from "react-i18next";
 
 interface SectionSettingProps {
     title: string
@@ -21,16 +22,22 @@ export default function SectionSetting({
     const [currentTheme, setCurrentTheme] = useState<string | null>(null)
     const [currentLang, setCurrentLang] = useState<string | null>(null)
 
+    const { t } = useTranslation()
+
     const handleClick = (type: string) => {
 
         if (type === "dark" || type === "light") {
+
             setCurrentTheme(type)
             document.documentElement.setAttribute("data-theme", type)
             localStorage.setItem("theme", type)
+
         } else if (type === "en" || type === "es") {
+
             setCurrentLang(type)
             i18n.changeLanguage(type)
             localStorage.setItem("language", type)
+
         }
     }
 
@@ -56,7 +63,7 @@ export default function SectionSetting({
         <h2
             className="text-text-primary dark:text-text-secondary-dark font-semibold text-xl mb-4"    
         >
-            { title }
+            { t(title) }
         </h2>
 
         <div className="bg-card dark:bg-card-dark rounded-2xl border border-border dark:border-border-dark p-6 flex justify-between items-center mb-8">
@@ -64,13 +71,22 @@ export default function SectionSetting({
                 <h4 
                     className="text-text-primary dark:text-text-secondary-dark font-semibold text-md"
                 >
-                    {subTitle}
+                    {t(subTitle)}
                 </h4>
 
                 <small 
                     className="text-text-secondary dark:text-text-secondary-dark font-normal text-sm"
                 >
-                    {parraf}
+                    
+                    { section === "language" && 
+                        currentLang === "en" 
+                            ? "English"
+                            : section === "language" && 
+                                currentLang === "es"
+                                    && "Español"   
+                    }
+
+                    { section !== "language" && t(parraf) }
                 </small>
             </div>
 

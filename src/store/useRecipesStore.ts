@@ -28,6 +28,8 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
         }
 
         try {
+            set({ loading: true })
+
             const data = await fetchRecipesWithCategories()
 
             const recipesNormalized = data.map(recipe => ({
@@ -125,9 +127,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
     recipeStatus: async (newStatus: string , recipeID: Recipes["id"]) => {
         
         try {
-            set({
-                loading: true
-            })
+            set({ loading: true })
 
             const updated = await changeStatusRecipeFromDB(newStatus, recipeID)
 

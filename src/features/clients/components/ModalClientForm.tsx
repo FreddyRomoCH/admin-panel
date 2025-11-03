@@ -8,6 +8,7 @@ import { cientSchemaEdit, clientSchema } from "@features/clients/lib/schema/clie
 import type { Clients, NewClient } from "@features/clients/types/clients"
 import { useClientsStore } from "@/store/useClientsStore"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 interface ModalClientFormProps {
     handleOnClose: () => void
@@ -17,6 +18,7 @@ interface ModalClientFormProps {
 }
 
 export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToEdit }: ModalClientFormProps) {
+    const { t } = useTranslation()
     const {error, addClient, updateClient} = useClientsStore()
 
     const schema = mode === "create" ? clientSchema : cientSchemaEdit
@@ -49,7 +51,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                 await updateClient(client as Clients)
 
                 if (!error) {
-                    toast.success(`${client.client_name} updated successfully!`, {
+                    toast.success(`${client.client_name} ${t("updated successfully")}!`, {
                         style: {
                             background: "#defae6",
                             color: "#475569",
@@ -57,7 +59,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                         },
                     })
                 } else {
-                    toast.error(`Unable to add the client. Try again later`, {
+                    toast.error(`${t("Unable to add the client")}. ${t("Try again later")}`, {
                         style: {
                             background: '#ffe2e3',
                             color: '#475569',
@@ -69,7 +71,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
             } else {
                 await addClient(client as NewClient)
 
-                toast.success(`${client.client_name} - ${client.project_name} added successfully!`, {
+                toast.success(`${client.client_name} - ${client.project_name} ${t("added successfully")}!`, {
                     style: {
                         background: '#defae6',
                         color: '#475569',
@@ -81,7 +83,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
             reset()
             handleOnClose()
         } catch {
-            toast.error(`Unable to add the client. Try again later`, {
+            toast.error(`${t("Unable to add the client")}. ${t("Try again later")}`, {
                 style: {
                     background: '#defae6',
                     color: '#475569',
@@ -97,7 +99,13 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
             <div className="fixed inset-0 flex items-center justify-center">
                 <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white dark:bg-card-dark rounded-2xl">
                     <header className="border-b-2 border-border dark:border-border-dark p-6">
-                        <DialogTitle className="text-lg font-semibold text-text-primary dark:text-text-secondary-dark">{mode === "create" ? "Add Client" : "Edit Client"}</DialogTitle>
+                        <DialogTitle 
+                            className="text-lg font-semibold text-text-primary dark:text-text-secondary-dark">
+                                {mode === "create" 
+                                    ? t("Add Client")
+                                    : t("Edit Client")
+                                }
+                        </DialogTitle>
                     </header>
 
                     <div className="overflow-y-auto max-h-[calc(80vh-6rem)] scrollbar-thin scrollbar-thumb-primary scrollbar-track-background-light">
@@ -109,7 +117,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                             <Input 
                                                 value={clientToEdit?.client_name ? clientToEdit.client_name : ""}
                                                 type="text" 
-                                                title="Client Name" 
+                                                title={t("Client Name")} 
                                                 id="client-name" 
                                                 validation="client_name" 
                                                 labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
@@ -121,7 +129,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                             <Input 
                                                 value={clientToEdit?.project_name ? clientToEdit.project_name : ""}
                                                 type="text" 
-                                                title="Project Name" 
+                                                title={t("Project Name")} 
                                                 id="project-name" 
                                                 validation="project_name" 
                                                 labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
@@ -133,7 +141,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                             <Select 
                                                 name="status" 
                                                 id="project-status" 
-                                                title="Project Status" 
+                                                title={t("Project Status")} 
                                                 validation="project_status" 
                                                 options={PROJECT_STATUS} 
                                                 labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
@@ -150,7 +158,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                                 }
                                                 type="date" 
                                                 id="project-due-date" 
-                                                title="Due Date" 
+                                                title={t("Due Date" )}
                                                 validation="due_date" 
                                                 labelClass="text-text-secondary text-sm dark:text-text-secondary-dark" 
                                                 inputClass="bg-background-light text-text-primary font-light text-sm w-full rounded-lg border-2 border-border px-4 py-1" 
@@ -162,13 +170,22 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                         </main>
 
                         <footer className="border-t-2 border-border dark:border-border-dark p-4 flex justify-end items-center gap-4 bg-card dark:bg-card-dark sticky bottom-0 shrink-0 rounded-b-2xl">
-                            <button type="button" onClick={() => handleOnClose()} className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer">Cancel</button>
+                            <button 
+                                type="button" 
+                                onClick={() => handleOnClose()} 
+                                className="bg-background-light text-text-primary rounded-2xl px-4 py-2 cursor-pointer"
+                            >
+                                    {t("Cancel")}
+                            </button>
                             <button 
                                 type="submit" 
                                 form="form-add-client" 
                                 className="bg-primary text-card rounded-2xl px-4 py-2 cursor-pointer"
                             >
-                                {mode === "create" ? "Add Client" : "Save Changes"}
+                                {mode === "create" 
+                                    ? t("Add Client") 
+                                    : t("Save Changes")
+                                }
                             </button>
                         </footer>
                     </div>

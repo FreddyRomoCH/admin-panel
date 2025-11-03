@@ -14,6 +14,7 @@ export default function Recipes() {
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
     const [selectedRecipe, setSelectedRecipe] = useState<Recipes | null>(null)
     const [newStatus, setNewStatus] = useState<string>("")
+    const [prevStatus, setPrevStatus] = useState<string>("")
     const { recipes, loading, error, fetchRecipes, deleteRecipe, recipeStatus} = useRecipesStore()
     const isChangingActiveRecipe = useRef(false)
     const { t } = useTranslation()
@@ -27,6 +28,14 @@ export default function Recipes() {
         setIsOpen(false)
         setIsConfirmationOpen(false)
         setSelectedRecipe(null)
+
+        if (isChangingActiveRecipe.current) {
+            setNewStatus(prevStatus)
+        }
+        if ( newStatus === "no") {
+            setNewStatus("yes")
+            isChangingActiveRecipe.current = false
+        }
     }
 
     const handleOpenOnDelete = (recipe: Recipes) => {
@@ -60,14 +69,15 @@ export default function Recipes() {
     const handleChangeActiveRecipe = (val: string, recipe: Recipes) => {
         isChangingActiveRecipe.current = true
         setSelectedRecipe(recipe)
+        setPrevStatus(recipe.is_active ? "yes" : "no")
         setNewStatus(val)
         setIsConfirmationOpen(true)
     }
 
     const handleChangeStatusRecipe = async () => {
+        setIsConfirmationOpen(false)
         const success = await recipeStatus(newStatus, selectedRecipe?.id)
         isChangingActiveRecipe.current = false
-        setIsConfirmationOpen(false)
 
         if (!success) {
             toast.error(`${t("Unable to change status. Try again later")}`, {
@@ -91,7 +101,6 @@ export default function Recipes() {
     useEffect(() => {
         fetchRecipes()
     }, [])
-
 
     if (error && !selectedRecipe) return <Error type="page" />
 
@@ -119,6 +128,11 @@ export default function Recipes() {
                             onDelete={handleOpenOnDelete}
                             onEdit={handleOpenModal} 
                             handleChangeActiveRecipe={(val, recipe) => handleChangeActiveRecipe(val, recipe)}
+                            currentStatus={
+                                selectedRecipe
+                                    ? {id: selectedRecipe.id, value: newStatus}
+                                    : null
+                            }
                         />
                     </tbody>
                 </table>

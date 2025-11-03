@@ -8,13 +8,15 @@ interface TableRecipesProps {
     onDelete: (recipe: Recipes) => void
     onEdit: (recipe: Recipes) => void
     handleChangeActiveRecipe?: (val: string, recipe: Recipes) => void
+    currentStatus?: { id: Recipes["id"]; value: string } | null
 }
 
 export default function TableRecipes({ 
     onEdit,
     onDelete,
     recipes,
-    handleChangeActiveRecipe
+    handleChangeActiveRecipe,
+    currentStatus
 }: TableRecipesProps) {
 
     return (
@@ -65,7 +67,12 @@ export default function TableRecipes({
                             labelClass=""
                             selectClass="border border-borde dark:border-border-dark rounded-sm px-3 py-1 text-text-secondary dark:text-secondary-dark"
                             optionClass="text-text-secondary dark:text-secondary-dark"
-                            value={recipe.is_active ? "yes" : "no"}
+                            value={currentStatus && currentStatus.id === recipe.id
+                                ? currentStatus.value
+                                : recipe.is_active
+                                ? "yes"
+                                : "no"
+                            }
                             recipe={recipe}
                             handleChangeActiveRecipe={handleChangeActiveRecipe}
                         />

@@ -41,6 +41,8 @@ export const useClientsStore = create<ClientsState>((set) => ({
 
     changePaymentStatus: async (project_id, newStatus) => {
         try {
+            set({ loading: true })
+
             const data = await updatePaymentStatus(project_id, newStatus)
 
             if (!data || !data.length) {
@@ -60,7 +62,8 @@ export const useClientsStore = create<ClientsState>((set) => ({
 
     showClients: async () =>  {
         try {
-
+            set({ loading: true })
+            
             const allClients = await fetchClientsFromBD()
 
             if (!allClients) {
