@@ -35,7 +35,7 @@ export default function Header() {
         }
     }
 
-    const avatar = `https://unavatar.io/github/FreddyRomoCH`
+    const avatar = "https://unavatar.io/github/FreddyRomoCH"
 
     return (
         <div className="flex justify-between items-center py-8">
@@ -77,6 +77,10 @@ export default function Header() {
                     className="rounded-full h-12 w-12 object-cover drop-shadow-lg drop-shadow-black/50" 
                     src={avatar} 
                     alt="Admin Profile Image" 
+                    onError={(e) => {
+                        e.currentTarget.onerror = null // Avoids infinite loop if the fallback image also fails
+                        e.currentTarget.src = "/images/Freddy_pequeno.jpeg"
+                    }}
                 />
                 
             </div>
