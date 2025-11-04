@@ -1,7 +1,7 @@
 import Button from "@/components/ui/Button"
 import Dark from "@/assets/icons/Dark";
 import Light from "@/assets/icons/Light";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
 
@@ -17,7 +17,7 @@ export default function SectionSetting({
     subTitle,
     parraf,
     section
- }: SectionSettingProps) {
+}: SectionSettingProps) {
 
     const [currentTheme, setCurrentTheme] = useState<string | null>(null)
     const [currentLang, setCurrentLang] = useState<string | null>(null)
@@ -41,22 +41,22 @@ export default function SectionSetting({
         }
     }
 
-    useEffect(() => {
-        const savedTheme = localStorage.getItem("theme")
-        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-        const themeToApply = savedTheme || (systemPrefersDark ? "dark" : "light")
+    // useEffect(() => {
+    //     const savedTheme = localStorage.getItem("theme")
+    //     const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+    //     const themeToApply = savedTheme || (systemPrefersDark ? "dark" : "light")
 
-        setCurrentTheme(themeToApply)
-        document.documentElement.setAttribute("data-theme", themeToApply)
-    }, [])
+    //     setCurrentTheme(themeToApply)
+    //     document.documentElement.setAttribute("data-theme", themeToApply)
+    // }, [])
 
-    useEffect(() => {
-        const savedLang = localStorage.getItem("language")
-        if (savedLang) {
-            setCurrentLang(savedLang)
-            i18n.changeLanguage(savedLang)
-        }
-    }, [])
+    // useEffect(() => {
+    //     const savedLang = localStorage.getItem("language")
+    //     if (savedLang) {
+    //         setCurrentLang(savedLang)
+    //         i18n.changeLanguage(savedLang)
+    //     }
+    // }, [])
 
     return (
         <>
