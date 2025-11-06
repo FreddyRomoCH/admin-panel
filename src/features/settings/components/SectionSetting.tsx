@@ -1,9 +1,12 @@
 import Button from "@/components/ui/Button"
 import Dark from "@/assets/icons/Dark";
 import Light from "@/assets/icons/Light";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
+import { useUsersStore } from "@/store/useUsersStore";
+import toast from "react-hot-toast";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface SectionSettingProps {
     title: string
@@ -18,45 +21,52 @@ export default function SectionSetting({
     parraf,
     section
 }: SectionSettingProps) {
+    const { user, setUser } = useAuthStore()
 
-    const [currentTheme, setCurrentTheme] = useState<string | null>(null)
-    const [currentLang, setCurrentLang] = useState<string | null>(null)
+    const [currentTheme, setCurrentTheme] = useState<string | null>(user?.theme || localStorage.getItem("theme") || "light")
+    const [currentLang, setCurrentLang] = useState<string | null>(user?.language || localStorage.getItem("language") || "en")
+    const { themeUser } = useUsersStore()
 
     const { t } = useTranslation()
 
-    const handleClick = (type: string) => {
+    const handleClick = async (type: string) => {
 
         if (type === "dark" || type === "light") {
+            const themeUpdated = await themeUser(type as "light" | "dark")
+            
+            if (!themeUpdated) {
+                toast.error("Failed to update theme preference")
+                return
+            }
 
             setCurrentTheme(type)
             document.documentElement.setAttribute("data-theme", type)
             localStorage.setItem("theme", type)
-
+            if (user) setUser({ ...user, theme: type }) // Update user in auth store
+            toast.success("Theme updated successfully")
+            
         } else if (type === "en" || type === "es") {
-
             setCurrentLang(type)
             i18n.changeLanguage(type)
             localStorage.setItem("language", type)
-
         }
     }
 
-    // useEffect(() => {
-    //     const savedTheme = localStorage.getItem("theme")
-    //     const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-    //     const themeToApply = savedTheme || (systemPrefersDark ? "dark" : "light")
+    useEffect(() => {
+        if (user?.theme) {
+            setCurrentTheme(user.theme)
+            document.documentElement.setAttribute("data-theme", user.theme)
+            localStorage.setItem("theme", user.theme)
+        }
+    }, [user?.theme])
 
-    //     setCurrentTheme(themeToApply)
-    //     document.documentElement.setAttribute("data-theme", themeToApply)
-    // }, [])
-
-    // useEffect(() => {
-    //     const savedLang = localStorage.getItem("language")
-    //     if (savedLang) {
-    //         setCurrentLang(savedLang)
-    //         i18n.changeLanguage(savedLang)
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (user?.language) {
+            setCurrentLang(user.language)
+            i18n.changeLanguage(user.language)
+            localStorage.setItem("language", user.language)
+        }
+    }, [user?.language])
 
     return (
         <>

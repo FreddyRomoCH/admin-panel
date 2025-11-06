@@ -76,5 +76,19 @@
     "Light": "Claro",
     "Dark": "Oscuro",
     "Theme": "Tema",
-    "Select your preferred interface style": "Selecciona tu estilo de interfaz preferido"
+    "Select your preferred interface style": "Selecciona tu estilo de interfaz preferido",
+    "Welcome Back": "Bienvenido de nuevo",
+    "Sign in to your dashboard to manage your projects": "Inicia sesión en tu panel para gestionar tus proyectos",
+    "you@example.com": "tu@ejemplo.com",
+    "Password": "Contraseña",
+    "Enter your password": "Ingresa tu contraseña",
+    "Sign In": "Iniciar Sesión",
+    "All rights reserved": "Todos los derechos reservados",
+    "Error signing in. Please try again": "Error al iniciar sesión. Por favor, inténtalo de nuevo",
+    "Login successful!": "¡Inicio de sesión exitoso!",
+    "Signing In...": "Iniciando sesión...",
+    "Unexpected error signing in. Please try again": "Error inesperado al iniciar sesión. Por favor, inténtalo de nuevo",
+    "Invalid credentials. Please try again.": "Credenciales inválidas. Por favor, inténtalo de nuevo.",
+    "Invalid email or password": "Correo electrónico o contraseña inválidos",
+    "Log Out": "Cerrar Sesión"
 }

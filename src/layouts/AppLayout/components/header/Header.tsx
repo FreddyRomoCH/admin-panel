@@ -6,11 +6,13 @@ import { useState } from "react";
 import ModalClientForm from "@/features/clients/components/ModalClientForm";
 import ModalEditRecipes from "@/features/recipes/components/ModalEditRecipes";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function Header() {
     const location = useLocation();
     const currentLocation = sidebarNavs.find((item) => item.path === location.pathname)
     const title = currentLocation ? currentLocation.label : "Settings"
+    const { user, signOut } = useAuthStore()
     const [isClientModalOpen, setIsClientModalOpen] = useState(false)
     const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false)
     const { t } = useTranslation()
@@ -35,14 +37,17 @@ export default function Header() {
         }
     }
 
-    const avatar = "https://unavatar.io/github/FreddyRomoCH"
+    const avatar = user?.avatar || "/images/avatar.png"
 
     return (
         <div className="flex justify-between items-center py-8">
-            <h1 
-                className="font-inter text-3xl font-bold text-text-primary dark:text-card">
-                { t(title) }
-            </h1>
+            <div>
+                <h1 
+                    className="font-inter text-3xl font-bold text-text-primary dark:text-card">
+                    { t(title) }
+                </h1>
+            </div>
+
             <div className="flex justify-center items-center gap-10">
                 {
                     title === "Recipes" && (
@@ -50,8 +55,7 @@ export default function Header() {
                             type="button"
                             title="Add Recipes" 
                             titleCss="text-card text-sm" 
-                            icon={IconPlus} 
-                            // href="https://recipes.freddyromo.dev/add-recipe" 
+                            icon={IconPlus}
                             target="_blank" 
                             iconCss="text-card w-5 h-5"
                             buttonCss="animate-sway flex justify-center items-center gap-2 bg-primary px-4 py-2 rounded-2xl cursor-pointer hover:scale-105 transform transition-transform duration-150 ease-in-out"
@@ -73,10 +77,19 @@ export default function Header() {
                         />
                     )
                 }
+
+                {/* User's Avatar */}
+
+                <Button 
+                    title={t("Log Out")}
+                    buttonCss="bg-primary px-4 py-2 rounded-2xl text-sm text-card hover:scale-105 transform transition-transform duration-150 ease-in-out cursor-pointer"
+                    handleClick={signOut}
+                />
+
                 <img 
                     className="rounded-full h-12 w-12 object-cover drop-shadow-lg drop-shadow-black/50" 
                     src={avatar} 
-                    alt="Admin Profile Image" 
+                    alt="Avatar Image" 
                     onError={(e) => {
                         e.currentTarget.onerror = null // Avoids infinite loop if the fallback image also fails
                         e.currentTarget.src = "/images/Freddy_pequeno.jpeg"

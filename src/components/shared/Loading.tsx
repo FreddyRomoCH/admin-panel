@@ -18,7 +18,7 @@ export default function Loading({
 
     return (
         <main 
-            className="grid ustify-center items-center gap-2 w-full"
+            className="grid justify-center items-center gap-2 w-full"
             style={gridClass}
         >
         {
