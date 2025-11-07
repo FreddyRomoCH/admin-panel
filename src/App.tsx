@@ -61,7 +61,11 @@ export default function App() {
 
   if (loading || !initialized) {
     return (
-        <Loading length={1} direction="cols" />
+        <Loading 
+          length={1} 
+          direction="cols" 
+          loader="spinner" 
+        />
     )
   }
 

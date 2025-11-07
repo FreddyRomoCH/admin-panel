@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom"
 import { sidebarNavs } from "@layouts/AppLayout/constants/sidebarNavs";
 import IconPlus from "@/assets/IconPlus";
 import Button from "@/components/ui/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalClientForm from "@/features/clients/components/ModalClientForm";
 import ModalEditRecipes from "@/features/recipes/components/ModalEditRecipes";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ export default function Header() {
     const { user, signOut } = useAuthStore()
     const [isClientModalOpen, setIsClientModalOpen] = useState(false)
     const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false)
+    const [avatar, setAvatar] = useState(user?.avatar || "/images/avatar.png")
     const { t } = useTranslation()
 
     const handleOpenModal = (mode: "edit" | "create") => {
@@ -37,7 +38,11 @@ export default function Header() {
         }
     }
 
-    const avatar = user?.avatar || "/images/avatar.png"
+    // const avatar = user?.avatar || "/images/avatar.png"
+
+    useEffect(() => {
+        setAvatar(user?.avatar || "image/avatar.png") 
+    }, [user?.avatar])
 
     return (
         <div className="flex justify-between items-center py-8">

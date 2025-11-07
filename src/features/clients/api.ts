@@ -1,15 +1,17 @@
 import { supabaseClients } from "@/lib/supabaseClient";
 import type { Clients, NewClient } from "@/features/clients/types/clients";
+import type { UserType } from "@/types/users";
 
 interface ClientData {
     client: NewClient
 }
 
-export async function addClientToBD({ client }: ClientData) {
+export async function addClientToBD({ client }: ClientData, user_id: UserType["id"]) {
     const { error: clientError, data: clientData } = await supabaseClients
         .from("clients")
         .insert({
-            name: client.client_name
+            name: client.client_name,
+            user_id
         })
         .select("id, name")
 

@@ -90,5 +90,9 @@
     "Unexpected error signing in. Please try again": "Error inesperado al iniciar sesión. Por favor, inténtalo de nuevo",
     "Invalid credentials. Please try again.": "Credenciales inválidas. Por favor, inténtalo de nuevo.",
     "Invalid email or password": "Correo electrónico o contraseña inválidos",
-    "Log Out": "Cerrar Sesión"
+    "Log Out": "Cerrar Sesión",
+    "Profile": "Perfil",
+    "Username": "Nombre de usuario",
+    "Language updated successfully": "Idioma actualizado correctamente",
+    "Theme updated successfully": "Apariencia actualizada correctamente"
 }
