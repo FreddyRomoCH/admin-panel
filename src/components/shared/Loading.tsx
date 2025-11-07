@@ -1,13 +1,16 @@
 import Skeleton from "@/components/ui/Skeleton";
+import Spinning from "./Spinning";
 
 interface LoadingProps {
     length: number
     direction: "rows" | "cols"
+    loader?: "skeleton" | "spinner" | null
 }
 
 export default function Loading({ 
     length,
-    direction
+    direction,
+    loader
 }: LoadingProps
 ) {
 
@@ -18,12 +21,16 @@ export default function Loading({
 
     return (
         <main 
-            className="grid ustify-center items-center gap-2 w-full"
+            className="grid justify-center items-center gap-2 w-full"
             style={gridClass}
         >
         {
             Array.from({ length: length }).map((_, i) => (
-                <div key={i}><Skeleton /></div>
+                loader === "skeleton" || !loader ? (
+                    <div key={i}><Skeleton /></div>
+                ) : (
+                    <Spinning key={i} />
+                )
             ))
         }
         </main>

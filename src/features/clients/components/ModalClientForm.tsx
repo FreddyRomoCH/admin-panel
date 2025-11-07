@@ -9,6 +9,8 @@ import type { Clients, NewClient } from "@features/clients/types/clients"
 import { useClientsStore } from "@/store/useClientsStore"
 import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
+import { useAuthStore } from "@/store/useAuthStore"
+import type { UserType } from "@/types/users"
 
 interface ModalClientFormProps {
     handleOnClose: () => void
@@ -20,6 +22,7 @@ interface ModalClientFormProps {
 export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToEdit }: ModalClientFormProps) {
     const { t } = useTranslation()
     const {error, addClient, updateClient} = useClientsStore()
+    const { user } = useAuthStore()
 
     const schema = mode === "create" ? clientSchema : cientSchemaEdit
     
@@ -69,7 +72,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                 }
                 
             } else {
-                await addClient(client as NewClient)
+                await addClient(client as NewClient, user?.id as UserType["id"])
 
                 toast.success(`${client.client_name} - ${client.project_name} ${t("added successfully")}!`, {
                     style: {

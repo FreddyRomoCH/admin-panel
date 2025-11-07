@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import { addClientToBD, fetchClientsFromBD, updatePaymentStatus, updateClientFromDB, deleteClientFromDB } from "@/features/clients/api";
 import type { Clients, NewClient } from "@/features/clients/types/clients";
+import type { UserType } from "@/types/users";
 
 interface ClientsState {
     clients: Clients[]
     loading: boolean
     error: boolean
-    addClient: (client: NewClient) => Promise<void>
+    addClient: (client: NewClient, user_id: UserType["id"]) => Promise<void>
     changePaymentStatus: (project_id: Clients["project_id"] | undefined, newValue: string) => Promise<boolean>
     showClients: () => Promise<void>
     updateClient: (client: Clients) => Promise<boolean>
@@ -18,11 +19,11 @@ export const useClientsStore = create<ClientsState>((set) => ({
     loading: true,
     error: false,
 
-    addClient: async (client: NewClient) => {
+    addClient: async (client: NewClient, user_id: UserType["id"]) => {
         try {
             set({ loading: true })
             
-            const newClient = await addClientToBD({client})
+            const newClient = await addClientToBD({client}, user_id)
 
             if (!newClient) {
                 set({ error: true, loading: false })
