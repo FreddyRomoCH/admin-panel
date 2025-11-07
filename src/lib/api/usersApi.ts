@@ -22,53 +22,60 @@ export async function fetchUsersFromDB() {
     }
 }
 
-export async function updateUserFromBD(username: UserType["username"], file: File, fileNameUUID: UserType["avatar"], user_id: UserType["id"]) {
+export async function updateUserFromBD(
+    username: UserType["username"],
+    file?: File | null,
+    fileNameUUID?: UserType["avatar"] | null,
+    user_id?: UserType["id"]
+) {
     try {
+        if (!user_id) throw new Error("User ID is required")
 
-        if (!fileNameUUID) return
-        if (!username && username.trim() === "") return
+        let avatarUrl: string | null = null
 
-        // Upload the file to user storage on supabase
+        if (file && fileNameUUID) {
         const { error: avatarError } = await supabaseClients.storage
-            .from('user')
+            .from("user")
             .upload(fileNameUUID, file, {
-                cacheControl: '3600',
+                cacheControl: "3600",
                 upsert: false
             })
 
         if (avatarError) {
-            console.error("Error uploading avatar:", avatarError);
+            console.error("Error uploading avatar:", avatarError)
             throw avatarError
         }
 
-        // Get public url of the uploaded file
         const { data: publicData } = supabaseClients.storage
-            .from('user')
+            .from("user")
             .getPublicUrl(fileNameUUID)
 
-        // Once uploaded, save the filepath to the table users in column avatar
-        const { error: userError, data: userData } = await supabaseClients
-            .from('users')
-            .update({ 
-                avatar: publicData.publicUrl,
-                username
-            })
-            .eq('id', user_id)
+            avatarUrl = publicData?.publicUrl ?? null
+        }
+
+        if (!avatarUrl && (!username || username.trim() === "")) {
+            console.warn("No valid updates provided (username or avatar)")
+            return null
+        }
+
+        
+        const updatePayload: Partial<UserType> = {}
+        if (username && username.trim() !== "") updatePayload.username = username
+        if (avatarUrl) updatePayload.avatar = avatarUrl
+
+        const { data: userData, error: userError } = await supabaseClients
+            .from("users")
+            .update(updatePayload)
+            .eq("id", user_id)
             .select("username, avatar")
             .single()
 
         if (userError) {
-            console.error("Error updating user avatar:", userError);
-            return
-        }
-        
-
-        if (userData) {
-            return {
-                userData
-            }
+            console.error("Error updating user:", userError)
+            throw userError
         }
 
+        return { userData }
     } catch (error) {
         console.error("Unexpected error updating user:", error)
         return null

@@ -18,13 +18,25 @@ export default function Settings() {
         if (!fileAvatar) return;
 
         setFile(fileAvatar);
-        
     }
 
     const handleSaveChanges = async () => {
+        if (!user?.id) return
+
+        if (!file) {
+            const result = await updateUser(currentUsername, null, undefined, user?.id);
+
+            if (!result.success) {
+                toast.error("Failed to update your username. Try again later");
+                return;
+            }
+
+            toast.success("Username updated successfully");
+            return;
+        }
         
-        if (file && user?.id) {
-            // Encrypt the name of the file before upload
+        if (file) {
+            // Encrypts the name of the file before upload
             const fileNameUUID = `${crypto.randomUUID()}.${file.name.split('.').pop()}`;
 
             const result = await updateUser(currentUsername, file, fileNameUUID, user?.id)
@@ -39,8 +51,6 @@ export default function Settings() {
                 toast.success("Data updated successfully");
             }
         }
-
-        
     }
 
     return (

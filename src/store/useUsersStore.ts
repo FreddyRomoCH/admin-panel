@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { UserType } from "@/types/users";
 import { fetchUsersFromDB } from "@/lib/api/usersApi";
-import { changeTheme } from "@/features/login/lib/supabaseAuth";
+import { changeTheme, changeLang } from "@/features/login/lib/supabaseAuth";
 
 interface UsersState {
     users: UserType[]
@@ -9,6 +9,7 @@ interface UsersState {
     error: boolean
     fetchUsers: () => Promise<void>
     themeUser: (theme: "light" | "dark") => Promise<boolean>
+    langUser: (lang: "en" | "es") => Promise<boolean>
 }
 
 export const useUsersStore = create<UsersState>((set, get) => ({
@@ -50,8 +51,6 @@ export const useUsersStore = create<UsersState>((set, get) => ({
             
             const { data, error } = await changeTheme(theme)
 
-            console.log("Change theme response:", { data, error })
-
             if (error || !data) {
                 set({ error: true, loading: false })
                 return false
@@ -69,6 +68,34 @@ export const useUsersStore = create<UsersState>((set, get) => ({
             
         } catch (error) {
             console.log("Unable to update user theme", error)
+            set({ error: true, loading: false })
+            return false
+        }
+    },
+
+    langUser: async (lang: "en" | "es") => {
+        try {
+            set({ loading: true })
+
+            const { data, error } = await changeLang(lang)
+
+            if (error || !data) {
+                set({ error: true, loading: false })
+                return false
+            }
+
+            set((state) => ({
+                users: state.users.map((user) =>
+                    user.id === data.id ? { ...user, language: data.language } : user
+                ),
+                loading: false,
+                error: false
+            }))
+
+            return true
+            
+        } catch (error) {
+            console.log("Unable to update user language", error)
             set({ error: true, loading: false })
             return false
         }

@@ -1,6 +1,5 @@
 import { create } from "zustand"
 import { supabaseClients } from "@/lib/supabaseClient"
-// import type { User } from "@supabase/supabase-js"
 import type { UserType } from "@/types/users"
 import { updateUserFromBD } from "@/lib/api/usersApi"
 
@@ -16,7 +15,12 @@ interface AuthState {
     initialized: boolean
     setUser: (user: UserType | null) => void
     fetchSession: () => Promise<void>
-    updateUser: (username: UserType["username"], file: File, avatar: UserType["avatar"], user_id: UserType["id"]) => Promise<UpdateUSerResponse>
+    updateUser: (
+        username: UserType["username"], 
+        file?: File | null, 
+        avatar?: UserType["avatar"], 
+        user_id?: UserType["id"]
+    ) => Promise<UpdateUSerResponse>
     signOut: () => Promise<void>
 }
 
@@ -69,8 +73,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         try {
             set({ loading: true })
             
-            const data = await updateUserFromBD(username, file, avatar, user_id)
-            console.log("DATA: ", data)
+            const data = await updateUserFromBD(username, file || null, avatar || undefined, user_id || "")
 
             if (!data) {
                 set({ loading: false})

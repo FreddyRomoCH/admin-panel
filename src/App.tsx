@@ -19,6 +19,9 @@ export default function App() {
   const { fetchSession, setUser, loading, user, initialized } = useAuthStore()
 
   useEffect(() => {
+
+    fetchSession()
+
     const { data: listener } = supabaseClients.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         fetchSession()
@@ -59,7 +62,7 @@ export default function App() {
     localStorage.setItem("language", langToApply)
   }, [user, loading])
 
-  if (loading || !initialized) {
+  if (!initialized) {
     return (
         <Loading 
           length={1} 

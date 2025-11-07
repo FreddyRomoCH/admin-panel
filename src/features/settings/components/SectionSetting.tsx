@@ -25,7 +25,7 @@ export default function SectionSetting({
 
     const [currentTheme, setCurrentTheme] = useState<string | null>(user?.theme || localStorage.getItem("theme") || "light")
     const [currentLang, setCurrentLang] = useState<string | null>(user?.language || localStorage.getItem("language") || "en")
-    const { themeUser } = useUsersStore()
+    const { themeUser, langUser } = useUsersStore()
 
     const { t } = useTranslation()
 
@@ -35,7 +35,7 @@ export default function SectionSetting({
             const themeUpdated = await themeUser(type as "light" | "dark")
             
             if (!themeUpdated) {
-                toast.error("Failed to update theme preference")
+                toast.error(t("Failed to update theme preference"))
                 return
             }
 
@@ -46,9 +46,18 @@ export default function SectionSetting({
             toast.success(t("Theme updated successfully"))
             
         } else if (type === "en" || type === "es") {
+
+            const langUpdated = await langUser(type as "en" | "es")
+
+            if (!langUpdated) {
+                toast.error(t("Failed to update lang preference"))
+                return
+            }
+
             setCurrentLang(type)
             i18n.changeLanguage(type)
             localStorage.setItem("language", type)
+            if (user) setUser({ ...user, language: type }) // Update user in auth store
             toast.success(t("Language updated successfully"))
         }
     }

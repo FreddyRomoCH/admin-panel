@@ -94,5 +94,7 @@
     "Profile": "Perfil",
     "Username": "Nombre de usuario",
     "Language updated successfully": "Idioma actualizado correctamente",
-    "Theme updated successfully": "Apariencia actualizada correctamente"
+    "Theme updated successfully": "Apariencia actualizada correctamente",
+    "Failed to update theme preference": "Error al actualizar la preferencia de tema",
+    "Failed to update lang preference": "Error al actualizar la preferencia de idioma"
 }

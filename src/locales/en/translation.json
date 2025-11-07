@@ -94,5 +94,7 @@
     "Profile": "Profile",
     "Username": "Username",
     "Language updated successfully": "Language updated successfully",
-    "Theme updated successfully": "Theme updated successfully"
+    "Theme updated successfully": "Theme updated successfully",
+    "Failed to update theme preference": "Failed to update theme preference",
+    "Failed to update lang preference": "Failed to update lang preference"
 }

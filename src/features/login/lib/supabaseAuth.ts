@@ -39,3 +39,20 @@ export async function changeTheme(theme: "light" | "dark") {
 
     return { data, error }
 }
+
+export async function changeLang(language: "en" | "es") {
+    const { data: { user }, error: userError } = await supabaseClients.auth.getUser()
+
+    if (userError || !user) {
+        return { data: null, error: userError || new Error("User not found") }
+    }
+
+    const { data, error } = await supabaseClients
+        .from("users")
+        .update({ language })
+        .eq("id", user.id)
+        .select("*")
+        .single()
+
+    return { data, error }
+}
