@@ -41,7 +41,7 @@ export default function Header() {
     // const avatar = user?.avatar || "/images/avatar.png"
 
     useEffect(() => {
-        setAvatar(user?.avatar || "image/avatar.png") 
+        setAvatar(user?.avatar || "/images/avatar.png") 
     }, [user?.avatar])
 
     return (
@@ -94,11 +94,7 @@ export default function Header() {
                 <img 
                     className="rounded-full h-12 w-12 object-cover drop-shadow-lg drop-shadow-black/50" 
                     src={avatar} 
-                    alt="Avatar Image" 
-                    onError={(e) => {
-                        e.currentTarget.onerror = null // Avoids infinite loop if the fallback image also fails
-                        e.currentTarget.src = "/images/Freddy_pequeno.jpeg"
-                    }}
+                    alt="Avatar Image"
                 />
                 
             </div>

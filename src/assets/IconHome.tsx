@@ -1,4 +1,8 @@
-export default function IconHome() {
+interface IconHomeProps {
+    className?: string
+}
+
+export default function IconHome({ className }: IconHomeProps) {
 
     return (
         <svg  
@@ -10,7 +14,9 @@ export default function IconHome() {
             stroke="currentColor" 
             strokeWidth="2" 
             strokeLinecap="round" 
-            strokeLinejoin="round">
+            strokeLinejoin="round"
+            className={`${className ?? ""}`}
+        >
                 <path 
                     stroke="none" 
                     d="M0 0h24v24H0z" 
