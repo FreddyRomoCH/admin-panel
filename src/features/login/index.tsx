@@ -74,7 +74,7 @@ export default function LoginPage() {
                             htmlFor="email"
                             className="text-text-secondary dark:text-text-secondary-dark text-base mb-2"
                         >
-                                Email
+                                {t("Email")}
                         </label>
 
                         <input 

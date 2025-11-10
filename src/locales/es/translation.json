@@ -96,5 +96,16 @@
     "Language updated successfully": "Idioma actualizado correctamente",
     "Theme updated successfully": "Apariencia actualizada correctamente",
     "Failed to update theme preference": "Error al actualizar la preferencia de tema",
-    "Failed to update lang preference": "Error al actualizar la preferencia de idioma"
+    "Failed to update lang preference": "Error al actualizar la preferencia de idioma",
+    "Create A New User": "Crea Un Nuevo Usuario",
+    "Allow them to manage their own projects": "Permite que manejen sus propios projectos",
+    "Email": "Correo Electrónico",
+    "First Name": "Nombre",
+    "Enter your first name": "Ingresa tu nombre",
+    "Last Name": "Apellido",
+    "Enter your last name": "Ingresa tu apellido",
+    "Create a password": "Crea una contraseña",
+    "Choose a username": "Crea un nombre de usuario",
+    "Creating...": "Creando...",
+    "Create Account": "Crear Cuenta"
 }

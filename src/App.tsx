@@ -12,8 +12,9 @@ import i18n from "./i18n";
 import LoginPage from "@/features/login";
 import { useAuthStore } from "@store/useAuthStore";
 import ProtectedRoute from "@components/shared/ProtectedRoute";
-import { supabaseClients } from "./lib/supabaseClient";
-import Loading from "./components/shared/Loading";
+import { supabaseClients } from "@lib/supabaseClient";
+import Loading from "@components/shared/Loading";
+import Register from "@features/register";
 
 export default function App() {
   const { fetchSession, setUser, loading, user, initialized } = useAuthStore()
@@ -109,6 +110,13 @@ export default function App() {
               <Settings />
             </ProtectedRoute>
           } />
+
+          <Route path="/register" element={
+            <ProtectedRoute>
+              <Register />
+            </ProtectedRoute>
+          } />
+          
         </Route>
       </Routes>
       <Toaster/>

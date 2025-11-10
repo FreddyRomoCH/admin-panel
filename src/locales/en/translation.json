@@ -96,5 +96,16 @@
     "Language updated successfully": "Language updated successfully",
     "Theme updated successfully": "Theme updated successfully",
     "Failed to update theme preference": "Failed to update theme preference",
-    "Failed to update lang preference": "Failed to update lang preference"
+    "Failed to update lang preference": "Failed to update lang preference",
+    "Create A New User": "Create A New User",
+    "Allow them to manage their own projects": "Allow them to manage their own projects",
+    "Email": "Email",
+    "First Name": "First Name",
+    "Enter your first name": "Enter your first name",
+    "Last Name": "Last Name",
+    "Enter your last name": "Enter your last name",
+    "Create a password": "Create a password",
+    "Choose a username": "Choose a username",
+    "Creating...": "Creating...",
+    "Create Account": "Create Account"
 }

@@ -2,11 +2,19 @@ import { create } from "zustand"
 import { supabaseClients } from "@/lib/supabaseClient"
 import type { UserType } from "@/types/users"
 import { updateUserFromBD } from "@/lib/api/usersApi"
+import type { RegisterSchemeType } from "@/features/register/lib/scheme/registerScheme"
+import { registerUserToBD } from "@/features/register/lib/api/register"
 
 type UpdateUSerResponse = {
     success: boolean
     user?: Pick<UserType, "avatar" | "username">
     error?: string
+}
+
+type RegisterUserResponse = {
+    success: boolean
+    error?: string
+    user?: RegisterSchemeType["email"]
 }
 
 interface AuthState {
@@ -21,6 +29,7 @@ interface AuthState {
         avatar?: UserType["avatar"], 
         user_id?: UserType["id"]
     ) => Promise<UpdateUSerResponse>
+    registerUser: (data: RegisterSchemeType) => Promise<RegisterUserResponse>
     signOut: () => Promise<void>
 }
 
@@ -102,7 +111,38 @@ export const useAuthStore = create<AuthState>((set) => ({
             return { success: false, error: (error as Error).message }
         }
     },
+    registerUser: async (data: RegisterSchemeType) => {
+        try {
+            set({ loading: true })
 
+            const response = await registerUserToBD(data)
+
+            if (response?.error) {
+                set({ loading: false })
+                
+                return {
+                    success: false,
+                    error: response.error
+                }
+            }
+
+            set({ loading: false})
+
+            return {
+                success: true,
+                user: response.email
+            }
+            
+        } catch (error) {
+            console.log("Error trying to register the user", error)
+            set({ loading: false })
+
+            return {
+                success: false,
+                error: (error as Error).message || "Unexpected error"
+            }
+        }
+    },
     signOut: async () => {
         await supabaseClients.auth.signOut()
         set({ user: null })

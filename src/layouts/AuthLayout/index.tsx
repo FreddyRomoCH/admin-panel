@@ -1,19 +1,18 @@
-import { NavLink, Outlet } from "react-router-dom";
-import HeaderLogo from "@layouts/AppLayout/components/sidebar/HeaderSidebar";
-import IconRecipe from "@/assets/IconRecipe";
-import IconProject from "@/assets/IconProject";
-import IconHome from "@/assets/IconHome";
+import { Outlet } from "react-router-dom";
+// import HeaderLogo from "@layouts/AppLayout/components/sidebar/HeaderSidebar";
+// import IconRecipe from "@/assets/IconRecipe";
+// import IconProject from "@/assets/IconProject";
+// import IconHome from "@/assets/IconHome";
 
 export default function AuthLayout() {
 
-    const items = [
-        { path: "/login", label: "Login", icon: "login" },
-        { path: "/register", label: "Register", icon: "register" }
-    ]
+    // const items = [
+    //     { path: "/login", label: "Login", icon: "login" }
+    // ]
 
     return (
-        <div className="grid grid-cols-[250px_1fr] min-h-screen min-w-screen">
-            <aside className="bg-background-base dark:bg-background-dark border-r border-border">
+        <div className="flex min-h-screen min-w-screen">
+            {/* <aside className="bg-background-base dark:bg-background-dark border-r border-border">
                 <div className="flex flex-col h-full gap-8 px-8 py-6">
                     <header>
                         <HeaderLogo />
@@ -42,13 +41,9 @@ export default function AuthLayout() {
                         </nav>
                     </div>
                 </div>
-            </aside>
+            </aside> */}
 
-            <div className="flex flex-col justify-start h-screen bg-background-light dark:bg-background-dark p-4">
-                <header>
-                    {/* <Header /> */}
-                </header>
-
+            <div className="flex flex-col justify-center w-dvw h-dvh bg-background-light dark:bg-background-dark p-4">
                 <main className="h-screen flex justify-center items-center">
                     <Outlet />
                 </main>
