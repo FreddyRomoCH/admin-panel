@@ -9,9 +9,11 @@ import toast from "react-hot-toast"
 import ModalClientForm from "@features/clients/components/ModalClientForm"
 import Loading from "@/components/shared/Loading"
 import { useTranslation } from "react-i18next"
+import { useAuthStore } from "@/store/useAuthStore"
 
 export default function Clients() {
     const {loading, error, showClients, clients, changePaymentStatus, deleteClient} = useClientsStore()
+    const { user } = useAuthStore()
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
@@ -47,6 +49,11 @@ export default function Clients() {
         if (mode === "delete") {
             setIsOpenDeleteModal(false)
         }
+
+        // Clean the temporary states globally
+        setSelectedClientId(0)
+        setPreviousValue("")
+        setDraftValue("")
     }
 
     const onConfirm = async (mode: "delete" | "status") => {
@@ -55,7 +62,6 @@ export default function Clients() {
         if (mode === "status") {
             setIsOpen(false)
             success = await changePaymentStatus(selectedClientId, draftValue)
-            // setDraftValue(previousValue)
         }
 
         if (mode === "delete") {
@@ -80,6 +86,11 @@ export default function Clients() {
                 }
             })
         }
+
+        // Clean the temporary states globally
+        setSelectedClientId(0)
+        setPreviousValue("")
+        setDraftValue("")
     }
 
     const handleClickEditClient = (client: Clients) => {
@@ -95,7 +106,7 @@ export default function Clients() {
         setIsOpenDeleteModal(true)
         setSelectedClientId(client_id)
     }
-            
+
     return (
         <main className="flex flex-col justify-center items-center">
             <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
@@ -113,6 +124,9 @@ export default function Clients() {
                 <tbody className="bg-card dark:bg-card-dark text-text-primary dark:text-text-secondary-dark font-inter">
                     {
                         clients && clients.map((client: Clients) => {
+                            const isClientFromUser = user?.id === client.user_id
+                            if ( !isClientFromUser ) return
+
                             const isEdited = client.project_id === selectedClientId
                             const currentValue = isEdited ? draftValue : client.project_status
                             
@@ -126,7 +140,7 @@ export default function Clients() {
                     
                             return (
                                 <TableClients 
-                                    key={client.project_name}
+                                    key={client.project_id}
                                     value={currentValue}
                                     found={statusFound} 
                                     client={client} 

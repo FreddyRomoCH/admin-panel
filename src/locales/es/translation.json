@@ -107,5 +107,7 @@
     "Create a password": "Crea una contraseña",
     "Choose a username": "Crea un nombre de usuario",
     "Creating...": "Creando...",
-    "Create Account": "Crear Cuenta"
+    "Create Account": "Crear Cuenta",
+    "Failed to update your username. Try again later": "Error al actualizar el nombre de usuario. Intenta más tarde",
+    "Username updated successfully": "Nombre de usuario actualizado correctamente"
 }

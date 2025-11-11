@@ -27,11 +27,23 @@ export default function Settings() {
             const result = await updateUser(currentUsername, null, undefined, user?.id);
 
             if (!result.success) {
-                toast.error("Failed to update your username. Try again later");
+                toast.error(t("Failed to update your username. Try again later"), {
+                    style: {
+                        background: '#ffe2e3',
+                        color: '#475569',
+                        fontSize: '14px'
+                    }
+                });
                 return;
             }
 
-            toast.success("Username updated successfully");
+            toast.success(t("Username updated successfully"), {
+                style: {
+                    background: "#defae6",
+                    color: "#475569",
+                    fontSize: "14px",
+                },
+            });
             return;
         }
         
@@ -42,13 +54,25 @@ export default function Settings() {
             const result = await updateUser(currentUsername, file, fileNameUUID, user?.id)
 
             if (!result.success) {
-                toast.error("Failed to update your data. Try again later")
+                toast.error("Failed to update your data. Try again later", {
+                    style: {
+                        background: '#ffe2e3',
+                        color: '#475569',
+                        fontSize: '14px'
+                    }
+                })
                 return
             }
 
             if (result.user) {
                 setCurrentAvatar(result.user?.username);
-                toast.success("Data updated successfully");
+                toast.success("Data updated successfully", {
+                    style: {
+                        background: "#defae6",
+                        color: "#475569",
+                        fontSize: "14px",
+                    },
+                });
             }
         }
     }

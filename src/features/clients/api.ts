@@ -13,7 +13,7 @@ export async function addClientToBD({ client }: ClientData, user_id: UserType["i
             name: client.client_name,
             user_id
         })
-        .select("id, name")
+        .select("id, name, user_id")
 
     if (clientError) throw clientError
 
@@ -41,6 +41,7 @@ export async function addClientToBD({ client }: ClientData, user_id: UserType["i
     return {
         client_id: clientData[0].id,
         client_name: clientData[0].name,
+        user_id: clientData[0].user_id,
         project_name: projectData[0].name,
         project_status: paymentsData[0].status,
         due_date: paymentsData[0].due_date,
@@ -54,6 +55,7 @@ export async function fetchClientsFromBD() {
         .select(`
             id,
             name,
+            user_id,
             projects (
                 name,
                 Payments (
@@ -73,6 +75,7 @@ export async function fetchClientsFromBD() {
             return {
                 client_id: client.id,
                 client_name: client.name,
+                user_id: client.user_id,
                 project_name: project.name,
                 project_id: payment?.id_project,
                 project_status: payment?.status ?? "",

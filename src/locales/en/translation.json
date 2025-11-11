@@ -107,5 +107,7 @@
     "Create a password": "Create a password",
     "Choose a username": "Choose a username",
     "Creating...": "Creating...",
-    "Create Account": "Create Account"
+    "Create Account": "Create Account",
+    "Failed to update your username. Try again later": "Failed to update your username. Try again later",
+    "Username updated successfully": "Username updated successfully"
 }

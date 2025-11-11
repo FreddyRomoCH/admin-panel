@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@layouts/AuthLayout";
 import Dashboard from "@features/dashboard";
@@ -73,6 +73,8 @@ export default function App() {
     )
   }
 
+  const isAdmin = user?.is_admin ?? false
+
   return (
     <>
       <Routes>
@@ -83,19 +85,28 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route index element={
             <ProtectedRoute>
-              <Dashboard />
+              { isAdmin 
+                ? <Dashboard /> 
+                : <Navigate to="/clients" /> 
+              }
             </ProtectedRoute>
           } />
 
           <Route path="/projects" element={
             <ProtectedRoute>
-              <Projects />
+              { isAdmin 
+                ? <Projects /> 
+                : <Navigate to="/clients" /> 
+              }
             </ProtectedRoute>
           } />
 
           <Route path="/recipes" element={
             <ProtectedRoute>
-              <Recipes />
+              { isAdmin 
+                ? <Recipes /> 
+                : <Navigate to="/clients" /> 
+              }
             </ProtectedRoute>
           } />
 
@@ -113,7 +124,10 @@ export default function App() {
 
           <Route path="/register" element={
             <ProtectedRoute>
-              <Register />
+              { isAdmin 
+                ? <Register /> 
+                : <Navigate to="/clients" /> 
+              }
             </ProtectedRoute>
           } />
           

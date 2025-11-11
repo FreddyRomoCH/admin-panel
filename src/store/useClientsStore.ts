@@ -32,7 +32,8 @@ export const useClientsStore = create<ClientsState>((set) => ({
 
             set((state) => ({
                 clients: [newClient, ...state.clients],
-                loading: false
+                loading: false,
+                error: false
             }))
         } catch (error) {
             console.error("Error fetching database", error)
@@ -51,7 +52,15 @@ export const useClientsStore = create<ClientsState>((set) => ({
                 return false
             }
 
-            set({ error: false, loading: false })
+            set((state) => ({
+                clients: state.clients.map((client) => 
+                    client.project_id === project_id
+                        ? { ...client, project_status: newStatus }
+                        : client
+                ),
+                loading: false,
+                error: false
+            }))
             return true
 
         } catch (error) {
