@@ -4,12 +4,16 @@ import type { RegisterSchemeType } from "@/features/register/lib/scheme/register
 
 interface NavsSidebarProps {
     isAdmin: RegisterSchemeType["is_admin"]
+    handleClick: () => void
 }
 
-export default function SideNavs({isAdmin}: NavsSidebarProps) {
+export default function SideNavs({isAdmin, handleClick}: NavsSidebarProps) {
 
     return (
-        <nav className="flex flex-col justify-center items-start gap-4">
+        <nav 
+            className="flex flex-col justify-center items-start gap-4"
+            onClick={handleClick}
+        >
             {sidebarNavs.map((item) => {
 
                 const noShow = !isAdmin && item.label !== "Clients"

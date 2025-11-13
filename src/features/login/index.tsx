@@ -61,7 +61,7 @@ export default function LoginPage() {
                     { t("Welcome Back") }
                 </h1>
 
-                <p className="text-text-secondary dark:text-text-secondary-dark mb-8 font-light text-base w-xs mx-auto text-center">
+                <p className="text-text-secondary dark:text-text-secondary-dark mb-8 font-light text-base w-full md:w-xs mx-auto text-center">
                     { t("Sign in to your dashboard to manage your projects") }.
                 </p>
 

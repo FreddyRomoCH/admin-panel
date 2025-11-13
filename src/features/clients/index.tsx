@@ -109,50 +109,52 @@ export default function Clients() {
 
     return (
         <main className="flex flex-col justify-center items-center">
-            <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
-                <thead className="bg-background-light dark:bg-background-dark shadow rounded-t-2xl text-text-secondary dark:text-text-secondary-dark">
-                    <tr>
-                        <th className="px-4 py-2 text-left">{t("Client Name")}</th>
-                        <th className="px-4 py-2 text-left">{t("Project")}</th>
-                        <th className="px-4 py-2 text-left">{t("Invoice Status")}</th>
-                        <th className="px-4 py-2 text-left">{t("Due Date")}</th>
-                        <th className="px-4 py-2 text-left">{t("Edit")}</th>
-                        <th className="px-4 py-2 text-left">{t("Delete")}</th>
-                    </tr>
-                </thead>
+            <div className="overflow-y-auto max-h-[calc(80vh)] w-full scrollbar-thin scrollbar-thumb-primary scrollbar-track-background-light">
+                <table className="w-full border-collapse text-sm tracking-wide font-light animate-blurred-fade-in">
+                    <thead className="bg-background-light dark:bg-background-dark shadow rounded-t-2xl text-text-secondary dark:text-text-secondary-dark">
+                        <tr>
+                            <th className="px-4 py-2 text-left">{t("Client Name")}</th>
+                            <th className="px-4 py-2 text-left">{t("Project")}</th>
+                            <th className="px-4 py-2 text-left">{t("Invoice Status")}</th>
+                            <th className="px-4 py-2 text-left">{t("Due Date")}</th>
+                            <th className="px-4 py-2 text-left">{t("Edit")}</th>
+                            <th className="px-4 py-2 text-left">{t("Delete")}</th>
+                        </tr>
+                    </thead>
 
-                <tbody className="bg-card dark:bg-card-dark text-text-primary dark:text-text-secondary-dark font-inter">
-                    {
-                        clients && clients.map((client: Clients) => {
-                            const isClientFromUser = user?.id === client.user_id
-                            if ( !isClientFromUser ) return
+                    <tbody className="bg-card dark:bg-card-dark text-text-primary dark:text-text-secondary-dark font-inter">
+                        {
+                            clients && clients.map((client: Clients) => {
+                                const isClientFromUser = user?.id === client.user_id
+                                if ( !isClientFromUser ) return
 
-                            const isEdited = client.project_id === selectedClientId
-                            const currentValue = isEdited ? draftValue : client.project_status
-                            
-                            const statusFound = PROJECT_STATUS.find((s: Status) => s.value === currentValue)
-                            ?? {
-                                value: "unknown",
-                                label: "Unknown",
-                                bg: "bg-gray-200",
-                                text: "text-gray-600",
-                            }
-                    
-                            return (
-                                <TableClients 
-                                    key={client.project_id}
-                                    value={currentValue}
-                                    found={statusFound} 
-                                    client={client} 
-                                    handleChangeOut={(val, oldVal) => onChangeSelect(val, oldVal, client.project_id)}
-                                    handleClickEditClient={() => handleClickEditClient(client)}
-                                    handleClickDeleteClient={() => handleClickDeleteClient(client.client_id)}
-                                />
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
+                                const isEdited = client.project_id === selectedClientId
+                                const currentValue = isEdited ? draftValue : client.project_status
+                                
+                                const statusFound = PROJECT_STATUS.find((s: Status) => s.value === currentValue)
+                                ?? {
+                                    value: "unknown",
+                                    label: "Unknown",
+                                    bg: "bg-gray-200",
+                                    text: "text-gray-600",
+                                }
+                        
+                                return (
+                                    <TableClients 
+                                        key={client.project_id}
+                                        value={currentValue}
+                                        found={statusFound} 
+                                        client={client} 
+                                        handleChangeOut={(val, oldVal) => onChangeSelect(val, oldVal, client.project_id)}
+                                        handleClickEditClient={() => handleClickEditClient(client)}
+                                        handleClickDeleteClient={() => handleClickDeleteClient(client.client_id)}
+                                    />
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
 
             {isOpen && (
                 <ModalConfirmation

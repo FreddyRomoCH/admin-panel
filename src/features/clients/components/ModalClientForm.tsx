@@ -99,7 +99,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
     return (
         <Dialog open={isOpen} onClose={handleOnClose}>
             <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
-            <div className="fixed inset-0 flex items-center justify-center">
+            <div className="fixed inset-0 flex items-center justify-center mx-2 md:mx-0">
                 <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white dark:bg-card-dark rounded-2xl">
                     <header className="border-b-2 border-border dark:border-border-dark p-6">
                         <DialogTitle 
@@ -115,8 +115,8 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                         <main className="py-6">
                             <FormProvider {...methods}>
                                 <form onSubmit={handleSubmit(onSubmit)} id="form-add-client">
-                                    <section className="flex justify-center items-start gap-4 mb-4 px-4 flex-1">
-                                        <div>
+                                    <section className="flex flex-col md:flex-row justify-center items-start gap-4 mb-4 px-4 flex-1">
+                                        <div className="w-full">
                                             <Input 
                                                 value={clientToEdit?.client_name ? clientToEdit.client_name : ""}
                                                 type="text" 
@@ -128,7 +128,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                             />
                                         </div>
 
-                                        <div>
+                                        <div className="w-full">
                                             <Input 
                                                 value={clientToEdit?.project_name ? clientToEdit.project_name : ""}
                                                 type="text" 
@@ -140,7 +140,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                             />
                                         </div>
 
-                                        <div>
+                                        <div className="w-full">
                                             <Select 
                                                 name="status" 
                                                 id="project-status" 
@@ -153,7 +153,7 @@ export default function ModalClientForm({ handleOnClose, isOpen, mode, clientToE
                                             />
                                         </div>
 
-                                        <div>
+                                        <div className="w-full">
                                             <Input 
                                                 value={clientToEdit?.due_date 
                                                     ? new Date(clientToEdit.due_date).toISOString().split("T")[0] 

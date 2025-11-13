@@ -101,7 +101,7 @@ export default function Settings() {
 
                     <div className="bg-card dark:bg-card-dark rounded-2xl border border-border dark:border-border-dark p-6 flex flex-col justify-between items-center mb-8 gap-6">
 
-                        <div className="flex flex-row justify-between items-center w-full gap-4">
+                        <div className="flex flex-col md:flex-row justify-between items-center w-full gap-4">
                             <div className="flex flex-col justify-center items-start gap-2 w-full">
                                 <label 
                                     htmlFor="username"

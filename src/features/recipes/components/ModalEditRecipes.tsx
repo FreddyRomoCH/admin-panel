@@ -145,7 +145,7 @@ export default function ModalEditRecipes({
             <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center">
                 {/* <Button onClick={handleOnClose}>Close Recipe</Button> */}
-                <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white dark:bg-card-dark rounded-2xl">
+                <DialogPanel className="max-w-3xl w-full max-h-4/5 bg-white dark:bg-card-dark rounded-2xl mx-2 md:mx-0">
                     <header className="border-b-2 border-border dark:border-border-dark p-6">
                         <DialogTitle className="text-lg font-semibold text-text-primary dark:text-text-secondary-dark">
                             {mode === "edit" ? t("Edit Recipe") : t("Create Recipe")}
@@ -156,7 +156,7 @@ export default function ModalEditRecipes({
                         <main className="py-6">
                             <FormProvider {...methods}>
                                 <form onSubmit={handleSubmit(onSubmit)} id="form-edit-recipe">
-                                    <section className="flex justify-between items-start gap-4 mb-4 px-4">
+                                    <section className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4 mb-4 px-4">
                                         <RecipeImage mainImage={main_image} title={title} />
 
                                         <div className="flex flex-col justify-start items-left gap-4 w-full">
