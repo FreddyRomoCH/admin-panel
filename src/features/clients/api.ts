@@ -49,8 +49,8 @@ export async function addClientToBD({ client }: ClientData, user_id: UserType["i
     } as Clients
 }
 
-export async function fetchClientsFromBD() {
-    const { error, data } = await supabaseClients
+export async function fetchClientsFromBD(user_id?: UserType["id"]) {
+    let query =  supabaseClients
         .from("clients")
         .select(`
             id,
@@ -66,6 +66,12 @@ export async function fetchClientsFromBD() {
             )
         `)
         .order("id", { ascending: false })
+
+    if (user_id) {
+        query = query.eq("user_id", user_id)
+    }
+
+    const { error, data } = await query
 
     if (error) throw error
 

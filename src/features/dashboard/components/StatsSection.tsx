@@ -21,9 +21,20 @@ export default function StatsSection({ isLoading, totalRepos, totalRecipes, tota
                 </>
             ) : (
                 <>
-                    <StatCard title="Total Projects" total={totalRepos ?? 0} />
-                    <StatCard title="Published Recipes" total={totalRecipes ?? 0} />
-                    <StatCard title="Total Clients" total={totalClients ?? 0} />
+                    <StatCard 
+                        title="Total Projects" 
+                        total={totalRepos ?? 0} 
+                    />
+
+                    <StatCard 
+                        title="Published Recipes" 
+                        total={totalRecipes ?? 0} 
+                    />
+
+                    <StatCard 
+                        title="Total Clients" 
+                        total={totalClients ?? 0} 
+                    />
                 </>
             )
         }

@@ -9,7 +9,7 @@ interface ClientsState {
     error: boolean
     addClient: (client: NewClient, user_id: UserType["id"]) => Promise<void>
     changePaymentStatus: (project_id: Clients["project_id"] | undefined, newValue: string) => Promise<boolean>
-    showClients: () => Promise<void>
+    showClients: (user_id?: UserType["id"]) => Promise<void>
     updateClient: (client: Clients) => Promise<boolean>
     deleteClient: (client_id: Clients["client_id"]) => Promise<boolean>
 }
@@ -70,17 +70,18 @@ export const useClientsStore = create<ClientsState>((set) => ({
         }
     },
 
-    showClients: async () =>  {
+    showClients: async (user_id?: UserType["id"]) =>  {
         try {
             set({ loading: true })
             
-            const allClients = await fetchClientsFromBD()
+            const allClients = await fetchClientsFromBD(user_id)
 
             if (!allClients) {
                 set({error: true, loading: false})
             }
 
             set({ clients: allClients, loading: false })
+            
         } catch (error) {
             console.error("Error fetching clients", error)
             set({ error: true, loading: false })

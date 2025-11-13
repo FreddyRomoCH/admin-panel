@@ -7,16 +7,20 @@ import Error from "@/components/shared/Error";
 import StatsSection from "@features/dashboard/components/StatsSection";
 import RecentItemsSection from "@features/dashboard/components/RecentItemsSection";
 import ChartSection from "@features/dashboard/components/ChartSection";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function Dashboard() {
     const { error: statsError , loading: dashboardStatsLoading, totalRepos, totalRecipes } = useDashboardStats()
     const { error: recentItemsError, loading: recentLoading, recentItems } = useRecentItems()
     const { error: chartError, loading: chartLoading, totalRecipesChart } = useActivityChart()
     const { error: totalClientsError, clients, loading: clientsLoading, showClients } = useClientsStore()
+    const { user } = useAuthStore()
 
     useEffect(() => {
-        showClients()
-    }, [])
+        if (!user?.id) return
+        
+        showClients(user?.id)
+    }, [user?.id])
 
     const totalClients = totalClientsError ? 0 : clients.length
     const isLoading = dashboardStatsLoading && clientsLoading
