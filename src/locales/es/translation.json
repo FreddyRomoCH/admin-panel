@@ -109,5 +109,6 @@
     "Creating...": "Creando...",
     "Create Account": "Crear Cuenta",
     "Failed to update your username. Try again later": "Error al actualizar el nombre de usuario. Intenta más tarde",
-    "Username updated successfully": "Nombre de usuario actualizado correctamente"
+    "Username updated successfully": "Nombre de usuario actualizado correctamente",
+    "No projects found": "No se han encontrado projectos"
 }

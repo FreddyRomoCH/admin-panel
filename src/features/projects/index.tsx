@@ -39,13 +39,13 @@ export default function Projects() {
                 )}
             </header>
 
-            <main className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch mb-8">
+            {/* <main className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch mb-8"> */}
                 <SectionProjects 
                     gitHubProjects={gitHubProjects} 
                     loading={loading} 
                     setTech={setTech} 
                 />
-            </main>
+            {/* </main> */}
 
             <footer className="flex justify-center items-center gap-4">
                 <ProjectsPagination 

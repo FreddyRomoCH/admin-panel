@@ -2,6 +2,7 @@ import Skeleton from "@/components/ui/Skeleton";
 import type { GHProjects } from "@features/projects/types";
 import CardProjects from "./CardProjects";
 import type { TopicsGitHub } from "@/types/topicsGitHub";
+import { useTranslation } from "react-i18next";
 
 interface SectionProjectsProps {
     gitHubProjects: GHProjects[],
@@ -10,6 +11,8 @@ interface SectionProjectsProps {
 }
 
 export default function SectionProjects({ gitHubProjects, loading, setTech }:SectionProjectsProps) {
+    const { t } = useTranslation()
+
     return (
         loading ? (
             Array.from({ length: 4 }).map((_, i) => (
@@ -22,15 +25,21 @@ export default function SectionProjects({ gitHubProjects, loading, setTech }:Sec
             ))
         ) : (
             gitHubProjects?.length > 0 ? (
-                gitHubProjects.map((project: GHProjects) => (
-                    <div key={project.id}>
-                        <CardProjects 
-                            setTech={setTech} {...project} 
-                        />
-                    </div>
-                ))
+                <main className="grid grid-cols-[repeat(auto-fit,_minmax(250px,250px))] gap-6 justify-center mb-8 w-full">
+                    {
+                        gitHubProjects.map((project: GHProjects) => (
+                                <CardProjects 
+                                    key={project.id}
+                                    setTech={setTech} {...project} 
+                                />
+                    ))
+                    }
+                </main>
             ) : (
-                !loading && <p>No recipes found</p>
+                !loading && 
+                    <p className="text-red-500 w-full text-center mb-8">
+                        {t("No projects found")}
+                    </p>
             )
         )
         
