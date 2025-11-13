@@ -4,17 +4,17 @@ import Header from "@/layouts/AppLayout/components/header/Header";
 
 export default function AppLayout() {
     return (
-        <div className="grid grid-cols-[250px_1fr] min-h-screen min-w-screen">
-            <aside className="bg-background-base dark:bg-background-dark border-r border-border">
+        <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] md:min-h-screen min-w-screen">
+            <aside className="bg-background-base dark:bg-background-dark border-r border-border -translate-x-full md:translate-x-0 hidden md:block">
                 <Sidebar />
             </aside>
 
-            <div className="flex flex-col justify-start h-screen bg-background-light dark:bg-background-dark p-4">
+            <div className="flex flex-col justify-start md:h-screen bg-background-light dark:bg-background-dark p-4">
                 <header>
                     <Header />
                 </header>
 
-                <main className="h-screen">
+                <main className="md:h-screen">
                     <Outlet />
                 </main>
             </div>

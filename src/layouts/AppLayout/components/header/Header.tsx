@@ -7,6 +7,8 @@ import ModalClientForm from "@/features/clients/components/ModalClientForm";
 import ModalEditRecipes from "@/features/recipes/components/ModalEditRecipes";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useMediaQuery } from "react-responsive";
+import IconMenuOpen from "@/assets/icons/IconMenuOpen";
 
 export default function Header() {
     const location = useLocation();
@@ -17,6 +19,7 @@ export default function Header() {
     const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false)
     const [avatar, setAvatar] = useState(user?.avatar || "/images/avatar.png")
     const { t } = useTranslation()
+    const isDesktop = useMediaQuery({ minWidth: 768 });
 
     const handleOpenModal = (mode: "edit" | "create") => {
         if (mode === "edit") {
@@ -45,15 +48,23 @@ export default function Header() {
     }, [user?.avatar])
 
     return (
-        <div className="flex justify-between items-center py-8">
+        <div className="flex flex-col-reverse md:flex-row justify-between items-center py-8">
+
             <div>
                 <h1 
-                    className="font-inter text-3xl font-bold text-text-primary dark:text-card">
+                    className="font-inter text-2xl md:text-3xl font-bold text-text-primary dark:text-card">
                     { t(title) }
                 </h1>
             </div>
 
-            <div className="flex justify-center items-center gap-10">
+            <div className="flex justify-center items-center gap-10 mb-6 md:mb-0">
+            
+                {!isDesktop && (
+                    <IconMenuOpen 
+                        className="text-primary w-auto h-12"
+                    />
+                )}
+
                 {
                     title === "Recipes" && (
                         <Button 

@@ -29,7 +29,7 @@ export default function Dashboard() {
     if (isPageError) return <Error type="page" />
 
     return (
-        <div className="flex flex-col justify-center items-center h-full -mt-12">
+        <div className="flex flex-col justify-center items-center md:h-full md:-mt-12">
             {statsError ? (
                 <Error type="section" />
             ):(
@@ -41,8 +41,8 @@ export default function Dashboard() {
                 />
             )}
 
-            <main className="grid grid-cols-9 gap-4 mt-8 w-full">
-                <section className="col-span-6 bg-card dark:bg-background-dark p-6 rounded-md shadow-md">
+            <main className="grid grid-cols-12 md:grid-cols-9 gap-4 mt-8 w-full">
+                <section className="col-span-12 md:col-span-6 bg-card dark:bg-background-dark py-6 md:p-6 rounded-md shadow-md">
                     {chartError ? (
                         <Error type="section" />
                     ) : (
@@ -55,7 +55,7 @@ export default function Dashboard() {
                     
                 </section>
 
-                <section className="col-span-3 bg-card dark:bg-background-dark p-6 rounded-md shadow-md animate-slide-in-right">
+                <section className="col-span-12 md:col-span-3 bg-card dark:bg-background-dark py-6 md:p-6 rounded-md shadow-md animate-slide-in-right">
                     {recentItemsError ? (
                         <Error type="section" />
                     ) : (
