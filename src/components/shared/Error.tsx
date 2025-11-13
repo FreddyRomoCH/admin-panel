@@ -32,7 +32,7 @@ export default function Error({ type }: ErrorProps) {
             <div className="flex flex-col justify-center items-center gap-6">
                 <header className="flex flex-col justify-center items-center gap-2">
                     <h1 
-                        className="text-3xl text-text-primary dark:text-text-secondary-dark font-bold"
+                        className="text-3xl text-text-primary dark:text-text-secondary-dark font-bold text-center"
                     >
                         Oops! Something went wrong.
                     </h1>

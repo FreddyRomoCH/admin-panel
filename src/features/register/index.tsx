@@ -40,12 +40,12 @@ export default function Register () {
 
     return (
         <main className="flex flex-col w-full animate-slide-in-top">
-            <div className="bg-card dark:bg-card-dark rounded-2xl shadow-lg shadow-black/10 p-12 max-w-2xl w-full m-auto h-auto flex flex-col justify-center items-center gap-2 text-center">
-                <h1 className="text-text-primary dark:text-text-secondary-dark font-semibold text-4xl mb-2">
+            <div className="bg-card dark:bg-card-dark rounded-2xl shadow-lg shadow-black/10 px-4 md:px-12 py-8 max-w-2xl w-full m-auto h-auto flex flex-col justify-center items-center gap-2 text-center">
+                <h1 className="text-text-primary dark:text-text-secondary-dark font-semibold text-3xl mb-2">
                     { t("Create A New User") }
                 </h1>
 
-                <p className="text-text-secondary dark:text-text-secondary-dark mb-8 font-light text-base w-xs mx-auto text-center">
+                <p className="text-text-secondary dark:text-text-secondary-dark mb-6 font-light text-base w-xs mx-auto text-center">
                     { t("Allow them to manage their own projects") }.
                 </p>
 
@@ -53,7 +53,7 @@ export default function Register () {
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-full"
                 >
-                    <div className="flex justify-around items-start gap-2">
+                    <div className="flex flex-col md:flex-row justify-around items-start gap-2">
                         {/* First Name */}
                         <div className="flex flex-col justify-center items-start mb-4 w-full">
                             <label 
@@ -69,7 +69,7 @@ export default function Register () {
                                 id="first_name"
                                 autoComplete="First Name"
                                 placeholder={ t("Enter your first name") } 
-                                className={`bg-white w-full rounded-lg px-3 py-4 border focus:ring-2 focus:ring-primary focus:outline-none
+                                className={`bg-white w-full rounded-lg px-3 py-3 border focus:ring-2 focus:ring-primary focus:outline-none
                                     ${errors.first_name ? "border-red-600" : "border-border dark:border-border-dark"} 
                                 `}
                             />
@@ -94,7 +94,7 @@ export default function Register () {
                                 id="last-name"
                                 autoComplete="Last Name"
                                 placeholder={ t("Enter your last name") } 
-                                className={`bg-white w-full rounded-lg px-3 py-4 border focus:ring-2 focus:ring-primary focus:outline-none
+                                className={`bg-white w-full rounded-lg px-3 py-3 border focus:ring-2 focus:ring-primary focus:outline-none
                                     ${errors.last_name ? "border-red-600" : "border-border dark:border-border-dark "} 
                                 `}
                             />
@@ -121,7 +121,7 @@ export default function Register () {
                             name="username" 
                             autoComplete="username"
                             placeholder={ t("Choose a username") } 
-                            className={`bg-white w-full rounded-lg px-3 py-4 border focus:ring-2 focus:ring-primary focus:outline-none
+                            className={`bg-white w-full rounded-lg px-3 py-3 border focus:ring-2 focus:ring-primary focus:outline-none
                                 ${errors.username ? "border-red-600" : "border-border dark:border-border-dark "} 
                             `}
                         />
@@ -131,56 +131,58 @@ export default function Register () {
                         )}
                     </div>
 
-                    {/* Email */}
-                    <div className="flex flex-col justify-center items-start mb-4">
-                        <label 
-                            htmlFor="email"
-                            className="text-text-secondary dark:text-text-secondary-dark text-base mb-2"
-                        >
-                                {t("Email")}
-                        </label>
+                    <div className="flex flex-col md:flex-row justify-around items-start gap-2">
+                        {/* Email */}
+                        <div className="flex flex-col justify-center items-start mb-4 w-full">
+                            <label 
+                                htmlFor="email"
+                                className="text-text-secondary dark:text-text-secondary-dark text-base mb-2"
+                            >
+                                    {t("Email")}
+                            </label>
 
-                        <input 
-                            {...register("email")}
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            autoComplete="email"
-                            placeholder={ t("you@example.com") } 
-                            className={`bg-white w-full rounded-lg px-3 py-4 border focus:ring-2 focus:ring-primary focus:outline-none
-                                ${errors.email ? "border-red-600" : "border-border dark:border-border-dark "} 
-                            `}
-                        />
+                            <input 
+                                {...register("email")}
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                autoComplete="email"
+                                placeholder={ t("you@example.com") } 
+                                className={`bg-white w-full rounded-lg px-3 py-3 border focus:ring-2 focus:ring-primary focus:outline-none
+                                    ${errors.email ? "border-red-600" : "border-border dark:border-border-dark "} 
+                                `}
+                            />
 
-                        {errors.email && (
-                            <p className="text-red-600 text-sm mt-2">{ errors.email.message }</p>
-                        )}
-                    </div>
+                            {errors.email && (
+                                <p className="text-red-600 text-sm mt-2">{ errors.email.message }</p>
+                            )}
+                        </div>
 
-                    {/* Password */}
-                    <div className="flex flex-col justify-center items-start mb-4">
-                        <label 
-                            htmlFor="password"
-                            className="text-text-secondary dark:text-text-secondary-dark text-base mb-2"
-                        >
-                                {t("Password")}
-                        </label>
+                        {/* Password */}
+                        <div className="flex flex-col justify-center items-start mb-4 w-full">
+                            <label 
+                                htmlFor="password"
+                                className="text-text-secondary dark:text-text-secondary-dark text-base mb-2"
+                            >
+                                    {t("Password")}
+                            </label>
 
-                        <input 
-                            {...register("password")}
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            autoComplete="password"
-                            placeholder={ t("Create a password") } 
-                            className={`bg-white w-full rounded-lg px-3 py-4 border focus:ring-2 focus:ring-primary focus:outline-none
-                                ${errors.password ? "border-red-600" : "border-border dark:border-border-dark"} 
-                            `}
-                        />
+                            <input 
+                                {...register("password")}
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                autoComplete="password"
+                                placeholder={ t("Create a password") } 
+                                className={`bg-white w-full rounded-lg px-3 py-3 border focus:ring-2 focus:ring-primary focus:outline-none
+                                    ${errors.password ? "border-red-600" : "border-border dark:border-border-dark"} 
+                                `}
+                            />
 
-                        {errors.password && (
-                            <p className="text-red-600 text-sm mt-2">{ errors.password.message }</p>
-                        )}
+                            {errors.password && (
+                                <p className="text-red-600 text-sm mt-2">{ errors.password.message }</p>
+                            )}
+                        </div>
                     </div>
 
                     <div className="flex flex-col justify-center items-start mb-4">
@@ -206,7 +208,7 @@ export default function Register () {
                         }
                         type="submit"
                         titleCss="text-white text-lg font-light"
-                        buttonCss={`bg-primary w-full rounded-lg py-4 cursor-pointer hover:bg-text-primary transform transition duration-150 ease-in-out
+                        buttonCss={`bg-primary w-full rounded-lg py-3 cursor-pointer hover:bg-text-primary transform transition duration-150 ease-in-out
                             ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}    
                         `}
                     />

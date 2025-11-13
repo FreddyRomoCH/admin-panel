@@ -38,7 +38,9 @@ export default function Sidebar({ handleClick }: SidebarProps) {
                 />
 
                 <footer>
-                    <FooterSidebar />
+                    <FooterSidebar 
+                        handleClick={handleClick}
+                    />
                 </footer>
             </div>
         </div>

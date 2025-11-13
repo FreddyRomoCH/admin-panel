@@ -8,7 +8,12 @@ interface StatsSectionProps {
     isLoading: boolean
 }
 
-export default function StatsSection({ isLoading, totalRepos, totalRecipes, totalClients }: StatsSectionProps) {
+export default function StatsSection({ 
+    isLoading, 
+    totalRepos, 
+    totalRecipes, 
+    totalClients 
+}: StatsSectionProps) {
 
     return (
         <header className="grid grid-cols-3 gap-4 mt-2 w-full">

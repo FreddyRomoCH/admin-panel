@@ -13,7 +13,7 @@ export default function AppLayout() {
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] md:min-h-screen min-w-screen">
+        <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] min-h-screen min-w-screen">
             <aside className={`bg-background-base dark:bg-background-dark transition-transform duration-200
                 ${!isDesktop ? `fixed inset-0 z-10 h-dvh w-dvw ${isSidebarOpen ? "translate-x-0" : "-translate-x-full" }` : "relative border-r border-border"}    
             `}>

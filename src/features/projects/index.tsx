@@ -6,12 +6,26 @@ import Skeleton from "@/components/ui/Skeleton"
 import Error from "@/components/shared/Error"
 
 export default function Projects() {
-    const {loading, error, gitHubProjects, hasMore, page, totalPages, goToPage, nextPage, prevPage, filter, setFilter, tech, setTech} = useProjects()
+    const {
+        loading, 
+        error, 
+        gitHubProjects, 
+        hasMore, 
+        page, 
+        totalPages, 
+        goToPage, 
+        nextPage, 
+        prevPage, 
+        filter, 
+        setFilter, 
+        tech, 
+        setTech
+    } = useProjects()
 
     if (error) return <Error type="page" />
 
     return (
-        <div className="flex flex-col justify-center items-center h-full -mt-12">
+        <div className="flex flex-col justify-center items-center md:h-full md:-mt-12">
             <header className="mb-8">
                 {loading ? (
                     <Skeleton />
@@ -25,7 +39,7 @@ export default function Projects() {
                 )}
             </header>
 
-            <main className="grid grid-cols-2 md:grid-cols-4 gap-6 items-stretch mb-8">
+            <main className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch mb-8">
                 <SectionProjects 
                     gitHubProjects={gitHubProjects} 
                     loading={loading} 

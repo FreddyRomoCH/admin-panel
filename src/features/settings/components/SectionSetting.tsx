@@ -86,7 +86,7 @@ export default function SectionSetting({
                 { t(title) }
             </h2>
 
-            <div className="bg-card dark:bg-card-dark rounded-2xl border border-border dark:border-border-dark p-6 flex justify-between items-center mb-8">
+            <div className="bg-card dark:bg-card-dark rounded-2xl border border-border dark:border-border-dark p-6 flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-center mb-8">
                 <div>
                     <h4 
                         className="text-text-primary dark:text-text-secondary-dark font-semibold text-md"
