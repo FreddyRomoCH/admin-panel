@@ -10,7 +10,11 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useMediaQuery } from "react-responsive";
 import IconMenuOpen from "@/assets/icons/IconMenuOpen";
 
-export default function Header() {
+interface HeaderProps {
+    handleOnCLick: () => void
+}
+
+export default function Header({ handleOnCLick }: HeaderProps) {
     const location = useLocation();
     const currentLocation = sidebarNavs.find((item) => item.path === location.pathname)
     const title = currentLocation ? currentLocation.label : "Settings"
@@ -41,8 +45,6 @@ export default function Header() {
         }
     }
 
-    // const avatar = user?.avatar || "/images/avatar.png"
-
     useEffect(() => {
         setAvatar(user?.avatar || "/images/avatar.png") 
     }, [user?.avatar])
@@ -60,9 +62,11 @@ export default function Header() {
             <div className="flex justify-center items-center gap-10 mb-6 md:mb-0">
             
                 {!isDesktop && (
-                    <IconMenuOpen 
-                        className="text-primary w-auto h-12"
-                    />
+                    <div onClick={handleOnCLick}>
+                        <IconMenuOpen 
+                            className="text-primary w-auto h-12"
+                        />
+                    </div>
                 )}
 
                 {
