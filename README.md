@@ -33,9 +33,14 @@ The goal of this project is to showcase my experience using Rect Router, Tailwin
 ---
 
 ## 📷 Screenshots
-![About](https://github.com/FreddyRomoCH/portfolio/blob/main/public/screenshots/portfolio-about.png)  
-![Projects](https://github.com/FreddyRomoCH/portfolio/blob/main/public/screenshots/portfolio-projects.png)  
-![Project Detail](https://github.com/FreddyRomoCH/portfolio/blob/main/public/screenshots/portfolio-project.png)  
+![Login](https://admin.freddyromo.dev/screenshots/login.png)  
+![Dashboard](https://admin.freddyromo.dev/screenshots/dashboard.png)  
+![Projects](https://admin.freddyromo.dev/screenshots/projects.png) 
+![Clients](https://admin.freddyromo.dev/screenshots/clients.png) 
+![Register](https://admin.freddyromo.dev/screenshots/register.png) 
+![Settings](https://admin.freddyromo.dev/screenshots/settings.png)    
+![Add Client](https://admin.freddyromo.dev/screenshots/add-client.png) 
+![Add Recipe](https://admin.freddyromo.dev/screenshots/add-recipe.png)   
 
 ---
 
